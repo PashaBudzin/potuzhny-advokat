@@ -77,6 +77,11 @@ export default function CreateDogovirRoute() {
               <Input type="text" name={"дата_народження"} />
             </div>
 
+            <div className="space-y-2 mt-4">
+              <Label htmlFor="дата_видачі">Дата Видачі</Label>
+              <Input type="text" name={"дата_видачі"} />
+            </div>
+
             <Button className="w-full mt-4" size="lg" type="submit">
               Generate
             </Button>
