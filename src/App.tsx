@@ -22,7 +22,6 @@ export function App() {
   return (
     <main className="text-text bg-background">
       <RouterProvider router={router} />
-      hello,world
     </main>
   );
 }
