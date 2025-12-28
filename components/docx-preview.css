@@ -1,0 +1,35 @@
+.docx-preview {
+  font-family: serif;
+  line-height: 1.6;
+}
+
+.docx-preview.small-preview {
+  max-height: 200px;
+  overflow-y: auto;
+  transform: scale(0.6);
+  transform-origin: top left;
+  width: 166.67%; /* 100% / 0.6 to compensate for scaling */
+}
+
+.docx-preview.dialog-preview {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.docx-preview table {
+  border-collapse: collapse;
+}
+
+.docx-preview td {
+  border: 1px solid #ccc;
+}
+
+.small-preview {
+  max-height: 200px;
+  overflow: auto;
+}
+
+.dialog-preview {
+  max-height: 100%;
+  overflow: auto;
+}
