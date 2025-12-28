@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Stepper,
   StepperContent,
@@ -11,14 +11,21 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from '@/components/ui/stepper';
-import { BookUser, Check, CreditCard, ListTodo, LoaderCircleIcon, LockKeyhole } from 'lucide-react';
+} from "@/components/ui/stepper";
+import {
+  BookUser,
+  Check,
+  CreditCard,
+  ListTodo,
+  LoaderCircleIcon,
+  LockKeyhole,
+} from "lucide-react";
 
 const steps = [
-  { title: 'User Details', icon: BookUser },
-  { title: 'Payment Info', icon: CreditCard },
-  { title: 'Auth OTP', icon: LockKeyhole },
-  { title: 'Preview Form', icon: ListTodo },
+  { title: "User Details", icon: BookUser },
+  { title: "Payment Info", icon: CreditCard },
+  { title: "Auth OTP", icon: LockKeyhole },
+  { title: "Preview Form", icon: ListTodo },
 ];
 
 export default function Component() {
@@ -37,39 +44,43 @@ export default function Component() {
       <StepperNav className="gap-3 mb-15">
         {steps.map((step, index) => {
           return (
-            <StepperItem key={index} step={index + 1} className="relative flex-1 items-start">
-              <StepperTrigger className="flex flex-col items-start justify-center gap-2.5 grow" asChild>
+            <StepperItem
+              key={index}
+              step={index + 1}
+              className="relative flex-1 items-start"
+            >
+              <StepperTrigger
+                className="flex flex-col items-start justify-center gap-2.5 grow"
+                asChild
+              >
                 <StepperIndicator className="size-8 border-2 data-[state=completed]:text-white data-[state=completed]:bg-green-500 data-[state=inactive]:bg-transparent data-[state=inactive]:border-border data-[state=inactive]:text-muted-foreground">
                   <step.icon className="size-4" />
                 </StepperIndicator>
                 <div className="flex flex-col items-start gap-1">
-                  <div className="text-[10px] font-semibold uppercase text-muted-foreground">Step {index + 1}</div>
+                  <div className="text-[10px] font-semibold uppercase text-muted-foreground">
+                    Step {index + 1}
+                  </div>
                   <StepperTitle className="text-start text-base font-semibold group-data-[state=inactive]/step:text-muted-foreground">
                     {step.title}
                   </StepperTitle>
                   <div>
                     <Badge
-                      variant="primary"
-                      size="sm"
-                      appearance="light"
+                      variant="default"
                       className="hidden group-data-[state=active]/step:inline-flex"
                     >
                       In Progress
                     </Badge>
 
                     <Badge
-                      variant="success"
-                      size="sm"
-                      appearance="light"
-                      className="hidden group-data-[state=completed]/step:inline-flex"
+                      variant="default"
+                      className="hidden group-data-[state=completed]/step:inline-flex bg-green-500 text-white"
                     >
                       Completed
                     </Badge>
 
                     <Badge
                       variant="secondary"
-                      size="sm"
-                      className="hidden group-data-[state=inactive]/step:inline-flex text-muted-foreground"
+                      className="hidden group-data-[state=inactive]/step:inline-flex"
                     >
                       Pending
                     </Badge>
@@ -87,14 +98,22 @@ export default function Component() {
 
       <StepperPanel className="text-sm">
         {steps.map((step, index) => (
-          <StepperContent key={index} value={index + 1} className="flex items-center justify-center">
+          <StepperContent
+            key={index}
+            value={index + 1}
+            className="flex items-center justify-center"
+          >
             Step {step.title} content
           </StepperContent>
         ))}
       </StepperPanel>
 
       <div className="flex items-center justify-between gap-2.5">
-        <Button variant="outline" onClick={() => setCurrentStep((prev) => prev - 1)} disabled={currentStep === 1}>
+        <Button
+          variant="outline"
+          onClick={() => setCurrentStep((prev) => prev - 1)}
+          disabled={currentStep === 1}
+        >
           Previous
         </Button>
         <Button
