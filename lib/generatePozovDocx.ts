@@ -73,6 +73,9 @@ export function generatePozovDocx(text: string): Document {
   }
 
   return new Document({
+    styles: {
+      default: { document: { run: { language: { value: "uk-UA" } } } },
+    },
     sections: [
       {
         properties: {

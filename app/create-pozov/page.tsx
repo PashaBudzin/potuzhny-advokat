@@ -36,6 +36,7 @@ import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
 import { filesAtom, pozovDataAtom } from "@/state/create-pozov";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
+import { File as FileIcon } from "lucide-react";
 import { Packer } from "docx";
 import { saveAs } from "file-saver";
 
@@ -268,6 +269,7 @@ function DataPreview({
 function ThirdStep() {
   const [_, setCurrentStep] = useAtom(stepAtom);
   const [pozovData] = useAtom(pozovDataAtom);
+  const [files] = useAtom(filesAtom);
   const [generatedContent, setGeneratedContent] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [docxFile, setDocxFile] = useState<File | null>(null);
@@ -327,7 +329,10 @@ function ThirdStep() {
 
   const saveDocument = useCallback(() => {
     if (docxFile) {
-      saveAs(docxFile, `${pozovData?.data?.["ПІБ позивача"] ?? "pozov"}.docx`);
+      saveAs(
+        docxFile,
+        `позов ${pozovData?.data?.["ПІБ позивача"] ?? "pozov"}.docx`,
+      );
     }
   }, [docxFile, pozovData]);
 
@@ -340,6 +345,24 @@ function ThirdStep() {
   return (
     <>
       <CardContent className="space-y-6">
+        {files.length > 0 && (
+          <div>
+            <h4 className="mb-4 font-medium text-foreground">
+              Завантажені документи
+            </h4>
+            <Carousel className="w-full">
+              <CarouselContent className="min-h-96">
+                {files.map((file, i) => (
+                  <CarouselItem className="min-h-full p-5" key={i}>
+                    <FilePreview file={file} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        )}
         <div className="w-full min-h-96 p-4 border rounded-md">
           {isGenerating ? (
             <div className="flex items-center justify-center h-96">
