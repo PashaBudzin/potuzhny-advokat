@@ -1,9 +1,17 @@
 import { generatePozov } from "@/lib/ai";
+import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
 
 export async function POST(req: Request) {
-  const { pozovData } = await req.json();
+  const { pozovData: rawPozovData } = await req.json();
 
-  const stream = await generatePozov(pozovData);
+  const pozovData = extractDataSchema.parse(rawPozovData);
+
+  if (!pozovData?.data)
+    return new Response(JSON.stringify({ message: "No data on pozovData" }), {
+      status: 400,
+    });
+
+  const stream = await generatePozov(pozovData.data, pozovData.type);
 
   return new Response(stream, {
     headers: {

@@ -10,7 +10,7 @@ import {
 
 const model = "gemini-flash-lite-latest";
 
-async function extractPozovData(files: File[]) {
+async function extractPozovData(files: File[], pozovType: ExtractData["type"]) {
   if (!files || files.length == 0) {
     throw new Error("no files were provided");
   }
@@ -36,19 +36,25 @@ async function extractPozovData(files: File[]) {
   const res = await ai.models.generateContent({
     model,
     config: extractPozovConfig,
-    contents: [...fileData.map((fd) => ({ role: "user", fileData: fd }))],
+    contents: [
+      ...fileData.map((fd) => ({ role: "user", fileData: fd })),
+      { text: `Тип позову: ${pozovType}` },
+    ],
   });
 
   return res.candidates?.at(0);
 }
 
-async function generatePozov(pozovData: NonNullable<ExtractData["data"]>) {
+async function generatePozov(
+  pozovData: NonNullable<ExtractData["data"]>,
+  type: ExtractData["type"],
+) {
   const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
   const res = await ai.models.generateContentStream({
     model,
     config: generatePozovConfig,
-    contents: [{ text: JSON.stringify(pozovData) }],
+    contents: [{ text: JSON.stringify({ data: pozovData, type }) }],
   });
 
   const encoder = new TextEncoder();

@@ -3,3 +3,4 @@ import { atom } from "jotai";
 
 export const filesAtom = atom<File[]>([]);
 export const pozovDataAtom = atom<ExtractData | null>(null);
+export const pozovTypeAtom = atom<ExtractData["type"]>("розлучення");

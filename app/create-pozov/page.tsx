@@ -33,12 +33,13 @@ import {
 } from "@/components/ui/stepper";
 import { extractPozovData } from "@/lib/ai";
 import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
-import { filesAtom, pozovDataAtom } from "@/state/create-pozov";
+import { filesAtom, pozovDataAtom, pozovTypeAtom } from "@/state/create-pozov";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
-import { File as FileIcon } from "lucide-react";
 import { Packer } from "docx";
 import { saveAs } from "file-saver";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const steps = [1, 2, 3] as const;
 
@@ -139,10 +140,12 @@ function SecondStep() {
     "none" | "loading" | "success" | "failed"
   >("none");
 
+  const [pozovType, setPozovType] = useAtom(pozovTypeAtom);
+
   const extractData = useCallback(() => {
     setExtractionState("loading");
 
-    extractPozovData(files)
+    extractPozovData(files, pozovType)
       .then(async (d) => {
         const res = d?.content?.parts?.at(0)?.text;
 
@@ -175,7 +178,7 @@ function SecondStep() {
         console.error("timed out");
       }
     }, 60000);
-  }, [files, extractionState, setPozovData]);
+  }, [files, extractionState, setPozovData, pozovType]);
 
   return (
     <>
@@ -191,6 +194,27 @@ function SecondStep() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
+        <div>
+          <Label htmlFor="тип позову">Тип позову</Label>
+          <RadioGroup
+            defaultValue="розлучення"
+            name="тип позову"
+            onValueChange={(nv) =>
+              setPozovType(nv as "розлучення" | "аліменти (Судовий наказ)")
+            }
+            className="mt-4"
+          >
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="розлучення" id="r1" />
+              <Label htmlFor="r1">Розлучення</Label>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="аліменти (Судовий наказ)" id="r1" />
+              <Label htmlFor="r1">Аліменти (Судовий наказ)</Label>
+            </div>
+          </RadioGroup>
+        </div>
         <div className="flex justify-center">
           <Button
             className="mt-4"
@@ -273,6 +297,7 @@ function ThirdStep() {
   const [generatedContent, setGeneratedContent] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [docxFile, setDocxFile] = useState<File | null>(null);
+  const [pozovType] = useAtom(pozovTypeAtom);
 
   const generatePozovDocument = useCallback(async () => {
     if (!pozovData?.data) return;
@@ -287,7 +312,7 @@ function ThirdStep() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pozovData: pozovData.data }),
+        body: JSON.stringify({ pozovData: { ...pozovData, type: pozovType } }),
       });
 
       if (!response.ok) {
@@ -325,7 +350,7 @@ function ThirdStep() {
     } finally {
       setIsGenerating(false);
     }
-  }, [pozovData]);
+  }, [pozovData, pozovType]);
 
   const saveDocument = useCallback(() => {
     if (docxFile) {
