@@ -145,6 +145,8 @@ function SecondStep() {
   const extractData = useCallback(() => {
     setExtractionState("loading");
 
+    console.log(pozovType);
+
     extractPozovData(files, pozovType)
       .then(async (d) => {
         const res = d?.content?.parts?.at(0)?.text;
