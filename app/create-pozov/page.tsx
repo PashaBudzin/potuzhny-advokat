@@ -47,7 +47,7 @@ const stepAtom = atom<1 | 2 | 3>(1);
 
 const stepNames = {
   1: "Оберіть файли для позову",
-  2: "Витягніть данні для створення позову",
+  2: "Витягніть дані для створення позову",
   3: "Генерація позову",
 };
 
@@ -223,7 +223,7 @@ function SecondStep() {
             onClick={extractData}
             disabled={extractionState === "loading"}
           >
-            Витягнути данні
+            Витягнути дані
           </Button>
         </div>
 
