@@ -57,7 +57,6 @@ export default function CreateDogovirRoute() {
                 <Input
                   type="text"
                   name={"ПІБ"}
-                  pattern="^[А-ЯІЇЄҐ][а-яіїєґ]+ [А-ЯІЇЄҐ][а-яіїєґ]+ [А-ЯІЇЄҐ][а-яіїєґ]+$"
                   placeholder="Прізвище Ім'я ПоБатькові"
                   required
                 />
