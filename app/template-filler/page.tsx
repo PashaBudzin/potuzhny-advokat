@@ -19,7 +19,6 @@ import {
 import { useEffect, useState } from "react";
 import { extractTags, generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
-import { intitials } from "@/lib/string";
 
 export default function TemplateFillerRoute() {
   const templateNames = Object.keys(templates);
@@ -121,9 +120,6 @@ export default function TemplateFillerRoute() {
                   const data = {
                     ...fdata,
                     дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
-                    ініціали: fdata["ПІБ"]
-                      ? intitials(fdata["ПІБ"] as string)
-                      : undefined,
                   };
 
                   const file = generateDocx(

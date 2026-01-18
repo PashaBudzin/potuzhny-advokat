@@ -18,6 +18,10 @@ const templates = {
     name: "Договір ФОП",
     templateUrl: "/договір_ФОП.docx",
   },
+  bezUchastiP: {
+    name: "Заява без участі позивача",
+    templateUrl: "/заява_без_участі_позивача.docx",
+  },
 } as Record<string, Template>;
 
 async function fetchTemplateArrayBuffer(url: string) {
