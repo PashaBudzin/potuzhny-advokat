@@ -1,0 +1,112 @@
+"use client";
+
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  fetchTemplateArrayBuffer,
+  templates,
+  type Template,
+} from "@/lib/templates";
+import { useCallback, useEffect, useState } from "react";
+import { generateDocx } from "@/lib/docsUtils";
+import { saveAs } from "file-saver";
+import { JsonPreview } from "@/components/json-preview";
+import { firstBetween } from "@/lib/string";
+
+type ParsedData = {
+  суд: string;
+  ПІБ_позивача: string;
+  ПІБ_позивача_рв: string;
+  адреса_позивача: string;
+  код_позивача: string;
+  суд_рв: string;
+  дата_рішення: string;
+  номер_справи: string;
+  ПІБ_відповідача_рв: string;
+};
+
+export default function TemplateFillerRoute() {
+  const [parsedData, setParsedData] = useState<ParsedData | null>(null);
+
+  const onSubmit = useCallback(async () => {
+    if (!parsedData) return;
+
+    const templateVydacha = await fetchTemplateArrayBuffer(
+      templates["vydachaRishennya"].templateUrl,
+    );
+
+    saveAs(
+      generateDocx(templateVydacha, {
+        ...parsedData,
+        дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
+      }),
+      `заява про видачу копії рішення ${parsedData.ПІБ_позивача}.docx`,
+    );
+  }, [parsedData]);
+
+  return (
+    <div className="min-h-screen bg-background p-8 mt-32">
+      <div className="max-w-2xl mx-auto pt-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Створити заяву про видачу копії рішення</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <Input
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+
+                  if (!file) return;
+
+                  const fr = new FileReader();
+                  fr.onload = (e) => {
+                    setParsedData(
+                      parseText(e?.target?.result?.toString() ?? ""),
+                    );
+                  };
+
+                  fr.readAsText(file);
+                }}
+              />
+            </div>
+            <div className="space-y-6 mt-4">
+              {parsedData && (
+                <JsonPreview onChange={setParsedData} data={parsedData} />
+              )}
+            </div>
+            <Button onClick={onSubmit} type="button" className="w-full mt-4">
+              Згенерувати
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+function parseText(text: string): ParsedData {
+  return {
+    суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
+    ПІБ_позивача:
+      firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "",
+    ПІБ_позивача_рв: firstBetween(text, "діє в інтересах ", " до") ?? "",
+    адреса_позивача:
+      firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
+    код_позивача: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
+    суд_рв: firstBetween(text, "року до ", "надійшла") ?? "",
+    дата_рішення: firstBetween(text, '"DOCDATE" content="', '">') ?? "",
+    номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
+    ПІБ_відповідача_рв: firstBetween(text, " до ", " про") ?? "",
+  };
+}

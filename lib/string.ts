@@ -5,4 +5,12 @@ function intitials(fullname: string) {
   return firstName[0] + "." + middleName[0] + ".";
 }
 
-export { intitials };
+function firstBetween(
+  text: string,
+  startSplit: string,
+  endSplit: string,
+): string | null {
+  return text.split(startSplit)?.at(1)?.split(endSplit)?.at(0) ?? null;
+}
+
+export { intitials, firstBetween };

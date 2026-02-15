@@ -5,7 +5,13 @@ import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface TreePreviewProps {
@@ -75,55 +81,55 @@ const TreeField: React.FC<TreeFieldProps> = ({
 
         {expanded && (
           <div className="ml-2 space-y-0.5">
-            {isArray
-              ? (
-                 <div className="space-y-0.5">
-                   {keys.map((key) => (
-                     <div
-                       key={key}
-                       className="flex items-center gap-1 py-0.5 px-0.5 rounded hover:bg-muted/30"
-                     >
-                       <span className="text-xs text-muted-foreground min-w-6 text-center">
-                         {parseInt(key) + 1}.
-                       </span>
-                       <div className="flex-1">
-                          <TreeField
-                            data={data[Number(key)]}
-                            path={path ? `${path}[${key}]` : `[${key}]`}
-                            onChange={onChange}
-                            level={level + 1}
-                            keyLabel={keyLabel}
-                            itemLabel={itemLabel}
-                            trueLabel={trueLabel}
-                            falseLabel={falseLabel}
-                          />
-                       </div>
-                     </div>
-                   ))}
-                 </div>
-              )
-               : keys.map((key) => (
-                   <div
-                     key={key}
-                     className="flex items-center gap-2 py-1 px-1 rounded hover:bg-muted/50"
-                   >
-                      <span className="text-sm font-medium text-foreground min-w-20 max-w-40 flex-shrink-0 truncate overflow-x-auto">
-                        {key}
-                      </span>
-                     <div className="flex-1">
-                        <TreeField
-                          data={data[key]}
-                          path={path ? `${path}.${key}` : key}
-                          onChange={onChange}
-                          level={level + 1}
-                          keyLabel={keyLabel}
-                          itemLabel={itemLabel}
-                          trueLabel={trueLabel}
-                          falseLabel={falseLabel}
-                        />
-                     </div>
-                   </div>
-                 ))}
+            {isArray ? (
+              <div className="space-y-0.5">
+                {keys.map((key) => (
+                  <div
+                    key={key}
+                    className="flex items-center gap-1 py-0.5 px-0.5 rounded hover:bg-muted/30"
+                  >
+                    <span className="text-xs text-muted-foreground min-w-6 text-center">
+                      {parseInt(key) + 1}.
+                    </span>
+                    <div className="flex-1">
+                      <TreeField
+                        data={data[Number(key)]}
+                        path={path ? `${path}[${key}]` : `[${key}]`}
+                        onChange={onChange}
+                        level={level + 1}
+                        keyLabel={keyLabel}
+                        itemLabel={itemLabel}
+                        trueLabel={trueLabel}
+                        falseLabel={falseLabel}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              keys.map((key) => (
+                <div
+                  key={key}
+                  className="flex items-center gap-2 py-1 px-1 rounded hover:bg-muted/50"
+                >
+                  <span className="text-sm font-medium text-foreground min-w-20 max-w-40 flex-shrink-0 truncate overflow-x-auto">
+                    {key}
+                  </span>
+                  <div className="flex-1">
+                    <TreeField
+                      data={data[key]}
+                      path={path ? `${path}.${key}` : key}
+                      onChange={onChange}
+                      level={level + 1}
+                      keyLabel={keyLabel}
+                      itemLabel={itemLabel}
+                      trueLabel={trueLabel}
+                      falseLabel={falseLabel}
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
@@ -156,13 +162,13 @@ const TreeField: React.FC<TreeFieldProps> = ({
     );
   }
 
-   return (
-     <Input
-       value={getValue()}
-       onChange={(e) => handleChange(e.target.value)}
-       className="h-7 text-xs"
-     />
-   );
+  return (
+    <Input
+      value={getValue()}
+      onChange={(e) => handleChange(e.target.value)}
+      className="h-7 text-xs"
+    />
+  );
 };
 
 export const TreePreview: React.FC<TreePreviewProps> = ({
@@ -191,8 +197,8 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
       for (let i = 0; i < parts.length - 1; i++) {
         const part = parts[i];
         let key: string | number;
-        
-        if (part.startsWith('[')) {
+
+        if (part.startsWith("[")) {
           key = parseInt(part.slice(1, -1));
         } else {
           key = part;
@@ -207,8 +213,8 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
       // Set the final value
       const lastPart = parts[parts.length - 1];
       let lastKey: string | number;
-      
-      if (lastPart.startsWith('[')) {
+
+      if (lastPart.startsWith("[")) {
         lastKey = parseInt(lastPart.slice(1, -1));
       } else {
         lastKey = lastPart;
@@ -221,9 +227,9 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
     onChange?.(newData);
   };
 
-   return (
-     <Card className={`p-2 ${className}`}>
-       <div className="space-y-1">
+  return (
+    <Card className={`p-2 ${className}`}>
+      <div className="space-y-1">
         <TreeField
           data={treeData}
           path=""
