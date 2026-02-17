@@ -1,22 +1,10 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  fetchTemplateArrayBuffer,
-  templates,
-  type Template,
-} from "@/lib/templates";
-import { useCallback, useEffect, useState } from "react";
+import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
+import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";

@@ -1,4 +1,4 @@
-function intitials(fullname: string) {
+function initials(fullname: string) {
   const firstName = fullname.split(" ")[1];
   const middleName = fullname.split(" ")[2];
 
@@ -10,7 +10,10 @@ function firstBetween(
   startSplit: string,
   endSplit: string,
 ): string | null {
-  return text.split(startSplit)?.at(1)?.split(endSplit)?.at(0) ?? null;
+  const startRegex = new RegExp(startSplit, "i");
+  const endRegex = new RegExp(endSplit, "i");
+
+  return text.split(startRegex)?.[1]?.split(endRegex)?.[0] ?? null;
 }
 
-export { intitials, firstBetween };
+export { initials, firstBetween };

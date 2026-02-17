@@ -61,6 +61,19 @@ export default function Page() {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-xl">
+                Скласти заяву без участі позивача/відповідача
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/zayava-bez">Відкрити</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

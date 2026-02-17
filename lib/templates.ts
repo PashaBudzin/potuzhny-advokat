@@ -22,6 +22,10 @@ const templates = {
     name: "Заява без участі позивача",
     templateUrl: "/заява_без_участі_позивача.docx",
   },
+  bezUchastiV: {
+    name: "Заява без участі відповідача",
+    templateUrl: "/заява_без_участі_відповідача.docx",
+  },
   vydachaRishennya: {
     name: "Заява про видачу рішення",
     templateUrl: "/заява_про_видачу_копії_рішення.docx",
