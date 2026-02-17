@@ -50,7 +50,7 @@ export default function TemplateFillerRoute() {
           ...parsedData,
           дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
         }),
-        `заява без участі відповідача ${parsedData.ПІБ_позивача}.docx`,
+        `заява без участі відповідача ${parsedData.ПІБ_відповідача}.docx`,
       );
     }
 
@@ -128,7 +128,7 @@ export default function TemplateFillerRoute() {
 function parseText(text: string): ParsedData {
   const judge = firstBetween(text, '"JUDGENAME1" content="', '">') ?? "";
   const def =
-    firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">') ?? "";
+    firstBetween(text, '<meta name="MEMBNAME2" content="', '">') ?? "";
   return {
     суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
     ПІБ_позивача:
