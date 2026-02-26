@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
 import { generateDocx } from "@/lib/docsUtils";
 import saveAs from "file-saver";
-import { intitials } from "@/lib/string";
 
 export default function CreateDogovirRoute() {
   return (
@@ -35,7 +34,6 @@ export default function CreateDogovirRoute() {
                 const data = {
                   ...fdata,
                   дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
-                  ініціали: intitials(fdata["ПІБ"] as string),
                 };
 
                 const dogRFile = generateDocx(templateDogRArrayBuffer, data);
