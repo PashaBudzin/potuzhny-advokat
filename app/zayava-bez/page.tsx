@@ -11,6 +11,7 @@ import { JsonPreview } from "@/components/json-preview";
 import { firstBetween, initials } from "@/lib/string";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toGenitive } from "@/lib/case";
 
 type ParsedData = {
   суд: string;
@@ -82,9 +83,9 @@ export default function TemplateFillerRoute() {
                   if (!file) return;
 
                   const fr = new FileReader();
-                  fr.onload = (e) => {
+                  fr.onload = async (e) => {
                     setParsedData(
-                      parseText(e?.target?.result?.toString() ?? ""),
+                      await parseText(e?.target?.result?.toString() ?? ""),
                     );
                   };
 
@@ -125,22 +126,25 @@ export default function TemplateFillerRoute() {
   );
 }
 
-function parseText(text: string): ParsedData {
+async function parseText(text: string): Promise<ParsedData> {
   const judge = firstBetween(text, '"JUDGENAME1" content="', '">') ?? "";
   const def =
     firstBetween(text, '<meta name="MEMBNAME2" content="', '">') ?? "";
+
+  const poz =
+    firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "";
+
   return {
     суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
-    ПІБ_позивача:
-      firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "",
-    ПІБ_позивача_РВ: firstBetween(text, "за позовом", " до") ?? "",
+    ПІБ_позивача: poz,
+    ПІБ_позивача_РВ: await toGenitive(poz),
     адреса_позивача:
       firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
     РНОКПП: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
     суд_ОВ: firstBetween(text, "суддя ", judge.split(" ")?.at(0) ?? "") ?? "",
     номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
     ПІБ_відповідача: def,
-    ПІБ_відповідача_РВ: firstBetween(text, " до ", " про") ?? "",
+    ПІБ_відповідача_РВ: await toGenitive(def),
     ініціали_позивача: initials(def),
     адреса_відповідача:
       firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">') ?? "",

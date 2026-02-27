@@ -1,8 +1,9 @@
 function initials(fullname: string) {
+  const lastName = fullname.split(" ")[0];
   const firstName = fullname.split(" ")[1];
   const middleName = fullname.split(" ")[2];
 
-  return firstName[0] + "." + middleName[0] + ".";
+  return lastName + " " + firstName[0] + "." + " " + middleName[0] + ".";
 }
 
 function firstBetween(
