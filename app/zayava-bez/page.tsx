@@ -137,14 +137,14 @@ async function parseText(text: string): Promise<ParsedData> {
   return {
     суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
     ПІБ_позивача: poz,
-    ПІБ_позивача_РВ: await toGenitive(poz),
+    ПІБ_позивача_РВ: (await toGenitive(poz)) ?? "",
     адреса_позивача:
       firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
     РНОКПП: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
     суд_ОВ: firstBetween(text, "суддя ", judge.split(" ")?.at(0) ?? "") ?? "",
     номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
     ПІБ_відповідача: def,
-    ПІБ_відповідача_РВ: await toGenitive(def),
+    ПІБ_відповідача_РВ: (await toGenitive(def)) ?? "",
     ініціали_позивача: initials(def),
     адреса_відповідача:
       firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">') ?? "",

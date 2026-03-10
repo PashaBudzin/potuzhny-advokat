@@ -15,7 +15,7 @@ export async function toGenitive(fullname: string) {
 
   const gender = await shevchenko.detectGender(anthroponym);
 
-  if (!gender) throw new Error("Failed to detect gender");
+  if (!gender) return null;
 
   const res = await shevchenko.inGenitive({
     gender,
