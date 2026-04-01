@@ -87,7 +87,8 @@ export default function TemplateFillerRoute() {
 async function parseText(text: string): Promise<ParsedData> {
   const poz =
     firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "";
-  const def = firstBetween(text, " до ", " про") ?? "";
+  const def =
+    firstBetween(text, '<meta name="MEMBNAME2" content="', '">') ?? "";
 
   return {
     суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
