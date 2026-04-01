@@ -9,6 +9,7 @@ import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
 import { firstBetween } from "@/lib/string";
+import { toGenitive } from "@/lib/case";
 
 type ParsedData = {
   суд: string;
@@ -58,9 +59,9 @@ export default function TemplateFillerRoute() {
                   if (!file) return;
 
                   const fr = new FileReader();
-                  fr.onload = (e) => {
+                  fr.onload = async (e) => {
                     setParsedData(
-                      parseText(e?.target?.result?.toString() ?? ""),
+                      await parseText(e?.target?.result?.toString() ?? ""),
                     );
                   };
 
@@ -83,18 +84,21 @@ export default function TemplateFillerRoute() {
   );
 }
 
-function parseText(text: string): ParsedData {
+async function parseText(text: string): Promise<ParsedData> {
+  const poz =
+    firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "";
+  const def = firstBetween(text, " до ", " про") ?? "";
+
   return {
     суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
-    ПІБ_позивача:
-      firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "",
-    ПІБ_позивача_рв: firstBetween(text, "діє в інтересах ", " до") ?? "",
+    ПІБ_позивача: poz,
+    ПІБ_позивача_рв: (await toGenitive(poz)) ?? "",
     адреса_позивача:
       firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
     код_позивача: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
     суд_рв: firstBetween(text, "року до ", "надійшла") ?? "",
     дата_рішення: firstBetween(text, '"DOCDATE" content="', '">') ?? "",
     номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
-    ПІБ_відповідача_рв: firstBetween(text, " до ", " про") ?? "",
+    ПІБ_відповідача_рв: (await toGenitive(def)) ?? "",
   };
 }
