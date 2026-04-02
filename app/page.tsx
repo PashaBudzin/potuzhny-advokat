@@ -52,7 +52,7 @@ export default function Page() {
           <Card className="text-center">
             <CardHeader>
               <CardTitle className="text-xl">
-                Скласти заяву про видачу рішення
+                Копія рішення/судовий наказ
               </CardTitle>
             </CardHeader>
             <CardContent>

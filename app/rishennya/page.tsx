@@ -3,6 +3,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
 import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
@@ -25,12 +27,13 @@ type ParsedData = {
 
 export default function TemplateFillerRoute() {
   const [parsedData, setParsedData] = useState<ParsedData | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<"vydachaRishennya" | "sudovyiNakaz">("vydachaRishennya");
 
   const onSubmit = useCallback(async () => {
     if (!parsedData) return;
 
     const templateVydacha = await fetchTemplateArrayBuffer(
-      templates["vydachaRishennya"].templateUrl,
+      templates[selectedTemplate].templateUrl,
     );
 
     saveAs(
@@ -38,19 +41,39 @@ export default function TemplateFillerRoute() {
         ...parsedData,
         дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
       }),
-      `заява про видачу копії рішення ${parsedData.ПІБ_позивача}.docx`,
+      `заява про видачу ${selectedTemplate === "vydachaRishennya" ? "копії рішення" : "судового наказу"} ${parsedData.ПІБ_позивача}.docx`,
     );
-  }, [parsedData]);
+  }, [parsedData, selectedTemplate]);
 
   return (
     <div className="min-h-screen bg-background p-8 mt-32">
       <div className="max-w-2xl mx-auto pt-10">
         <Card>
           <CardHeader>
-            <CardTitle>Створити заяву про видачу копії рішення</CardTitle>
+            <CardTitle>Копія рішення/судовий наказ</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
+              <RadioGroup
+                value={selectedTemplate}
+                onValueChange={(value) =>
+                  setSelectedTemplate(value as "vydachaRishennya" | "sudovyiNakaz")
+                }
+                className="flex gap-4"
+              >
+                <Field orientation="horizontal">
+                  <RadioGroupItem value="vydachaRishennya" id="vydachaRishennya" />
+                  <FieldLabel htmlFor="vydachaRishennya" className="font-normal">
+                    копія про видачу рішення
+                  </FieldLabel>
+                </Field>
+                <Field orientation="horizontal">
+                  <RadioGroupItem value="sudovyiNakaz" id="sudovyiNakaz" />
+                  <FieldLabel htmlFor="sudovyiNakaz" className="font-normal">
+                    судовий наказ
+                  </FieldLabel>
+                </Field>
+              </RadioGroup>
               <Input
                 type="file"
                 onChange={(e) => {

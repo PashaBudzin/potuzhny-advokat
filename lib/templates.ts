@@ -30,6 +30,10 @@ const templates = {
     name: "Заява про видачу рішення",
     templateUrl: "/заява_про_видачу_копії_рішення.docx",
   },
+  sudovyiNakaz: {
+    name: "Заява про видачу судового наказу",
+    templateUrl: "/заява_про_видачу_судового_наказу.docx",
+  },
 } as Record<string, Template>;
 
 async function fetchTemplateArrayBuffer(url: string) {
