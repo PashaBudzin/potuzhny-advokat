@@ -14,7 +14,17 @@ function firstBetween(
   const startRegex = new RegExp(startSplit, "i");
   const endRegex = new RegExp(endSplit, "i");
 
-  return text.split(startRegex)?.[1]?.split(endRegex)?.[0] ?? null;
+  return removeTags(text.split(startRegex)?.[1]?.split(endRegex)?.[0] ?? null);
 }
 
-export { initials, firstBetween };
+function removeTags(text: string | null) {
+  if (!text) return text;
+  return text.replace(/<[^>]*>/g, "");
+}
+
+function normalizeAddress(text: string | null) {
+  if (!text) return text;
+  return text.replace(/,\s*Україна\s*,\s*\d+\s*$/i, "");
+}
+
+export { initials, firstBetween, removeTags, normalizeAddress };

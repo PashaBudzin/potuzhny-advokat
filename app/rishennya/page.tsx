@@ -10,7 +10,7 @@ import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
-import { firstBetween } from "@/lib/string";
+import { firstBetween, normalizeAddress } from "@/lib/string";
 import { toGenitive } from "@/lib/case";
 
 type ParsedData = {
@@ -118,7 +118,7 @@ async function parseText(text: string): Promise<ParsedData> {
     ПІБ_позивача: poz,
     ПІБ_позивача_рв: (await toGenitive(poz)) ?? "",
     адреса_позивача:
-      firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
+      normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">')) ?? "",
     код_позивача: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
     суд_рв: firstBetween(text, "року до ", "надійшла") ?? "",
     дата_рішення: firstBetween(text, '"DOCDATE" content="', '">') ?? "",

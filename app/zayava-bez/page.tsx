@@ -8,7 +8,7 @@ import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
-import { firstBetween, initials } from "@/lib/string";
+import { firstBetween, initials, normalizeAddress } from "@/lib/string";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toGenitive } from "@/lib/case";
@@ -139,7 +139,7 @@ async function parseText(text: string): Promise<ParsedData> {
     ПІБ_позивача: poz,
     ПІБ_позивача_РВ: (await toGenitive(poz)) ?? "",
     адреса_позивача:
-      firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
+      normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">')) ?? "",
     РНОКПП: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
     суд_ОВ: firstBetween(text, "суддя ", judge.split(" ")?.at(0) ?? "") ?? "",
     номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
@@ -147,7 +147,7 @@ async function parseText(text: string): Promise<ParsedData> {
     ПІБ_відповідача_РВ: (await toGenitive(def)) ?? "",
     ініціали_позивача: initials(def),
     адреса_відповідача:
-      firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">') ?? "",
+      normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">')) ?? "",
     ініціали_судді: judge,
   };
 }
