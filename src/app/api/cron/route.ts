@@ -12,6 +12,8 @@ function getDaysAgo(days: number): Date {
   return new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
 }
 
+export const maxDuration = 30;
+
 export async function GET() {
   console.log("[cron] Starting email fetch process");
 
