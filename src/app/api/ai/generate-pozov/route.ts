@@ -11,12 +11,11 @@ export async function POST(req: Request) {
       status: 400,
     });
 
-  const stream = await generatePozov(pozovData.data, pozovData.type);
+  const text = await generatePozov(pozovData.data);
 
-  return new Response(stream, {
+  return new Response(text, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Transfer-Encoding": "chunked",
     },
   });
 }

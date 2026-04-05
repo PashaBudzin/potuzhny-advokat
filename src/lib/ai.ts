@@ -1,76 +1,71 @@
 "use server";
 
-import { FileData, GoogleGenAI } from "@google/genai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { generateText, Output } from "ai";
 import { env } from "@/env";
 import {
-  extractPozovConfig,
-  ExtractData,
-  generatePozovConfig,
+  dataSchema,
+  extractDataSchema,
+  extractionPrompt,
 } from "./ai-configs/create-pozov-config";
+import legalDocsUa from "../../lib/ai-configs/skills/legal-docs-ua";
 
-const model = "gemini-flash-lite-latest";
+const google = createGoogleGenerativeAI({
+  apiKey: env.GEMINI_API_KEY,
+});
 
-async function extractPozovData(files: File[], pozovType: ExtractData["type"]) {
-  if (!files || files.length == 0) {
+const model = google("gemini-2.5-flash-lite");
+
+async function extractPozovData(files: File[]) {
+  if (!files || files.length === 0) {
     throw new Error("no files were provided");
   }
-  const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
-  const fileData: FileData[] = [];
+  const fileParts: Array<{
+    type: "file";
+    data: Uint8Array;
+    mediaType: string;
+  }> = [];
+
   for (const file of files) {
     const arrayBuffer = await file.arrayBuffer();
-    const blob = new Blob([arrayBuffer], {
-      type: file.type || "application/octet-stream",
-    });
-    const uploaded = await ai.files.upload({
-      file: blob,
-      config: { mimeType: file.type || "application/octet-stream" },
-    });
+    const uint8Array = new Uint8Array(arrayBuffer);
 
-    fileData.push({
-      fileUri: uploaded.uri,
-      mimeType: uploaded.mimeType,
+    fileParts.push({
+      type: "file",
+      data: uint8Array,
+      mediaType: file.type || "application/octet-stream",
     });
   }
 
-  const res = await ai.models.generateContent({
+  const result = await generateText({
     model,
-    config: extractPozovConfig,
-    contents: [
-      ...fileData.map((fd) => ({ role: "user", fileData: fd })),
-      { text: `Тип позову: ${pozovType}` },
+    messages: [
+      {
+        role: "user",
+        content: fileParts,
+      },
     ],
+    system: extractionPrompt,
+    output: Output.object({ schema: extractDataSchema }),
   });
 
-  return res.candidates?.at(0);
+  return JSON.parse(result.text);
 }
 
-async function generatePozov(
-  pozovData: NonNullable<ExtractData["data"]>,
-  type: ExtractData["type"],
-) {
-  const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+async function generatePozov(pozovData: (typeof dataSchema)["_input"]) {
+  const prompt = `Дані для створення позовної заяви про розірвання шлюбу:
+${JSON.stringify(pozovData, null, 2)}
 
-  const res = await ai.models.generateContentStream({
+На основі наданих даних створи повний текст позовної заяви українською мовою, дотримуючись формату potuzhny-advokat-docx.`;
+
+  const result = await generateText({
     model,
-    config: generatePozovConfig,
-    contents: [{ text: JSON.stringify({ data: pozovData, type }) }],
+    system: legalDocsUa,
+    messages: [{ role: "user", content: prompt }],
   });
 
-  const encoder = new TextEncoder();
-
-  return new ReadableStream({
-    async start(controller) {
-      try {
-        for await (const chunk of res) {
-          controller.enqueue(encoder.encode(chunk?.text));
-        }
-        controller.close();
-      } catch (e) {
-        controller.error(e);
-      }
-    },
-  });
+  return result.text;
 }
 
 export { extractPozovData, generatePozov };

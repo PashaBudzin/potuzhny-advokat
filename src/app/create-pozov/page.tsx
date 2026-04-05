@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/stepper";
 import { extractPozovData } from "@/lib/ai";
 import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
-import { filesAtom, pozovDataAtom, pozovTypeAtom } from "@/state/create-pozov";
+import { filesAtom, pozovDataAtom } from "@/state/create-pozov";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import { Packer } from "docx";
@@ -140,34 +140,28 @@ function SecondStep() {
     "none" | "loading" | "success" | "failed"
   >("none");
 
-  const [pozovType, setPozovType] = useAtom(pozovTypeAtom);
-
   const extractData = useCallback(() => {
     setExtractionState("loading");
 
-    console.log(pozovType);
-
-    extractPozovData(files, pozovType)
-      .then(async (d) => {
-        const res = d?.content?.parts?.at(0)?.text;
-
-        if (!res) {
+    extractPozovData(files)
+      .then(async (data) => {
+        if (!data) {
           setExtractionState("failed");
           return;
         }
 
-        const data = await extractDataSchema.parseAsync(JSON.parse(res));
+        const parsed = await extractDataSchema.parseAsync(data);
 
-        console.log(data);
+        console.log(parsed);
 
-        if (!data.success || data?.data == undefined) {
+        if (!parsed.success || parsed?.data == undefined) {
           setExtractionState("failed");
-          setPozovData(data);
+          setPozovData(parsed);
           return;
         }
 
         setExtractionState("success");
-        setPozovData(data);
+        setPozovData(parsed);
       })
       .catch((err) => {
         console.error(err);
@@ -180,7 +174,7 @@ function SecondStep() {
         console.error("timed out");
       }
     }, 60000);
-  }, [files, extractionState, setPozovData, pozovType]);
+  }, [files, extractionState, setPozovData]);
 
   return (
     <>
@@ -196,27 +190,6 @@ function SecondStep() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        <div>
-          <Label htmlFor="тип позову">Тип позову</Label>
-          <RadioGroup
-            defaultValue="розлучення"
-            name="тип позову"
-            onValueChange={(nv) =>
-              setPozovType(nv as "розлучення" | "аліменти (Судовий наказ)")
-            }
-            className="mt-4"
-          >
-            <div className="flex items-center gap-3">
-              <RadioGroupItem value="розлучення" id="r1" />
-              <Label htmlFor="r1">Розлучення</Label>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <RadioGroupItem value="аліменти (Судовий наказ)" id="r1" />
-              <Label htmlFor="r1">Аліменти (Судовий наказ)</Label>
-            </div>
-          </RadioGroup>
-        </div>
         <div className="flex justify-center">
           <Button
             className="mt-4"
@@ -299,7 +272,6 @@ function ThirdStep() {
   const [generatedContent, setGeneratedContent] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [docxFile, setDocxFile] = useState<File | null>(null);
-  const [pozovType] = useAtom(pozovTypeAtom);
 
   const generatePozovDocument = useCallback(async () => {
     if (!pozovData?.data) return;
@@ -314,45 +286,32 @@ function ThirdStep() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pozovData: { ...pozovData, type: pozovType } }),
+        body: JSON.stringify({ pozovData }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to generate document");
       }
 
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
+      const result = await response.text();
+      setGeneratedContent(result);
 
-      if (reader) {
-        let result = "";
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          result += decoder.decode(value, { stream: true });
-          setGeneratedContent(result);
-        }
+      // Generate DOCX using the function from lib
+      const { generatePozovDocx } = await import("@/lib/generatePozovDocx");
+      const doc = generatePozovDocx(result);
 
-        // After streaming is complete, convert to DOCX and create file
-        if (result) {
-          // Generate DOCX using the function from lib
-          const { generatePozovDocx } = await import("@/lib/generatePozovDocx");
-          const doc = generatePozovDocx(result);
-
-          // Convert to blob and create File
-          const blob = await Packer.toBlob(doc);
-          const docxFileObj = new File([blob], "pozov.docx", {
-            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          });
-          setDocxFile(docxFileObj);
-        }
-      }
+      // Convert to blob and create File
+      const blob = await Packer.toBlob(doc);
+      const docxFileObj = new File([blob], "pozov.docx", {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      setDocxFile(docxFileObj);
     } catch (error) {
       console.error("Error generating document:", error);
     } finally {
       setIsGenerating(false);
     }
-  }, [pozovData, pozovType]);
+  }, [pozovData]);
 
   const saveDocument = useCallback(() => {
     if (docxFile) {
