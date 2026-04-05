@@ -9,6 +9,8 @@ const envSchema = z.object({
   TELEGRAM_TOKEN: z.string().optional(),
   BRIEFING_CHAT_ID: z.string().optional(),
   BRIEFING_THREAD_ID: z.string().optional(),
+  PASSWORD_HASH: z.string().optional(),
+  HMAC_SECRET: z.string().optional(),
 });
 
 const env = envSchema.parse(process.env);
