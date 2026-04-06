@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useState, useTransition } from "react";
 import { getCases, getCasesCount, type SortField, type SortOrder, type CaseState } from "@/lib/actions/cases";
 import { updateCaseMetadata } from "@/lib/actions/case-metadata";
@@ -8,7 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import type { Case } from "@/lib/accounting/db/schema";
-import { normalizeAddress, firstBetween } from "@/lib/string";
+import { normalizeAddress, firstBetween, initials } from "@/lib/string";
+import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
+import { generateDocx } from "@/lib/docsUtils";
+import { saveAs } from "file-saver";
+import { toGenitive } from "@/lib/case";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function SortIcon({ field, current }: { field: SortField; current: { field: SortField; order: SortOrder } }) {
   if (current.field !== field) return null;
@@ -73,6 +80,12 @@ export default function DashboardClient({
   const [defendantCode, setDefendantCode] = useState("");
   const [defendantAddress, setDefendantAddress] = useState("");
   const [saving, setSaving] = useState(false);
+
+  const [generatePoz, setGeneratePoz] = useState(true);
+  const [generateVid, setGenerateVid] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [generatingCase, setGeneratingCase] = useState<string | null>(null);
+  const [courtGenitive, setCourtGenitive] = useState<Record<string, string>>({});
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -162,6 +175,77 @@ export default function DashboardClient({
       setCases((prev) => [...prev, ...newCases]);
       setOffset((prev) => prev + limit);
     });
+  };
+
+  const toggleRow = (caseNumber: string) => {
+    setExpandedRows((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(caseNumber)) {
+        newSet.delete(caseNumber);
+      } else {
+        newSet.add(caseNumber);
+      }
+      return newSet;
+    });
+  };
+
+  const generateDocuments = async (c: Case) => {
+    if (!c.courtName || !c.judgeName || !c.plaintiffName || !c.defendantName) {
+      alert("Недостатньо даних для генерації документів");
+      return;
+    }
+
+    setGeneratingCase(c.caseNumber);
+
+    try {
+      const [templateBezV, templateBezP] = await Promise.all([
+        fetchTemplateArrayBuffer(templates["bezUchastiV"].templateUrl),
+        fetchTemplateArrayBuffer(templates["bezUchastiP"].templateUrl),
+      ]);
+
+      const judge = c.judgeName;
+      const courtOV = firstBetween(c.courtName, "суддя ", judge.split(" ").at(0) ?? "") ?? "";
+      const courtGen = courtGenitive[c.caseNumber] ?? "";
+
+      const parsedData = {
+        суд: c.courtName,
+        ініціали_судді: judge,
+        номер_справи: c.caseNumber,
+        ПІБ_позивача: c.plaintiffName,
+        ПІБ_позивача_РВ: (await toGenitive(c.plaintiffName)) ?? "",
+        адреса_позивача: c.plaintiffAddress ?? "",
+        РНОКПП: c.plaintiffCode ?? "",
+        суд_ОВ: courtGen || courtOV || "",
+        ПІБ_відповідача: c.defendantName,
+        ПІБ_відповідача_РВ: (await toGenitive(c.defendantName)) ?? "",
+        ініціали_позивача: initials(c.plaintiffName),
+        адреса_відповідача: c.defendantAddress ?? "",
+      };
+
+      const dataWithDate = {
+        ...parsedData,
+        дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
+      };
+
+      if (generateVid) {
+        saveAs(
+          generateDocx(templateBezV, dataWithDate),
+          `заява без участі відповідача ${c.defendantName}.docx`,
+        );
+      }
+
+      if (generatePoz) {
+        saveAs(
+          generateDocx(templateBezP, dataWithDate),
+          `заява без участі позивача ${c.plaintiffName}.docx`,
+        );
+      }
+    } catch (error) {
+      console.error("Error generating documents:", error);
+      alert("Помилка при генерації документів");
+    } finally {
+      setGeneratingCase(null);
+    }
   };
 
   return (
@@ -295,34 +379,111 @@ export default function DashboardClient({
             </tr>
           </thead>
           <tbody className="divide-y border">
-            {cases.map((c) => (
-              <tr key={c.caseNumber} className="hover:bg-muted">
-                <td className="px-3 py-2 text-sm font-mono">{c.caseNumber}</td>
-                <td className="px-3 py-2 text-sm">
-                  <span
-                    className={`inline-flex rounded px-2 py-0.5 text-xs ${
-                      c.state === "decision"
-                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                        : c.state === "ruling"
-                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                        : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                    }`}
-                  >
-                    {c.state}
-                  </span>
-                </td>
-                <td className="px-3 py-2 text-sm">{c.plaintiffName || "-"}</td>
-                <td className="px-3 py-2 text-sm">{c.defendantName || "-"}</td>
-                <td className="px-3 py-2 text-sm">{c.courtName || "-"}</td>
-                <td className="px-3 py-2 text-sm">{c.judgeName || "-"}</td>
-                <td className="px-3 py-2 text-sm">
-                  {c.registrationDate ? c.registrationDate.toLocaleDateString("uk-UA") : "-"}
-                </td>
-                <td className="px-3 py-2 text-sm">
-                  {c.lastUpdated ? c.lastUpdated.toLocaleString("uk-UA") : "-"}
-                </td>
-              </tr>
-            ))}
+            {cases.map((c) => {
+              const isExpanded = expandedRows.has(c.caseNumber);
+              return (
+                <React.Fragment key={c.caseNumber}>
+                  <tr className="hover:bg-muted">
+                    <td className="px-3 py-2 text-sm">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleRow(c.caseNumber)}
+                        className="h-6 w-6 p-0"
+                      >
+                        {isExpanded ? (
+                          <ChevronUp className="h-4 w-4" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </td>
+                    <td className="px-3 py-2 text-sm font-mono">{c.caseNumber}</td>
+                    <td className="px-3 py-2 text-sm">
+                      <span
+                        className={`inline-flex rounded px-2 py-0.5 text-xs ${
+                          c.state === "decision"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            : c.state === "ruling"
+                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                            : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                        }`}
+                      >
+                        {c.state}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-sm">{c.plaintiffName || "-"}</td>
+                    <td className="px-3 py-2 text-sm">{c.defendantName || "-"}</td>
+                    <td className="px-3 py-2 text-sm">{c.courtName || "-"}</td>
+                    <td className="px-3 py-2 text-sm">{c.judgeName || "-"}</td>
+                    <td className="px-3 py-2 text-sm">
+                      {c.registrationDate ? c.registrationDate.toLocaleDateString("uk-UA") : "-"}
+                    </td>
+                    <td className="px-3 py-2 text-sm">
+                      {c.lastUpdated ? c.lastUpdated.toLocaleString("uk-UA") : "-"}
+                    </td>
+                  </tr>
+                  {isExpanded && (
+                    <tr key={`${c.caseNumber}-expanded`}>
+                      <td colSpan={9} className="bg-muted/30 px-4 py-4">
+                        <div className="rounded-lg border bg-card p-4">
+                          <h3 className="mb-3 text-sm font-semibold">Згенерувати документи</h3>
+                          <div className="mb-3 flex flex-col gap-2">
+                            <Field orientation={"horizontal"}>
+                              <Checkbox
+                                onCheckedChange={() => setGeneratePoz(!generatePoz)}
+                                checked={generatePoz}
+                              />
+                              <FieldLabel>Без участі позивача</FieldLabel>
+                            </Field>
+                            <Field orientation={"horizontal"}>
+                              <Checkbox
+                                onCheckedChange={() => setGenerateVid(!generateVid)}
+                                checked={generateVid}
+                              />
+                              <FieldLabel>Без участі відповідача</FieldLabel>
+                            </Field>
+                          </div>
+                          <div className="mb-3">
+                            <label className="mb-1 block text-xs text-muted-foreground">Суд (родовий відмінок)</label>
+                            <Input
+                              value={courtGenitive[c.caseNumber] ?? ""}
+                              onChange={(e) =>
+                                setCourtGenitive((prev) => ({
+                                  ...prev,
+                                  [c.caseNumber]: e.target.value,
+                                }))
+                              }
+                              placeholder="суддя Олександрійському..."
+                            />
+                          </div>
+                          <Button
+                            onClick={() => generateDocuments(c)}
+                            disabled={
+                              generatingCase === c.caseNumber ||
+                              (!generatePoz && !generateVid) ||
+                              !c.courtName ||
+                              !c.judgeName ||
+                              !c.plaintiffName ||
+                              !c.defendantName
+                            }
+                          >
+                            {generatingCase === c.caseNumber
+                              ? "Генерація..."
+                              : "Згенерувати"}
+                          </Button>
+                          <div className="mt-3 text-xs text-muted-foreground">
+                            {!c.courtName || !c.judgeName || !c.plaintiffName || !c.defendantName
+                              ? "Потрібно заповнити: суд, суддя, ПІБ позивача, ПІБ відповідача"
+                              : "Всі дані заповнені"}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
