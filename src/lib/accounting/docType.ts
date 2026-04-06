@@ -13,7 +13,7 @@ export type DocType = "registration" | "ruling" | "decision";
  * @description adds type field of type DocEmail, returns null if can't match to any type
  */
 export function parseDocType(doc: DocEmail): TypedDocEmail | null {
-  if (doc.title.toLowerCase().includes("ухвала"))
+  if (doc.title.toLowerCase().includes("ухвал"))
     return { ...doc, type: "ruling" };
 
   if (doc.title.toLowerCase().includes("автоматизованого"))
