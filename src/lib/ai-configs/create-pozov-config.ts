@@ -1,5 +1,3 @@
-import { GenerateContentConfig, MediaResolution } from "@google/genai";
-
 import { z } from "zod";
 import { zodToGemini } from "../gemini-zod";
 

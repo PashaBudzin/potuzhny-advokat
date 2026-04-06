@@ -6,7 +6,7 @@ import { updateCaseMetadata } from "@/lib/actions/case-metadata";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import type { Case } from "@/lib/accounting/db/schema";
 import { normalizeAddress, firstBetween } from "@/lib/string";
 
@@ -38,10 +38,6 @@ function extractMeta(text: string, name: string): string {
   return firstBetween(text, `<meta name="${name}" content="`, '"') ?? "";
 }
 
-function extractMetaTag(text: string, tag: string): string {
-  return firstBetween(text, `"${tag}" content="`, '">') ?? "";
-}
-
 function extractCaseCourt(text: string): string {
   const judge = firstBetween(text, '"JUDGENAME1" content="', '">') ?? "";
   return firstBetween(text, "суддя ", judge.split(" ").at(0) ?? "") ?? "";
@@ -61,6 +57,7 @@ export default function DashboardClient({
     order: "desc",
   });
   const [state, setState] = useState<CaseState | "">("");
+  const [search, setSearch] = useState("");
   const [filteredCount, setFilteredCount] = useState(totalCount);
   const [pending, startTransition] = useTransition();
   const limit = 50;
@@ -123,20 +120,12 @@ export default function DashboardClient({
     setIsOpen(false);
   };
 
-  const loadMore = () => {
-    startTransition(async () => {
-      const newCases = await getCases(offset + limit, limit, sort.field, sort.order, state || null);
-      setCases((prev) => [...prev, ...newCases]);
-      setOffset((prev) => prev + limit);
-    });
-  };
-
   const handleSort = (field: SortField) => {
     const newOrder = sort.field === field && sort.order === "desc" ? "asc" : "desc";
     setSort({ field, order: newOrder });
     setOffset(0);
     startTransition(async () => {
-      const newCases = await getCases(0, limit, field, newOrder, state || null);
+      const newCases = await getCases(0, limit, field, newOrder, state || null, search || null);
       setCases(newCases);
     });
   };
@@ -146,11 +135,32 @@ export default function DashboardClient({
     setOffset(0);
     startTransition(async () => {
       const [newCases, count] = await Promise.all([
-        getCases(0, limit, sort.field, sort.order, newState || null),
-        getCasesCount(newState || null),
+        getCases(0, limit, sort.field, sort.order, newState || null, search || null),
+        getCasesCount(newState || null, search || null),
       ]);
       setCases(newCases);
       setFilteredCount(count);
+    });
+  };
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setOffset(0);
+    startTransition(async () => {
+      const [newCases, count] = await Promise.all([
+        getCases(0, limit, sort.field, sort.order, state || null, value || null),
+        getCasesCount(state || null, value || null),
+      ]);
+      setCases(newCases);
+      setFilteredCount(count);
+    });
+  };
+
+  const loadMore = () => {
+    startTransition(async () => {
+      const newCases = await getCases(offset + limit, limit, sort.field, sort.order, state || null, search || null);
+      setCases((prev) => [...prev, ...newCases]);
+      setOffset((prev) => prev + limit);
     });
   };
 
@@ -164,52 +174,52 @@ export default function DashboardClient({
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="mb-4 rounded-lg border p-4">
+          <div className="mb-4 rounded-lg border bg-card p-4">
             <div className="mb-4">
               <label className="mb-2 block text-sm font-medium">Завантажити HTML (з суду)</label>
               <Input type="file" accept=".html" onChange={handleFileUpload} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Номер справи</label>
+                <label className="mb-1 block text-xs text-muted-foreground">Номер справи</label>
                 <Input value={caseNumber} onChange={(e) => setCaseNumber(e.target.value)} placeholder="Номер справи" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Суд</label>
+                <label className="mb-1 block text-xs text-muted-foreground">Суд</label>
                 <Input value={courtName} onChange={(e) => setCourtName(e.target.value)} placeholder="Суд" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Суддя</label>
+                <label className="mb-1 block text-xs text-muted-foreground">Суддя</label>
                 <Input value={judgeName} onChange={(e) => setJudgeName(e.target.value)} placeholder="Суддя" />
               </div>
               <div className="col-span-2 border-t pt-2">
                 <span className="text-sm font-medium">Позивач</span>
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">ПІБ</label>
+                <label className="mb-1 block text-xs text-muted-foreground">ПІБ</label>
                 <Input value={plaintiffName} onChange={(e) => setPlaintiffName(e.target.value)} placeholder="ПІБ позивача" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">РНОКПП</label>
+                <label className="mb-1 block text-xs text-muted-foreground">РНОКПП</label>
                 <Input value={plaintiffCode} onChange={(e) => setPlaintiffCode(e.target.value)} placeholder="РНОКПП" />
               </div>
               <div className="col-span-2">
-                <label className="mb-1 block text-xs text-gray-500">Адреса</label>
+                <label className="mb-1 block text-xs text-muted-foreground">Адреса</label>
                 <Input value={plaintiffAddress} onChange={(e) => setPlaintiffAddress(e.target.value)} placeholder="Адреса позивача" />
               </div>
               <div className="col-span-2 border-t pt-2">
                 <span className="text-sm font-medium">Відповідач</span>
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">ПІБ</label>
+                <label className="mb-1 block text-xs text-muted-foreground">ПІБ</label>
                 <Input value={defendantName} onChange={(e) => setDefendantName(e.target.value)} placeholder="ПІБ відповідача" />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">РНОКПП</label>
+                <label className="mb-1 block text-xs text-muted-foreground">РНОКПП</label>
                 <Input value={defendantCode} onChange={(e) => setDefendantCode(e.target.value)} placeholder="РНОКПП" />
               </div>
               <div className="col-span-2">
-                <label className="mb-1 block text-xs text-gray-500">Адреса</label>
+                <label className="mb-1 block text-xs text-muted-foreground">Адреса</label>
                 <Input value={defendantAddress} onChange={(e) => setDefendantAddress(e.target.value)} placeholder="Адреса відповідача" />
               </div>
             </div>
@@ -256,14 +266,23 @@ export default function DashboardClient({
         >
           Case # <SortIcon field="caseNumber" current={sort} />
         </Button>
-        <span className="ml-auto text-sm text-gray-500">
+        <div className="relative">
+          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            className="pl-8"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
+        <span className="ml-auto text-sm text-muted-foreground">
           Total: {filteredCount} cases
         </span>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y border">
+          <thead className="bg-muted">
             <tr>
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">Case #</th>
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">State</th>
@@ -275,18 +294,18 @@ export default function DashboardClient({
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">Last Updated</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y border">
             {cases.map((c) => (
-              <tr key={c.caseNumber} className="hover:bg-gray-50">
+              <tr key={c.caseNumber} className="hover:bg-muted">
                 <td className="px-3 py-2 text-sm font-mono">{c.caseNumber}</td>
                 <td className="px-3 py-2 text-sm">
                   <span
                     className={`inline-flex rounded px-2 py-0.5 text-xs ${
                       c.state === "decision"
-                        ? "bg-green-100 text-green-800"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                         : c.state === "ruling"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-blue-100 text-blue-800"
+                        ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                        : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                     }`}
                   >
                     {c.state}
@@ -317,7 +336,7 @@ export default function DashboardClient({
       )}
 
       {cases.length === 0 && (
-        <p className="py-8 text-center text-gray-500">No cases found</p>
+        <p className="py-8 text-center text-muted-foreground">No cases found</p>
       )}
     </div>
   );
