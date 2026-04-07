@@ -4,7 +4,7 @@ import { isAuthenticated } from "@/lib/auth-server";
 
 const PROTECTED_ROUTES = ["/admin", "/dashboard"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   const isProtected = PROTECTED_ROUTES.some((route) => path.startsWith(route));
