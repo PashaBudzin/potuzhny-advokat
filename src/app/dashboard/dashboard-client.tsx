@@ -16,6 +16,7 @@ import { saveAs } from "file-saver";
 import { toGenitive } from "@/lib/case";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
+import { getCourtGenetative } from "@/lib/actions/cases";
 
 function SortIcon({ field, current }: { field: SortField; current: { field: SortField; order: SortOrder } }) {
   if (current.field !== field) return null;
@@ -426,7 +427,7 @@ export default function DashboardClient({
                   {isExpanded && (
                     <tr key={`${c.caseNumber}-expanded`}>
                       <td colSpan={9} className="bg-muted/30 px-4 py-4">
-                        <div className="rounded-lg border bg-card p-4">
+                        <div className="rounded-lg border bg-card p-4 lg:max-w-[33%]">
                           <h3 className="mb-3 text-sm font-semibold">Згенерувати документи</h3>
                           <div className="mb-3 flex flex-col gap-2">
                             <Field orientation={"horizontal"}>
@@ -446,26 +447,44 @@ export default function DashboardClient({
                           </div>
                           <div className="mb-3">
                             <label className="mb-1 block text-xs text-muted-foreground">Суд (родовий відмінок)</label>
-                            <Input
-                              value={courtGenitive[c.caseNumber] ?? ""}
-                              onChange={(e) =>
-                                setCourtGenitive((prev) => ({
-                                  ...prev,
-                                  [c.caseNumber]: e.target.value,
-                                }))
-                              }
-                              placeholder="суддя Олександрійському..."
-                            />
+                            <div className="flex flex-col gap-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={async () => {
+                                  if (!c.courtName) return;
+                                  const gen = await getCourtGenetative(c.courtName);
+                                  setCourtGenitive((prev) => ({
+                                    ...prev,
+                                    [c.caseNumber]: gen,
+                                  }));
+                                }}
+                                disabled={!c.courtName}
+                              >
+                                AI
+                              </Button>
+                              <Input
+                                value={courtGenitive[c.caseNumber] ?? ""}
+                                onChange={(e) =>
+                                  setCourtGenitive((prev) => ({
+                                    ...prev,
+                                    [c.caseNumber]: e.target.value,
+                                  }))
+                                }
+                                placeholder="суддя Олександрійському..."
+                              />
+                            </div>
                           </div>
                           <Button
                             onClick={() => generateDocuments(c)}
                             disabled={
                               generatingCase === c.caseNumber ||
                               (!generatePoz && !generateVid) ||
-                              !c.courtName ||
                               !c.judgeName ||
                               !c.plaintiffName ||
-                              !c.defendantName
+                              !c.defendantName ||
+                              (!courtGenitive[c.caseNumber] && !c.courtName)
                             }
                           >
                             {generatingCase === c.caseNumber

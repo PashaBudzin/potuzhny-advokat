@@ -135,3 +135,8 @@ export async function getCasesCount(state?: CaseState | null, search?: string | 
   const result = await db.select({ count: sql<number>`count(*)` }).from(cases);
   return result[0]?.count ?? 0;
 }
+
+export async function getCourtGenetative(courtName: string): Promise<string> {
+  const { generateGenetativeCase } = await import("@/lib/ai");
+  return generateGenetativeCase(courtName);
+}

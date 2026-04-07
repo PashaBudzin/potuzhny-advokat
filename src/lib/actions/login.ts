@@ -18,6 +18,6 @@ export async function loginAction(formData: FormData): Promise<string> {
     return "Invalid password";
   }
 
-  redirect("/admin");
+  redirect("/dashboard");
   return "success";
 }

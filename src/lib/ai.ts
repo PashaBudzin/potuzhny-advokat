@@ -1,18 +1,13 @@
 "use server";
 
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateText, Output } from "ai";
-import { env } from "@/env";
 import {
   dataSchema,
   extractDataSchema,
   extractionPrompt,
 } from "./ai-configs/create-pozov-config";
 import legalDocsUa from "../../lib/ai-configs/skills/legal-docs-ua";
-
-const google = createGoogleGenerativeAI({
-  apiKey: env.GEMINI_API_KEY,
-});
+import { fastModel, google } from "./ai-providers";
 
 const model = google("gemini-2.5-flash-lite");
 
@@ -63,6 +58,16 @@ ${JSON.stringify(pozovData, null, 2)}
     model,
     system: legalDocsUa,
     messages: [{ role: "user", content: prompt }],
+  });
+
+  return result.text;
+}
+
+export async function generateGenetativeCase(phrase: string) {
+  const result = await generateText({
+    model: fastModel(),
+    system: `Тобі дається іменник чи словосполучення, твоя задача сказати його й тільки його (більше ніяких слів) в родовому відмінку. Відповідь тільки українською.`,
+    messages: [{ role: "user", content: phrase }],
   });
 
   return result.text;

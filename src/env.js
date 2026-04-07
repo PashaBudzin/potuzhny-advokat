@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   GEMINI_API_KEY: z.string(),
+  GROQ_API_KEY: z.string().optional(),
 
   IMAP_USER: z.string().optional(),
   IMAP_PASS: z.string().optional(),
