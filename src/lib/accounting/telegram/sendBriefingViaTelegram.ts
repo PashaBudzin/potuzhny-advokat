@@ -44,6 +44,11 @@ function formBriefing(updates: CaseUpdate[]) {
         );
         break;
     }
+    if (update.nextCourtHearing) {
+      briefs.push(
+        `Призначено судове засідання ${update.caseNumber} ${update.nextCourtHearing.toLocaleString("uk-UA")}`,
+      );
+    }
   });
 
   return briefs.join("\n------\n");

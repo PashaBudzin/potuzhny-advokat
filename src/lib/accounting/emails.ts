@@ -50,9 +50,11 @@ export async function fetchEmails(
 
         if (!parsed.date) continue;
 
+        const content = parsed.text || "";
+
         results.push({
           title: parsed.subject || "",
-          content: parsed.text || "",
+          content,
           date: parsed.date,
           caseNumber: parsed.subject?.match(/№\s*([^\s]+)/)?.[1] ?? "",
         });

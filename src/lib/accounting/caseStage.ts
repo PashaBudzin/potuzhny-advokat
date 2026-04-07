@@ -14,6 +14,7 @@ const STATE_PRIORITY: Record<DocType, number> = {
   registration: 1,
   ruling: 2,
   decision: 3,
+  hearing: 0,
 };
 
 function getStateFromDocs(docs: TypedDocEmail[]): CaseState {

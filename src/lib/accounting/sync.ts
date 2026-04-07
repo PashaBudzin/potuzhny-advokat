@@ -9,7 +9,17 @@ const STATE_PRIORITY: Record<DocType, number> = {
   registration: 1,
   ruling: 2,
   decision: 3,
+  hearing: 0,
 };
+
+function parseHearingDate(doc: TypedDocEmail): Date | null {
+  const text = doc.content + "\n" + doc.title;
+  const match = text.match(/призначено слухання\s+(\d{2})\.(\d{2})\.(\d{2,4})\s+(\d{2}):(\d{2})/);
+  if (!match) return null;
+  const [, day, month, year, hour, minute] = match;
+  const fullYear = year.length === 2 ? 2000 + +year : +year;
+  return new Date(fullYear, +month - 1, +day, +hour, +minute);
+}
 
 function getStateFromDocs(docs: TypedDocEmail[]): CaseStage["state"] {
   let highestPriority = 0;
@@ -40,6 +50,7 @@ export type CaseUpdate = {
   lastUpdated: Date;
   changed: boolean;
   plaintiffName: string | null;
+  nextCourtHearing: Date | null;
 };
 
 export async function updateCaseStates(
@@ -63,6 +74,16 @@ export async function updateCaseStates(
       new Date(0),
     );
 
+    const hearingDocs = caseDocs.filter((d) => d.type === "hearing");
+    const hearingDocsWithDates = hearingDocs
+      .map((doc) => ({
+        doc,
+        hearingDate: parseHearingDate(doc),
+      }))
+      .filter((h) => h.hearingDate !== null)
+      .sort((a, b) => (b.hearingDate!.getTime() - a.hearingDate!.getTime()));
+    const nextCourtHearing = hearingDocsWithDates[0]?.hearingDate ?? null;
+
     const existing = await db.query.cases.findFirst({
       where: (cases, { eq }) => eq(cases.caseNumber, caseNumber),
     });
@@ -76,17 +97,29 @@ export async function updateCaseStates(
         state,
         registrationDate,
         lastUpdated,
+        nextCourtHearing,
       });
       changed = true;
-    } else if (existing.state !== state) {
-      await db
-        .update(cases)
-        .set({
-          state,
-          lastUpdated,
-        })
-        .where(eq(cases.caseNumber, caseNumber));
-      changed = true;
+    } else {
+      const updates: Record<string, unknown> = {
+        lastUpdated,
+      };
+
+      if (existing.state !== state) {
+        updates.state = state;
+      }
+
+      if (nextCourtHearing) {
+        updates.nextCourtHearing = nextCourtHearing;
+      }
+
+      if (Object.keys(updates).length > 1 || nextCourtHearing) {
+        await db
+          .update(cases)
+          .set(updates)
+          .where(eq(cases.caseNumber, caseNumber));
+        changed = true;
+      }
     }
 
     updates.push({
@@ -96,6 +129,7 @@ export async function updateCaseStates(
       lastUpdated,
       changed,
       plaintiffName,
+      nextCourtHearing: nextCourtHearing ?? existing?.nextCourtHearing ?? null,
     });
   }
 

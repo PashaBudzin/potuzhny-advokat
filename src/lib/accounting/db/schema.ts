@@ -5,11 +5,13 @@ export const cases = pgTable("cases", {
   uniqueId: uuid("unique_id").defaultRandom().unique().notNull(),
 
   state: text("state", {
-    enum: ["registration", "ruling", "decision"],
+    enum: ["registration", "ruling", "decision", "hearing"],
   }).notNull(),
 
   registrationDate: timestamp("registration_date"),
   lastUpdated: timestamp("last_updated"),
+
+  nextCourtHearing: timestamp("next_court_date"),
 
   courtName: text("court_name"),
 
