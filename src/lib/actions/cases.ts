@@ -147,8 +147,13 @@ export async function getCasesWithHearings() {
       caseNumber: cases.caseNumber,
       nextCourtHearing: cases.nextCourtHearing,
       plaintiffName: cases.plaintiffName,
+      plaintiffAddress: cases.plaintiffAddress,
+      plaintiffCode: cases.plaintiffCode,
       defendantName: cases.defendantName,
+      defendantAddress: cases.defendantAddress,
+      defendantCode: cases.defendantCode,
       courtName: cases.courtName,
+      judgeName: cases.judgeName,
     })
     .from(cases)
     .where(sql`${cases.nextCourtHearing} is not null`)
