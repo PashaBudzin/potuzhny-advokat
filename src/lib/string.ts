@@ -1,7 +1,12 @@
-function initials(fullname: string) {
+function splitName(fullname: string) {
   const lastName = fullname.split(" ")[0];
   const firstName = fullname.split(" ")[1];
   const middleName = fullname.split(" ")[2];
+
+  return { firstName, middleName, lastName };
+}
+function initials(fullname: string) {
+  const { lastName, firstName, middleName } = splitName(fullname);
 
   return lastName + " " + firstName[0] + "." + " " + middleName[0] + ".";
 }
@@ -27,4 +32,4 @@ function normalizeAddress(text: string | null) {
   return text.replace(/,\s*Україна\s*,\s*\d+\s*$/i, "");
 }
 
-export { initials, firstBetween, removeTags, normalizeAddress };
+export { initials, firstBetween, removeTags, normalizeAddress, splitName };
