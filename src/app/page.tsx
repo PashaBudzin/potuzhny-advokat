@@ -29,6 +29,17 @@ export default function Page() {
 
           <Card className="text-center">
             <CardHeader>
+              <CardTitle className="text-xl">Створити Позов (Новий)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/create-pozov-live">Відкрити</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
               <CardTitle className="text-xl">Створити Договір</CardTitle>
             </CardHeader>
             <CardContent>
