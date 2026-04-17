@@ -369,6 +369,7 @@ export default function DashboardClient({
         <table className="min-w-full divide-y border">
           <thead className="bg-muted">
             <tr>
+              <th className="w-10 px-3 py-2"></th>
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">Case #</th>
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">State</th>
               <th className="px-3 py-2 text-left text-xs font-medium uppercase">Plaintiff</th>
