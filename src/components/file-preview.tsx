@@ -1,17 +1,17 @@
 "use client";
 
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
 import DocxPreview from "./docx-preview";
 import ExcelPreview from "./xlsx-preview";
 
 function FilePreview({ file }: { file: File }) {
-  const [showPreview, setShowPreview] = useState(false);
+  const [showPreview, setShowPreview] = React.useState(false);
 
   return (
     <>
@@ -35,6 +35,10 @@ function FilePreview({ file }: { file: File }) {
     </>
   );
 }
+
+const MemoizedFilePreview = React.memo(FilePreview, (prev, curr) => {
+  return prev.file.name === curr.file.name && prev.file.size === curr.file.size;
+});
 
 function FileTypePreview({ file, small }: { file: File; small?: boolean }) {
   if (file.type === "application/pdf") {
@@ -90,4 +94,4 @@ function ImagePreview({ file, small }: { file: File; small?: boolean }) {
   );
 }
 
-export { FilePreview };
+export { MemoizedFilePreview as FilePreview };
