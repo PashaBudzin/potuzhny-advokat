@@ -16,6 +16,7 @@ import { saveAs } from "file-saver";
 import { toGenitive } from "@/lib/case";
 import { firstBetween, initials } from "@/lib/string";
 import { getCourtGenetative } from "@/lib/actions/cases";
+import { getCourtEmail } from "@/lib/courts";
 
 interface Hearing {
   caseNumber: string;
@@ -200,6 +201,11 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
                           {hearing.plaintiffName} vs {hearing.defendantName}
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">{hearing.courtName}</div>
+                        {getCourtEmail(hearing.courtName) && (
+                          <div className="text-xs text-muted-foreground">
+                            {getCourtEmail(hearing.courtName)}
+                          </div>
+                        )}
                         <CollapsibleContent>
                           <div className="mt-3 border-t pt-3">
                             <div className="mb-2 flex flex-col gap-1">

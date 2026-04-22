@@ -32,6 +32,35 @@ function normalizeAddress(text: string | null) {
   return text.replace(/,\s*Україна\s*,\s*\d+\s*$/i, "");
 }
 
+function normalizeCourtName(courtName: string | null) {
+  if (!courtName) return null;
+  return courtName
+    .replace(/\s+Харківської\s+області$/i, "")
+    .replace(/\s+Полтавської\s+області$/i, "")
+    .replace(/\s+Львівської\s+області$/i, "")
+    .replace(/\s+Одеської\s+області$/i, "")
+    .replace(/\s+Дніпропетровської\s+області$/i, "")
+    .replace(/\s+Донецької\s+області$/i, "")
+    .replace(/\s+Запорізької\s+області$/i, "")
+    .replace(/\s+Миколаївської\s+області$/i, "")
+    .replace(/\s+Херсонської\s+області$/i, "")
+    .replace(/\s+Сумської\s+області$/i, "")
+    .replace(/\s+Чернігівської\s+області$/i, "")
+    .replace(/\s+Черкаської\s+області$/i, "")
+    .replace(/\s+Кіровоградської\s+області$/i, "")
+    .replace(/\s+Житомирської\s+області$/i, "")
+    .replace(/\s+Вінницької\s+області$/i, "")
+    .replace(/\s+Хмельницької\s+області$/i, "")
+    .replace(/\s+Тернопільської\s+області$/i, "")
+    .replace(/\s+Рівненської\s+області$/i, "")
+    .replace(/\s+Волинської\s+області$/i, "")
+    .replace(/\s+Івано-Франківської\s+області$/i, "")
+    .replace(/\s+Закарпатської\s+області$/i, "")
+    .replace(/\s+Луганської\s+області$/i, "")
+    .replace(/\s+Автономної\s+Республіки\s+Крим$/i, "")
+    .trim();
+}
+
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
   const k = 1024;
@@ -45,6 +74,7 @@ export {
   firstBetween,
   removeTags,
   normalizeAddress,
+  normalizeCourtName,
   splitName,
   formatBytes,
 };
