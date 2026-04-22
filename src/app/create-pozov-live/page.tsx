@@ -1,7 +1,6 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Packer } from "docx";
 import { Trash, File as FileIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
@@ -11,55 +10,76 @@ import { FilePreview } from "@/components/file-preview";
 import { JsonPreview } from "@/components/json-preview";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 import {
-  pozovFilesAtom,
-  pozovTemplateDataAtom,
-  extractionStatusAtom,
-} from "@/state/create-pozov-live";
-import { pozovTemplateDataSchema, generatePozovText } from "@/lib/template-pozov-generator";
+  pozovTemplateDataSchema,
+  generatePozovText,
+} from "@/lib/template-pozov-generator";
 import { extractPozovTemplateData } from "@/lib/ai";
 import { generatePozovDocx } from "@/lib/generatePozovDocx";
+import { formatBytes } from "@/lib/string";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
-function formatBytes(bytes: number): string {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
-}
+type ExtractionStatus = "idle" | "extracting" | "success" | "error";
 
 export default function Page() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [extractionStatus, setExtractionStatus] = useState<ExtractionStatus>("idle");
+  const [templateData, setTemplateData] = useState<object | null>(null);
+  const [message, setMessage] = useState("");
+
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-[1800px] mx-auto">
         <h1 className="text-3xl font-bold mb-6">Створення позову</h1>
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_1fr] gap-6">
-          <UploadSection />
-          <DataSection />
-          <PreviewSection />
+          <UploadSection
+            files={files}
+            setFiles={setFiles}
+            setExtractionStatus={setExtractionStatus}
+            setTemplateData={setTemplateData}
+            message={message}
+            setMessage={setMessage}
+          />
+          <DataSection
+            files={files}
+            extractionStatus={extractionStatus}
+            templateData={templateData}
+            setTemplateData={setTemplateData}
+          />
+          <PreviewSection
+            extractionStatus={extractionStatus}
+            templateData={templateData}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function UploadSection() {
-  const [files, setFiles] = useAtom(pozovFilesAtom);
-  const [, setExtractionStatus] = useAtom(extractionStatusAtom);
-  const [, setTemplateData] = useAtom(pozovTemplateDataAtom);
+interface UploadSectionProps {
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  setExtractionStatus: React.Dispatch<React.SetStateAction<ExtractionStatus>>;
+  setTemplateData: React.Dispatch<React.SetStateAction<object | null>>;
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function UploadSection({
+  files,
+  setFiles,
+  setExtractionStatus,
+  setTemplateData,
+  message,
+  setMessage,
+}: UploadSectionProps) {
   const filesRef = useRef(files);
 
   useEffect(() => {
@@ -80,6 +100,12 @@ function UploadSection() {
     },
   });
 
+  const messageRef = useRef(message);
+
+  useEffect(() => {
+    messageRef.current = message;
+  }, [message]);
+
   const extractData = useCallback(async () => {
     const currentFiles = filesRef.current;
     if (currentFiles.length === 0) return;
@@ -88,7 +114,7 @@ function UploadSection() {
     setTemplateData(null);
 
     try {
-      const result = await extractPozovTemplateData(currentFiles);
+      const result = await extractPozovTemplateData(currentFiles, messageRef.current);
       const parsed = pozovTemplateDataSchema.parse(result);
       setExtractionStatus("success");
       setTemplateData(parsed);
@@ -98,9 +124,12 @@ function UploadSection() {
     }
   }, [setExtractionStatus, setTemplateData]);
 
-  const removeFile = useCallback((fileName: string) => {
-    setFiles((prev) => prev.filter((f) => f.name !== fileName));
-  }, [setFiles]);
+  const removeFile = useCallback(
+    (fileName: string) => {
+      setFiles((prev) => prev.filter((f) => f.name !== fileName));
+    },
+    [setFiles],
+  );
 
   return (
     <Card className="h-fit">
@@ -122,7 +151,7 @@ function UploadSection() {
             isDragActive
               ? "border-primary bg-primary/10 ring-2 ring-primary/20"
               : "border-border",
-            "flex justify-center rounded-md border border-dashed p-6 transition-colors duration-200 cursor-pointer hover:border-primary/50"
+            "flex justify-center rounded-md border border-dashed p-6 transition-colors duration-200 cursor-pointer hover:border-primary/50",
           )}
         >
           <div className="text-center">
@@ -138,8 +167,10 @@ function UploadSection() {
 
         {files.length > 0 && (
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Завантажені ({files.length})</Label>
-            <div className="max-h-64 overflow-y-auto space-y-1">
+            <Label className="text-sm font-medium">
+              Завантажені ({files.length})
+            </Label>
+            <div className="max-h-32 overflow-y-auto space-y-1">
               {files.map((file) => (
                 <div
                   key={file.name}
@@ -165,6 +196,19 @@ function UploadSection() {
           </div>
         )}
 
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Додаткові інструкції</Label>
+          <Textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value.slice(0, 500))}
+            placeholder="Опишіть додаткові деталі або виправлення..."
+            className="min-h-[80px]"
+          />
+          <p className="text-xs text-muted-foreground text-right">
+            {message.length}/500
+          </p>
+        </div>
+
         <Button
           onClick={extractData}
           disabled={files.length === 0}
@@ -178,10 +222,19 @@ function UploadSection() {
   );
 }
 
-function DataSection() {
-  const [extractionStatus] = useAtom(extractionStatusAtom);
-  const [templateData, setTemplateData] = useAtom(pozovTemplateDataAtom);
-  const [files] = useAtom(pozovFilesAtom);
+interface DataSectionProps {
+  files: File[];
+  extractionStatus: ExtractionStatus;
+  templateData: object | null;
+  setTemplateData: React.Dispatch<React.SetStateAction<object | null>>;
+}
+
+function DataSection({
+  files,
+  extractionStatus,
+  templateData,
+  setTemplateData,
+}: DataSectionProps) {
   const [selectedFileIndex, setSelectedFileIndex] = useState(0);
 
   return (
@@ -201,10 +254,13 @@ function DataSection() {
                     "text-xs px-2 py-1 rounded transition-colors",
                     i === selectedFileIndex
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted hover:bg-muted/80"
+                      : "bg-muted hover:bg-muted/80",
                   )}
                 >
-                  {i + 1}. {file.name.length > 20 ? file.name.slice(0, 20) + "..." : file.name}
+                  {i + 1}.{" "}
+                  {file.name.length > 20
+                    ? file.name.slice(0, 20) + "..."
+                    : file.name}
                 </button>
               ))}
             </div>
@@ -223,13 +279,9 @@ function DataSection() {
             Завантажте документи для видобування даних
           </div>
         ) : extractionStatus === "extracting" ? (
-          <>
-            <Skeleton className="w-full h-48" />
-            <Skeleton className="w-full h-64" />
-            <p className="text-center text-muted-foreground">
-              Видобування даних...
-            </p>
-          </>
+          <div className="flex items-center justify-center h-48 text-muted-foreground">
+            Видобування даних...
+          </div>
         ) : (
           templateData && (
             <JsonPreview
@@ -248,12 +300,15 @@ function DataSection() {
   );
 }
 
-function PreviewSection() {
-  const [extractionStatus] = useAtom(extractionStatusAtom);
-  const [templateData] = useAtom(pozovTemplateDataAtom);
-  const [docxFile, setDocxFile] = useState<File | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+interface PreviewSectionProps {
+  extractionStatus: ExtractionStatus;
+  templateData: object | null;
+}
 
+function PreviewSection({
+  extractionStatus,
+  templateData,
+}: PreviewSectionProps) {
   const generatedText = useMemo(() => {
     if (!templateData) return "";
     try {
@@ -263,61 +318,33 @@ function PreviewSection() {
     }
   }, [templateData]);
 
-  const generateDocx = useCallback(async () => {
-    if (!generatedText || !templateData) return;
+  const saveDocx = useCallback(() => {
+    if (!templateData || !generatedText) return;
 
-    setIsGenerating(true);
-    setDocxFile(null);
-
-    try {
-      const doc = generatePozovDocx(generatedText);
-      const blob = await Packer.toBlob(doc);
-      const fileName = `позов ${templateData["ПІБ позивача"] ?? "pozov"}.docx`;
-      const file = new File([blob], fileName, {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-      setDocxFile(file);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsGenerating(false);
-    }
-  }, [generatedText, templateData]);
-
-  useEffect(() => {
-    const shouldGenerate = templateData && generatedText && !docxFile && !isGenerating;
-    if (shouldGenerate) {
-      generateDocx();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const doc = generatePozovDocx(generatedText);
+    Packer.toBlob(doc).then((blob) => {
+      const fileName = `позов ${(templateData as Record<string, unknown>)["ПІБ позивача"] ?? "pozov"}.docx`;
+      saveAs(blob, fileName);
+    });
   }, [templateData, generatedText]);
-
-  const saveDocument = useCallback(() => {
-    if (docxFile) {
-      saveAs(
-        docxFile,
-        `позов ${templateData?.["ПІБ позивача"] ?? "pozov"}.docx`,
-      );
-    }
-  }, [docxFile, templateData]);
 
   const renderPreview = () => {
     if (!generatedText) return null;
-    
-    const paragraphs = generatedText.split("/t").filter(p => p.trim());
-    
+
+    const paragraphs = generatedText.split("/t").filter((p) => p.trim());
+
     return paragraphs.map((para, i) => {
       const isCentered = para.trim().startsWith("/c");
-      const content = isCentered 
-        ? para.trim().replace(/^\/c/, "").trim() 
+      const content = isCentered
+        ? para.trim().replace(/^\/c/, "").trim()
         : para.trim();
-      
+
       return (
         <p
           key={i}
           className={cn(
             "text-sm font-mono my-1 text-justify leading-relaxed",
-            isCentered ? "text-center" : "pl-8 first-line:pl-0"
+            isCentered ? "text-center" : "pl-8 first-line:pl-0",
           )}
         >
           {content}
@@ -328,41 +355,32 @@ function PreviewSection() {
 
   return (
     <Card className="h-fit">
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader>
         <CardTitle>Попередній перегляд позову</CardTitle>
-        <div className="flex gap-2">
-          <Button onClick={generateDocx} disabled={!templateData || isGenerating} size="sm">
-            Оновити
-          </Button>
-        </div>
       </CardHeader>
       <CardContent>
         {extractionStatus === "idle" || extractionStatus === "extracting" ? (
           <div className="flex items-center justify-center h-64 text-muted-foreground">
-            {extractionStatus === "extracting" ? "Генерація..." : "Завантажте документи"}
+            {extractionStatus === "extracting"
+              ? "Генерація..."
+              : "Завантажте документи"}
           </div>
         ) : !templateData ? (
           <div className="flex items-center justify-center h-64 text-muted-foreground">
             Помилка видобування даних
           </div>
-        ) : isGenerating ? (
-          <Skeleton className="w-full h-96" />
         ) : (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              {docxFile && (
-                <p className="text-sm text-muted-foreground">
-                  DOCX згенеровано: {docxFile.name}
-                </p>
-              )}
-              <Button onClick={docxFile ? saveDocument : generateDocx} size="sm">
-                {docxFile ? "Зберегти DOCX" : "Згенерувати DOCX"}
+              <p className="text-sm text-muted-foreground">
+                Попередній перегляд оновлюється автоматично
+              </p>
+              <Button onClick={saveDocx} size="sm">
+                Зберегти DOCX
               </Button>
             </div>
             <div className="max-h-[600px] overflow-auto bg-muted/30 rounded-md p-4">
-              <div className="space-y-0.5">
-                {renderPreview()}
-              </div>
+              <div className="space-y-0.5">{renderPreview()}</div>
             </div>
           </div>
         )}

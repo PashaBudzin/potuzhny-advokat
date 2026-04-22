@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { renderAsync } from "docx-preview";
 import "./docx-preview.css";
 
-function DocxPreview({ file }: { file: File }) {
+function DocxPreview({ file, small }: { file: File; small?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +21,12 @@ function DocxPreview({ file }: { file: File }) {
     });
   }, [file]);
 
-  return <div ref={containerRef} className="docx-preview dialog-preview" />;
+  return (
+    <div
+      ref={containerRef}
+      className={small ? "docx-preview small-preview" : "docx-preview dialog-preview"}
+    />
+  );
 }
 
 export default DocxPreview;

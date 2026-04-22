@@ -6,12 +6,14 @@ import {
   extractDataSchema,
   extractionPrompt,
 } from "./ai-configs/create-pozov-config";
-import legalDocsUa from "../../lib/ai-configs/skills/legal-docs-ua";
 import { fastModel, google } from "./ai-providers";
 import { pozovTemplateDataSchema } from "./template-pozov-generator";
 
 const model = google("gemini-2.5-flash-lite");
 
+/**
+ * @deprecated
+ */
 async function extractPozovData(files: File[]) {
   if (!files || files.length === 0) {
     throw new Error("no files were provided");
@@ -49,7 +51,7 @@ async function extractPozovData(files: File[]) {
   return JSON.parse(result.text);
 }
 
-async function extractPozovTemplateData(files: File[]) {
+async function extractPozovTemplateData(files: File[], message = "") {
   if (!files || files.length === 0) {
     throw new Error("no files were provided");
   }
@@ -76,6 +78,10 @@ async function extractPozovTemplateData(files: File[]) {
     messages: [
       {
         role: "user",
+        content: message,
+      },
+      {
+        role: "user",
         content: fileParts,
       },
     ],
@@ -86,6 +92,9 @@ async function extractPozovTemplateData(files: File[]) {
   return JSON.parse(result.text);
 }
 
+/**
+ * @deprecated
+ */
 async function generatePozov(pozovData: (typeof dataSchema)["_input"]) {
   const prompt = `Дані для створення позовної заяви про розірвання шлюбу:
 ${JSON.stringify(pozovData, null, 2)}
@@ -94,7 +103,6 @@ ${JSON.stringify(pozovData, null, 2)}
 
   const result = await generateText({
     model,
-    system: legalDocsUa,
     messages: [{ role: "user", content: prompt }],
   });
 

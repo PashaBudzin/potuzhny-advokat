@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -181,6 +181,14 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
   falseLabel = "false",
 }) => {
   const [treeData, setTreeData] = useState(data);
+  const isInternalUpdate = useRef(false);
+
+  useEffect(() => {
+    if (!isInternalUpdate.current) {
+      setTreeData(data);
+    }
+    isInternalUpdate.current = false;
+  }, [data]);
 
   const handleChange = (path: string, value: any) => {
     const newData = Array.isArray(treeData)
@@ -223,6 +231,7 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
       current[lastKey] = value;
     }
 
+    isInternalUpdate.current = true;
     setTreeData(newData);
     onChange?.(newData);
   };

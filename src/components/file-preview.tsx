@@ -15,17 +15,20 @@ function FilePreview({ file }: { file: File }) {
 
   return (
     <>
-        <button
-          className="h-full w-full ring hover:ring-primary p-10 m-3"
-          onClick={() => setShowPreview(true)}
-        >
-          <FileTypePreview file={file} />
-        </button>
+      <div
+        className="h-48 w-full cursor-pointer hover:bg-muted/50 rounded-md transition-colors"
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowPreview(true);
+        }}
+      >
+        <FileTypePreview file={file} small />
+      </div>
       <Dialog open={showPreview} onOpenChange={(v) => setShowPreview(v)}>
         <DialogHeader>
           <DialogTitle>File preview</DialogTitle>
         </DialogHeader>
-        <DialogContent className="h-[80vh] p-10">
+        <DialogContent className="h-[80vh] max-w-[90vw]">
           <FileTypePreview file={file} />
         </DialogContent>
       </Dialog>
@@ -33,21 +36,21 @@ function FilePreview({ file }: { file: File }) {
   );
 }
 
-function FileTypePreview({ file }: { file: File }) {
+function FileTypePreview({ file, small }: { file: File; small?: boolean }) {
   if (file.type === "application/pdf") {
     return <PdfPreview file={file} />;
   }
 
   if (file.type.startsWith("image/")) {
-    return <ImagePreview file={file} />;
+    return <ImagePreview file={file} small={small} />;
   }
 
   if (
     file.type ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-    file.name.endsWith(".docx") // fallback for browsers that give empty type
+    file.name.endsWith(".docx")
   ) {
-    return <DocxPreview file={file} />;
+    return <DocxPreview file={file} small={small} />;
   }
 
   if (
@@ -57,7 +60,7 @@ function FileTypePreview({ file }: { file: File }) {
     file.name.endsWith(".xlsx") ||
     file.name.endsWith(".xls")
   ) {
-    return <ExcelPreview file={file} />;
+    return <ExcelPreview file={file} small={small} />;
   }
 
   return <p>Unsupported file type</p>;
@@ -75,11 +78,16 @@ function PdfPreview({ file }: { file: File }) {
   );
 }
 
-function ImagePreview({ file }: { file: File }) {
+function ImagePreview({ file, small }: { file: File; small?: boolean }) {
   const url = URL.createObjectURL(file);
 
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} className="h-full object-contain" />;
+  return (
+    <img
+      src={url}
+      className={small ? "h-full w-full object-contain" : "h-full w-full object-contain"}
+    />
+  );
 }
 
 export { FilePreview };
