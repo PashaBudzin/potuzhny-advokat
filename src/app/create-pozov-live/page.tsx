@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import {
   pozovTemplateDataSchema,
   generatePozovText,
+  PozovTemplateData,
 } from "@/lib/template-pozov-generator";
 import { extractPozovTemplateData } from "@/lib/ai";
 import { generatePozovDocx } from "@/lib/generatePozovDocx";
@@ -30,8 +31,11 @@ type ExtractionStatus = "idle" | "extracting" | "success" | "error";
 
 export default function Page() {
   const [files, setFiles] = useState<File[]>([]);
-  const [extractionStatus, setExtractionStatus] = useState<ExtractionStatus>("idle");
-  const [templateData, setTemplateData] = useState<object | null>(null);
+  const [extractionStatus, setExtractionStatus] =
+    useState<ExtractionStatus>("idle");
+  const [templateData, setTemplateData] = useState<PozovTemplateData | null>(
+    null,
+  );
   const [message, setMessage] = useState("");
 
   return (
@@ -67,7 +71,7 @@ interface UploadSectionProps {
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   setExtractionStatus: React.Dispatch<React.SetStateAction<ExtractionStatus>>;
-  setTemplateData: React.Dispatch<React.SetStateAction<object | null>>;
+  setTemplateData: React.Dispatch<React.SetStateAction<PozovTemplateData | null>>;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -114,7 +118,10 @@ function UploadSection({
     setTemplateData(null);
 
     try {
-      const result = await extractPozovTemplateData(currentFiles, messageRef.current);
+      const result = await extractPozovTemplateData(
+        currentFiles,
+        messageRef.current,
+      );
       const parsed = pozovTemplateDataSchema.parse(result);
       setExtractionStatus("success");
       setTemplateData(parsed);
@@ -225,8 +232,8 @@ function UploadSection({
 interface DataSectionProps {
   files: File[];
   extractionStatus: ExtractionStatus;
-  templateData: object | null;
-  setTemplateData: React.Dispatch<React.SetStateAction<object | null>>;
+  templateData: PozovTemplateData | null;
+  setTemplateData: React.Dispatch<React.SetStateAction<PozovTemplateData | null>>;
 }
 
 function DataSection({
@@ -302,7 +309,7 @@ function DataSection({
 
 interface PreviewSectionProps {
   extractionStatus: ExtractionStatus;
-  templateData: object | null;
+  templateData: PozovTemplateData | null;
 }
 
 function PreviewSection({
@@ -310,8 +317,9 @@ function PreviewSection({
   templateData,
 }: PreviewSectionProps) {
   const generatedText = useMemo(() => {
-    if (!templateData) return "";
     try {
+      if (!templateData || templateData == null) return "";
+
       return generatePozovText(templateData);
     } catch {
       return "";
