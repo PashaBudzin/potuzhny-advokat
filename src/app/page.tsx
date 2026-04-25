@@ -85,6 +85,28 @@ export default function Page() {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-xl">Панель керування</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/dashboard">Відкрити</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="text-xl">Календар судових засідань</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/dashboard/calendar">Відкрити</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
