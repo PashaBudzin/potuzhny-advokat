@@ -35,6 +35,8 @@ function normalizeAddress(text: string | null) {
 function normalizeCourtName(courtName: string | null) {
   if (!courtName) return null;
   return courtName
+    .replace(/\s+м\.\s+/i, " міста ")
+    .replace(/\s+м\.о\.\s+/i, " міста обласного значення ")
     .replace(/\s+Харківської\s+області$/i, "")
     .replace(/\s+Полтавської\s+області$/i, "")
     .replace(/\s+Львівської\s+області$/i, "")

@@ -14,12 +14,23 @@ export interface Court {
 export function getCourtEmail(courtName: string | null): string | null {
   if (!courtName) return null;
 
-  const normalizedName = normalizeCourtName(courtName);
-  if (!normalizedName) return null;
+  const normalizedInput = normalizeCourtName(courtName);
+  if (!normalizedInput) return null;
 
-  const court = courtsData.find(
-    (c: Court) => normalizeCourtName(c.name) === normalizedName,
+  const exactMatch = courtsData.find(
+    (c: Court) => normalizeCourtName(c.name) === normalizedInput,
   );
+  if (exactMatch) return exactMatch.mail;
 
-  return court?.mail ?? null;
+  const fuzzyMatch = courtsData.find((c: Court) => {
+    const normalizedDbName = normalizeCourtName(c.name);
+    if (!normalizedDbName) return false;
+
+    return (
+      normalizedDbName.includes(normalizedInput) ||
+      normalizedInput.includes(normalizedDbName)
+    );
+  });
+
+  return fuzzyMatch?.mail ?? null;
 }
