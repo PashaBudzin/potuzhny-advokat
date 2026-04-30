@@ -10,12 +10,12 @@ This is a Next.js 16 application with TypeScript, Tailwind CSS 4, and shadcn/ui.
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Start development server |
-| `bun run build` | Production build |
-| `bun run start` | Start production server |
-| `bun run lint` | Run ESLint |
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `bun run dev`   | Start development server |
+| `bun run build` | Production build         |
+| `bun run start` | Start production server  |
+| `bun run lint`  | Run ESLint               |
 
 There are no dedicated test scripts in this project.
 
@@ -37,14 +37,14 @@ There are no dedicated test scripts in this project.
 
 ```typescript
 // Good
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { someFunction } from "@/lib/some-module"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { someFunction } from "@/lib/some-module";
 
 // Bad
-import Button from "@/components/ui/button"  // named export exists
-import "../components/something"  // use @/ instead
+import Button from "@/components/ui/button"; // named export exists
+import "../components/something"; // use @/ instead
 ```
 
 ### Naming Conventions
