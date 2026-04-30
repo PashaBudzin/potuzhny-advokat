@@ -190,7 +190,7 @@ export const TreePreview: React.FC<TreePreviewProps> = ({
 
         if (path) {
             // Parse path that can contain both dot notation and array indices
-            const parts = path.match(/([^\[\].]+)|\[(\d+)\]/g) || [];
+            const parts = path.match(/([^[\].]+)|\[(\d+)\]/g) || [];
             let current: any = newData;
 
             for (let i = 0; i < parts.length - 1; i++) {

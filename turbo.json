@@ -4,7 +4,18 @@
         "build": {
             "dependsOn": ["^build"],
             "outputs": [".next/**", "!.next/cache/**"],
-            "env": ["GEMINI_API_KEY", "GROQ_API_KEY", "IMAP_USER", "IMAP_PASS", "DATABASE_URL", "TELEGRAM_TOKEN", "BRIEFING_CHAT_ID", "BRIEFING_THREAD_ID", "PASSWORD_HASH", "HMAC_SECRET"]
+            "env": [
+                "GEMINI_API_KEY",
+                "GROQ_API_KEY",
+                "IMAP_USER",
+                "IMAP_PASS",
+                "DATABASE_URL",
+                "TELEGRAM_TOKEN",
+                "BRIEFING_CHAT_ID",
+                "BRIEFING_THREAD_ID",
+                "PASSWORD_HASH",
+                "HMAC_SECRET"
+            ]
         },
         "check-types": {
             "dependsOn": ["^check-types"]
@@ -25,6 +36,21 @@
         "db:studio": {
             "cache": false,
             "persistent": true
+        },
+        "//#quality": {
+            "dependsOn": ["//#lint", "//#format:check"]
+        },
+        "//#quality:fix": {
+            "dependsOn": ["//#lint:fix", "//#format"]
+        },
+        "//#lint": {},
+        "//#lint:fix": {
+            "cache": false
+        },
+        "//#format:check": {},
+        "//#format": {
+            "dependsOn": ["//#lint:fix"],
+            "cache": false
         }
     }
 }
