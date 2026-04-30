@@ -34,6 +34,7 @@ export async function fetchEmails(options: FetchEmailsOptions): Promise<DocEmail
                 searchQuery.since = since;
             }
 
+            // oxlint-disable-next-line eslint/no-await-in-loop
             const uids = await client.search(searchQuery);
             const uidArray = Array.isArray(uids) ? uids : Object.keys(uids);
 
@@ -41,6 +42,7 @@ export async function fetchEmails(options: FetchEmailsOptions): Promise<DocEmail
 
             const fetchUids = uidArray as number[];
 
+            // oxlint-disable-next-line eslint/no-await-in-loop
             for await (const message of client.fetch(fetchUids, { source: true })) {
                 if (!message.source) continue;
 

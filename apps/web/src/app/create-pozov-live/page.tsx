@@ -1,4 +1,5 @@
 "use client";
+// oxlint-disable react/no-array-index-key
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Packer } from "docx";
@@ -329,7 +330,7 @@ function PreviewSection({ extractionStatus, templateData }: PreviewSectionProps)
 
             return (
                 <p
-                    key={i}
+                    key={`para-${i}-${content.slice(0, 30)}`}
                     className={cn(
                         "text-sm font-mono my-1 text-justify leading-relaxed",
                         isCentered ? "text-center" : "pl-8 first-line:pl-0",

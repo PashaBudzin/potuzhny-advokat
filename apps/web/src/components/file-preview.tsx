@@ -72,7 +72,6 @@ function PdfPreview({ file }: { file: File }) {
 function ImagePreview({ file, small }: { file: File; small?: boolean }) {
     const url = URL.createObjectURL(file);
 
-    // eslint-disable-next-line @next/next/no-img-element
     return (
         <img
             src={url}

@@ -38,7 +38,7 @@ export default function Component() {
                 {steps.map((step, index) => {
                     return (
                         <StepperItem
-                            key={index}
+                            key={step.title}
                             step={index + 1}
                             className="relative flex-1 items-start"
                         >
@@ -92,7 +92,7 @@ export default function Component() {
             <StepperPanel className="text-sm">
                 {steps.map((step, index) => (
                     <StepperContent
-                        key={index}
+                        key={step.title}
                         value={index + 1}
                         className="flex items-center justify-center"
                     >

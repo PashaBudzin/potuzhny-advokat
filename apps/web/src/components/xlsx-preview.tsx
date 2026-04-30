@@ -16,8 +16,7 @@ function ExcelPreview({ file, small }: { file: File; small?: boolean }) {
             const workbook = XLSX.read(ab, { type: "array" });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const jsonData: any[][] = XLSX.utils.sheet_to_json(worksheet, {
+            const jsonData: string[][] = XLSX.utils.sheet_to_json(worksheet, {
                 header: 1,
             });
 
@@ -41,10 +40,15 @@ function ExcelPreview({ file, small }: { file: File; small?: boolean }) {
                 }
             >
                 <tbody>
-                    {displayData.map((row, i) => (
-                        <tr key={i}>
-                            {row.map((cell, j) => (
-                                <td key={j} className="border border-gray-300 p-1">
+                    {displayData.map((row, rowIndex) => (
+                        // oxlint-disable-next-line react/no-array-index-key
+                        <tr key={`row-${rowIndex}-${row[0] || ""}`}>
+                            {row.map((cell, cellIndex) => (
+                                // oxlint-disable-next-line react/no-array-index-key
+                                <td
+                                    key={`cell-${rowIndex}-${cellIndex}-${cell || ""}`}
+                                    className="border border-gray-300 p-1"
+                                >
                                     {cell?.toString() || ""}
                                 </td>
                             ))}

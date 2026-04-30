@@ -38,8 +38,6 @@ import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 import { Packer } from "docx";
 import { saveAs } from "file-saver";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 
 const steps = [1, 2, 3] as const;
 
@@ -178,8 +176,8 @@ function SecondStep() {
             <CardContent className="space-y-6 p-20">
                 <Carousel className="w-full">
                     <CarouselContent className="min-h-96">
-                        {files.map((file, i) => (
-                            <CarouselItem className="min-h-full p-5" key={i}>
+                        {files.map((file) => (
+                            <CarouselItem className="min-h-full p-5" key={file.name}>
                                 <FilePreview file={file} />
                             </CarouselItem>
                         ))}
@@ -326,8 +324,8 @@ function ThirdStep() {
                         <h4 className="mb-4 font-medium text-foreground">Завантажені документи</h4>
                         <Carousel className="w-full">
                             <CarouselContent className="min-h-96">
-                                {files.map((file, i) => (
-                                    <CarouselItem className="min-h-full p-5" key={i}>
+                                {files.map((file) => (
+                                    <CarouselItem className="min-h-full p-5" key={file.name}>
                                         <FilePreview file={file} />
                                     </CarouselItem>
                                 ))}

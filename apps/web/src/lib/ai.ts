@@ -15,22 +15,15 @@ async function extractPozovData(files: File[]) {
         throw new Error("no files were provided");
     }
 
-    const fileParts: Array<{
-        type: "file";
-        data: Uint8Array;
-        mediaType: string;
-    }> = [];
-
-    for (const file of files) {
+    const filePromises = files.map(async (file) => {
         const arrayBuffer = await file.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
-
-        fileParts.push({
-            type: "file",
-            data: uint8Array,
+        return {
+            type: "file" as const,
+            data: new Uint8Array(arrayBuffer),
             mediaType: file.type || "application/octet-stream",
-        });
-    }
+        };
+    });
+    const fileParts = await Promise.all(filePromises);
 
     const result = await generateText({
         model,
@@ -52,22 +45,15 @@ async function extractPozovTemplateData(files: File[], message = "") {
         throw new Error("no files were provided");
     }
 
-    const fileParts: Array<{
-        type: "file";
-        data: Uint8Array;
-        mediaType: string;
-    }> = [];
-
-    for (const file of files) {
+    const filePromises = files.map(async (file) => {
         const arrayBuffer = await file.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
-
-        fileParts.push({
-            type: "file",
-            data: uint8Array,
+        return {
+            type: "file" as const,
+            data: new Uint8Array(arrayBuffer),
             mediaType: file.type || "application/octet-stream",
-        });
-    }
+        };
+    });
+    const fileParts = await Promise.all(filePromises);
 
     const result = await generateText({
         model,

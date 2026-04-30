@@ -3,7 +3,6 @@ import { cases } from "./db/schema";
 import { eq } from "drizzle-orm";
 import type { TypedDocEmail, DocType } from "./docType";
 import type { CaseStage } from "./caseStage";
-import { CaseStateSummary } from "./summary";
 
 const STATE_PRIORITY: Record<DocType, number> = {
     registration: 1,
@@ -54,7 +53,6 @@ export type CaseUpdate = {
 };
 
 export async function updateCaseStates(typedEmails: TypedDocEmail[]): Promise<CaseUpdate[]> {
-    const updates: CaseUpdate[] = [];
     const caseMap = new Map<string, TypedDocEmail[]>();
 
     for (const doc of typedEmails) {
@@ -63,7 +61,7 @@ export async function updateCaseStates(typedEmails: TypedDocEmail[]): Promise<Ca
         caseMap.set(doc.caseNumber, existing);
     }
 
-    for (const [caseNumber, caseDocs] of caseMap) {
+    const updatePromises = Array.from(caseMap.entries()).map(async ([caseNumber, caseDocs]) => {
         const state = getStateFromDocs(caseDocs);
         const registrationDoc = caseDocs.find((d) => d.type === "registration");
         const registrationDate = registrationDoc?.date ?? null;
@@ -117,7 +115,7 @@ export async function updateCaseStates(typedEmails: TypedDocEmail[]): Promise<Ca
             }
         }
 
-        updates.push({
+        return {
             caseNumber,
             state,
             registrationDate,
@@ -125,8 +123,10 @@ export async function updateCaseStates(typedEmails: TypedDocEmail[]): Promise<Ca
             changed,
             plaintiffName,
             nextCourtHearing: nextCourtHearing ?? existing?.nextCourtHearing ?? null,
-        });
-    }
+        };
+    });
+
+    const updates = await Promise.all(updatePromises);
 
     return updates.filter((u) => u.changed);
 }

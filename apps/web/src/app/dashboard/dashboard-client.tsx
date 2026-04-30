@@ -58,11 +58,6 @@ function extractMeta(text: string, name: string): string {
     return firstBetween(text, `<meta name="${name}" content="`, '"') ?? "";
 }
 
-function extractCaseCourt(text: string): string {
-    const judge = firstBetween(text, '"JUDGENAME1" content="', '">') ?? "";
-    return firstBetween(text, "суддя ", judge.split(" ").at(0) ?? "") ?? "";
-}
-
 export default function DashboardClient({
     initialCases,
     totalCount,

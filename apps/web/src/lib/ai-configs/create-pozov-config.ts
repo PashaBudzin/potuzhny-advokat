@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToGemini } from "../gemini-zod";
 
 export const childSchema = z.object({
     ПІБ: z.string(),

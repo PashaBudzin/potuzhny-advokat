@@ -8,7 +8,7 @@ function splitName(fullname: string) {
 function initials(fullname: string) {
     const { lastName, firstName, middleName } = splitName(fullname);
 
-    return lastName + " " + firstName[0] + "." + " " + middleName[0] + ".";
+    return `${lastName} ${firstName[0]}. ${middleName[0]}.`;
 }
 
 function firstBetween(text: string, startSplit: string, endSplit: string): string | null {
