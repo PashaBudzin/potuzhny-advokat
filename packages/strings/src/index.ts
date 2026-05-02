@@ -1,3 +1,4 @@
+export { formatNumber } from "./number-to-words";
 export {
     splitName,
     initials,
@@ -6,5 +7,4 @@ export {
     normalizeAddress,
     normalizeCourtName,
     formatBytes,
-    formatNumber,
-} from "@potuzhny-advokat/strings";
+} from "./string-utils";

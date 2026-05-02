@@ -16,6 +16,7 @@
         "@hugeicons/react": "^1.1.4",
         "@potuzhny-advokat/accounting": "workspace:*",
         "@potuzhny-advokat/db": "workspace:*",
+        "@potuzhny-advokat/strings": "workspace:*",
         "@types/node-telegram-bot-api": "^0.64.14",
         "ai": "^6.0.146",
         "class-variance-authority": "^0.7.1",

@@ -24,6 +24,7 @@
         "@hugeicons/react": "^1.1.4",
         "@potuzhny-advokat/accounting": "workspace:*",
         "@potuzhny-advokat/db": "workspace:*",
+        "@potuzhny-advokat/strings": "workspace:*",
         "@types/node-telegram-bot-api": "^0.64.14",
         "ai": "^6.0.146",
         "class-variance-authority": "^0.7.1",
@@ -126,6 +127,10 @@
         "drizzle-kit": "^0.31.10",
         "typescript": "^5",
       },
+    },
+    "packages/strings": {
+      "name": "@potuzhny-advokat/strings",
+      "version": "0.1.0",
     },
   },
   "trustedDependencies": [
@@ -531,6 +536,8 @@
     "@potuzhny-advokat/auth-crypto": ["@potuzhny-advokat/auth-crypto@workspace:packages/auth-crypto"],
 
     "@potuzhny-advokat/db": ["@potuzhny-advokat/db@workspace:packages/db"],
+
+    "@potuzhny-advokat/strings": ["@potuzhny-advokat/strings@workspace:packages/strings"],
 
     "@potuzhny-advokat/web": ["@potuzhny-advokat/web@workspace:apps/web"],
 

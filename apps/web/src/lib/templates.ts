@@ -12,7 +12,7 @@ type Template = {
 const templates = {
     dogovirR: {
         name: "Договір Розлучення",
-        templateUrl: "/договір_розлучення.docx",
+        templateUrl: "/договір_розлучення-аліменти.docx",
     },
     dogovirF: {
         name: "Договір ФОП",
