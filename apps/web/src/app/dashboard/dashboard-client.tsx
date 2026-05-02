@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
-import type { Case } from "@/lib/accounting/db/schema";
+import type { Case } from "@potuzhny-advokat/db";
 import { normalizeAddress, firstBetween, initials } from "@/lib/string";
 import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
 import { generateDocx } from "@/lib/docsUtils";

@@ -1,5 +1,4 @@
-import { db } from "./db/db";
-import { cases } from "./db/schema";
+import { db, cases } from "@potuzhny-advokat/db";
 import { eq } from "drizzle-orm";
 import type { TypedDocEmail, DocType } from "./docType";
 import type { CaseStage } from "./caseStage";

@@ -1,7 +1,6 @@
 "use server";
 
-import { db } from "@/lib/accounting/db/db";
-import { cases } from "@/lib/accounting/db/schema";
+import { db, cases } from "@potuzhny-advokat/db";
 import { desc, asc, sql } from "drizzle-orm";
 
 import { eq, or, like, and } from "drizzle-orm";

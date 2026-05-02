@@ -44,8 +44,8 @@ function ExcelPreview({ file, small }: { file: File; small?: boolean }) {
                         // oxlint-disable-next-line react/no-array-index-key
                         <tr key={`row-${rowIndex}-${row[0] || ""}`}>
                             {row.map((cell, cellIndex) => (
-                                // oxlint-disable-next-line react/no-array-index-key
                                 <td
+                                    // oxlint-disable-next-line react/no-array-index-key
                                     key={`cell-${rowIndex}-${cellIndex}-${cell || ""}`}
                                     className="border border-gray-300 p-1"
                                 >

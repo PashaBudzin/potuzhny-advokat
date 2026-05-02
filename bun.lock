@@ -22,6 +22,7 @@
         "@base-ui/react": "^1.0.0",
         "@hugeicons/core-free-icons": "^3.1.1",
         "@hugeicons/react": "^1.1.4",
+        "@potuzhny-advokat/db": "workspace:*",
         "@types/node-telegram-bot-api": "^0.64.14",
         "ai": "^6.0.146",
         "class-variance-authority": "^0.7.1",
@@ -30,8 +31,6 @@
         "docx": "^9.5.1",
         "docx-preview": "^0.3.7",
         "docxtemplater": "^3.67.6",
-        "dotenv": "^17.4.0",
-        "drizzle-orm": "^0.45.2",
         "embla-carousel-react": "^8.6.0",
         "file-saver": "^2.0.5",
         "imapflow": "^1.2.18",
@@ -42,7 +41,6 @@
         "next-themes": "^0.4.6",
         "node-telegram-bot-api": "^0.67.0",
         "pdfjs-dist": "^5.4.624",
-        "pg": "^8.20.0",
         "pizzip": "^3.2.0",
         "radix-ui": "^1.4.3",
         "react": "19.2.3",
@@ -62,10 +60,8 @@
         "@types/file-saver": "^2.0.7",
         "@types/node": "^20",
         "@types/pdfjs-dist": "^2.10.378",
-        "@types/pg": "^8.20.0",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "drizzle-kit": "^0.31.10",
         "tailwindcss": "^4",
         "typescript": "^5",
       },
@@ -90,6 +86,20 @@
         "vite": "^5.4.21",
         "vite-plugin-web-extension": "^4.5.1",
         "webextension-polyfill": "^0.10.0",
+      },
+    },
+    "packages/db": {
+      "name": "@potuzhny-advokat/db",
+      "version": "0.1.0",
+      "dependencies": {
+        "drizzle-orm": "^0.45.2",
+        "pg": "^8.20.0",
+      },
+      "devDependencies": {
+        "@types/pg": "^8.20.0",
+        "dotenv": "^17.4.0",
+        "drizzle-kit": "^0.31.10",
+        "typescript": "^5",
       },
     },
   },
@@ -490,6 +500,8 @@
     "@pnpm/network.ca-file": ["@pnpm/network.ca-file@1.0.2", "", { "dependencies": { "graceful-fs": "4.2.10" } }, "sha512-YcPQ8a0jwYU9bTdJDpXjMi7Brhkr1mXsXrUJvjqM2mQDgkRiz8jFaQGOdaLxgjtUfQgZhKy/O3cG/YwmgKaxLA=="],
 
     "@pnpm/npm-conf": ["@pnpm/npm-conf@3.0.2", "", { "dependencies": { "@pnpm/config.env-replace": "^1.1.0", "@pnpm/network.ca-file": "^1.0.1", "config-chain": "^1.1.11" } }, "sha512-h104Kh26rR8tm+a3Qkc5S4VLYint3FE48as7+/5oCEcKR2idC/pF1G6AhIXKI+eHPJa/3J9i5z0Al47IeGHPkA=="],
+
+    "@potuzhny-advokat/db": ["@potuzhny-advokat/db@workspace:packages/db"],
 
     "@potuzhny-advokat/web": ["@potuzhny-advokat/web@workspace:apps/web"],
 
