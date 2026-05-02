@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
             bodySizeLimit: "50mb",
         },
     },
+    transpilePackages: [
+        "@potuzhny-advokat/db",
+        "@potuzhny-advokat/strings",
+        "@potuzhny-advokat/accounting",
+        "@potuzhny-advokat/auth-crypto",
+    ],
 };
 
 export default nextConfig;
