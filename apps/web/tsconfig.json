@@ -9,7 +9,8 @@
             }
         ],
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@potuzhny-advokat/*": ["../../packages/*/src"]
         }
     },
     "include": [

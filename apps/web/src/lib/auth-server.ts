@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { validatePass } from "./auth";
+import { validatePassLocal as validatePass } from "./auth";
 
 const COOKIE_NAME = "auth_token";
 
