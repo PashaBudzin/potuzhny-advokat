@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "../env";
 import { CaseUpdate } from "../sync";
 import TelegramBot from "node-telegram-bot-api";
 

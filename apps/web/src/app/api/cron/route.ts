@@ -1,11 +1,13 @@
-import { env } from "@/env";
-import { DocEmail, parseDocType } from "@/lib/accounting/docType";
-import { groupDocsByCase } from "@/lib/accounting/caseStage";
-import { updateCaseStates } from "@/lib/accounting/sync";
-import { fetchEmails } from "@/lib/accounting/emails";
-
 import { NextResponse } from "next/server";
-import { sendTelegramBriefing } from "@/lib/accounting/telegram/sendBriefingViaTelegram";
+import { env } from "@/env";
+import {
+    parseDocType,
+    fetchEmails,
+    updateCaseStates,
+    groupDocsByCase,
+    sendTelegramBriefing,
+    type DocEmail,
+} from "@potuzhny-advokat/accounting";
 
 function getDaysAgo(days: number): Date {
     const now = new Date();
