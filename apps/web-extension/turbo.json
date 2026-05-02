@@ -1,0 +1,14 @@
+{
+    "extends": ["//"],
+    "tasks": {
+        "build": {
+            "env": ["CHROME_PATH"]
+        },
+        "dev": {
+            "env": ["CHROME_PATH"],
+            "passThroughEnv": ["CHROME_PATH"],
+            "cache": false,
+            "persistent": true
+        }
+    }
+}

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+html,
+body {
+    width: 300px;
+    height: 400px;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    @apply bg-gray-900;
+}

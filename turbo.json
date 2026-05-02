@@ -3,19 +3,7 @@
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
-            "outputs": [".next/**", "!.next/cache/**"],
-            "env": [
-                "GEMINI_API_KEY",
-                "GROQ_API_KEY",
-                "IMAP_USER",
-                "IMAP_PASS",
-                "DATABASE_URL",
-                "TELEGRAM_TOKEN",
-                "BRIEFING_CHAT_ID",
-                "BRIEFING_THREAD_ID",
-                "PASSWORD_HASH",
-                "HMAC_SECRET"
-            ]
+            "outputs": [".next/**", "!.next/cache/**"]
         },
         "check-types": {
             "dependsOn": ["^check-types"]
