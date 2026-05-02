@@ -1,0 +1,27 @@
+{
+    "name": "@potuzhny-advokat/api",
+    "version": "0.1.0",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {},
+    "dependencies": {
+        "@potuzhny-advokat/auth-crypto": "workspace:*",
+        "@tanstack/react-query": "^5.100.8",
+        "@trpc/client": "^11.17.0",
+        "@trpc/server": "^11.17.0",
+        "@trpc/tanstack-react-query": "^11.17.0",
+        "client-only": "^0.0.1",
+        "react": "^19.2.3",
+        "server-only": "^0.0.1",
+        "superjson": "^2.2.6",
+        "zod": "^4.4.2"
+    },
+    "devDependencies": {
+        "@types/node": "^25.6.0",
+        "@types/react": "^19.2.14",
+        "typescript": "^5"
+    },
+    "peerDependencies": {
+        "next": "16.1.1"
+    }
+}
