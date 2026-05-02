@@ -24,7 +24,7 @@ type ParsedData = {
     суд_ОВ: string;
     ПІБ_відповідача: string;
     ПІБ_відповідача_РВ: string;
-    ініціали_позивача: string;
+    ініціали_відповідача: string;
     адреса_відповідача: string;
 };
 
@@ -140,7 +140,7 @@ async function parseText(text: string): Promise<ParsedData> {
         номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
         ПІБ_відповідача: def,
         ПІБ_відповідача_РВ: (await toGenitive(def)) ?? "",
-        ініціали_позивача: initials(def),
+        ініціали_відповідача: initials(def),
         адреса_відповідача:
             normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS2" content="', '">')) ??
             "",

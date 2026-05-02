@@ -240,7 +240,7 @@ export default function DashboardClient({
                 суд_ОВ: courtGen || courtOV || "",
                 ПІБ_відповідача: c.defendantName,
                 ПІБ_відповідача_РВ: (await toGenitive(c.defendantName)) ?? "",
-                ініціали_позивача: initials(c.plaintiffName),
+                ініціали_відповідача: initials(c.defendantName),
                 адреса_відповідача: c.defendantAddress ?? "",
             };
 

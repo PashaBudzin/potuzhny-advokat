@@ -95,7 +95,7 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
                 суд_ОВ: courtGen || courtOV || "",
                 ПІБ_відповідача: h.defendantName,
                 ПІБ_відповідача_РВ: (await toGenitive(h.defendantName)) ?? "",
-                ініціали_позивача: initials(h.plaintiffName),
+                ініціали_відповідача: initials(h.defendantName),
                 адреса_відповідача: h.defendantAddress ?? "",
             };
 
