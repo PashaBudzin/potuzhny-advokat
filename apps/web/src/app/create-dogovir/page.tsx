@@ -24,7 +24,7 @@ const metaOptions = [
 ] as const;
 
 export default function CreateDogovirRoute() {
-    const [ціна, setЦіна] = React.useState("");
+    const [ціна, setЦіна] = React.useState("5000");
     const [мета, setМета] = React.useState("");
 
     const ціна_розшифровка = ціна ? formatNumber(Number(ціна)) : "";
@@ -40,6 +40,7 @@ export default function CreateDogovirRoute() {
         const data = {
             ...fdata,
             дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
+            мета,
             ціна_розшифровка,
         };
         const docFile = generateDocx(templateArrayBuffer, data);
@@ -56,6 +57,7 @@ export default function CreateDogovirRoute() {
         const data = {
             ...fdata,
             дата_сьогодні: new Date().toLocaleDateString("uk-UA"),
+            мета,
             ціна_розшифровка,
         };
         const docFile = generateDocx(templateArrayBuffer, data);
