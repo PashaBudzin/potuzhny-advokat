@@ -26,7 +26,21 @@ import { validatePass } from "@potuzhny-advokat/auth-crypto";
  */
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-    const passwordHash = opts.headers.get("Authentification");
+    // Prefer explicit header if present (legacy behavior), otherwise fall back to the
+    // cookie named "auth_token" which is set by the Next.js app as an httpOnly cookie.
+    const authHeader = opts.headers.get("Authentification");
+    let passwordHash: string | undefined = authHeader ?? undefined;
+
+    if (!passwordHash) {
+        const cookieHeader = opts.headers.get("cookie") ?? "";
+        const authToken = cookieHeader
+            .split(";")
+            .map((c) => c.trim())
+            .find((c) => c.startsWith("auth_token="));
+        if (authToken) {
+            passwordHash = authToken.split("=")[1];
+        }
+    }
 
     return {
         passwordHash,
