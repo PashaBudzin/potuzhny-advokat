@@ -13,8 +13,8 @@
         "lint:fix": "oxlint --fix .",
         "format:check": "oxfmt --check --ignore-path .oxfmtignore",
         "format": "oxfmt --ignore-path .oxfmtignore",
-        "quality": "bun run lint && bun run format:check",
-        "quality:fix": "bun run lint:fix && bun run format",
+        "ci:check": "bunx turbo run quality",
+        "ci:fix": "bunx turbo run quality:fix",
         "prepare": "husky"
     },
     "devDependencies": {
