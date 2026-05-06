@@ -11,8 +11,10 @@
         "build": "turbo run build",
         "lint": "oxlint --report-unused-disable-directives",
         "lint:fix": "oxlint --fix .",
-        "format:check": "oxfmt --check",
-        "format": "oxfmt",
+        "format:check": "oxfmt --check --ignore-path .oxfmtignore",
+        "format": "oxfmt --ignore-path .oxfmtignore",
+        "quality": "bun run lint && bun run format:check",
+        "quality:fix": "bun run lint:fix && bun run format",
         "prepare": "husky"
     },
     "devDependencies": {

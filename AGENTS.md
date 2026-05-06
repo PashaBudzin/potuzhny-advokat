@@ -1,3 +1,15 @@
+<!-- intent-skills:start -->
+
+## Skill Loading
+
+Before substantial work:
+
+- Skill check: run `bunx @tanstack/intent@latest list`, or use skills already listed in context.
+- Skill guidance: if one local skill clearly matches the task, run `bunx @tanstack/intent@latest load <package>#<skill>` and follow the returned `SKILL.md`.
+- Monorepos: when working across packages, run the skill check from the workspace root and prefer the local skill for the package being changed.
+- Multiple matches: prefer the most specific local skill for the package or concern you are changing; load additional skills only when the task spans multiple packages or concerns.
+    <!-- intent-skills:end -->
+
 # AGENTS.md
 
 This file provides guidelines for agentic coding agents operating in this repository.
@@ -112,6 +124,165 @@ Note: `public/` remains at project root (not in src/) for Next.js static file se
 - Use Route Handlers with `NextResponse`
 - Validate input with Zod schemas
 - Keep business logic in `src/lib/`
+
+### tRPC Usage
+
+This project uses tRPC with TanStack Query for type-safe API calls. The setup is in `apps/web/src/trpc/`.
+
+#### Architecture
+
+- **Server side** (`@/trpc/server`): Use in React Server Components (RSC) for prefetching
+- **Client side** (`@/trpc/client`): Use in Client Components with `useTRPC()` hook
+
+#### Files
+
+- `apps/web/src/trpc/server.tsx` - Server-side utilities (prefetch, HydrateClient, trpc proxy)
+- `apps/web/src/trpc/client.tsx` - Client-side provider and hooks (TRPCReactProvider, useTRPC)
+- `apps/web/src/trpc/query-client.ts` - Query client configuration with SuperJSON
+- `apps/web/src/app/api/[trpc]/route.ts` - API route handler
+
+#### Server Components (RSC)
+
+For server components that need to prefetch data and hydrate to the client:
+
+```tsx
+import { trpc, prefetch, HydrateClient } from "@/trpc/server";
+
+export default async function Page() {
+    // Prefetch query options - this prepares data on the server
+    void prefetch(
+        trpc.cases.getCases.queryOptions({
+            offset: 0,
+            limit: 50,
+            sortField: "lastUpdated",
+            sortOrder: "desc",
+            state: null,
+            search: null,
+        }),
+    );
+
+    // Or prefetch with input
+    void prefetch(
+        trpc.cases.getCasesCount.queryOptions({
+            state: null,
+            search: null,
+        }),
+    );
+
+    return (
+        <HydrateClient>
+            <YourClientComponent />
+        </HydrateClient>
+    );
+}
+```
+
+Key points:
+
+- Use `prefetch()` with `queryOptions()` to prefetch data server-side
+- Wrap client component in `<HydrateClient>` to transfer dehydrated state
+- Do NOT use `useTRPC()` in server components - it's a client hook
+
+#### Client Components
+
+For client components that need to fetch data or call mutations:
+
+```tsx
+"use client";
+
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+
+export default function ClientComponent() {
+    const trpc = useTRPC();
+
+    // Using React Query with tRPC queryOptions
+    const query = useQuery(
+        trpc.cases.getCases.queryOptions({
+            offset: 0,
+            limit: 50,
+            sortField: "lastUpdated",
+            sortOrder: "desc",
+            state: null,
+            search: null,
+        }),
+    );
+
+    // Handle loading/error states
+    if (query.isLoading) return <div>Loading...</div>;
+    if (query.isError) return <div>Error: {query.error.message}</div>;
+
+    return <div>{query.data.length} cases</div>;
+}
+```
+
+For mutations (create/update/delete):
+
+```tsx
+"use client";
+
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+
+export function CreateButton() {
+    const trpc = useTRPC();
+
+    const mutation = useMutation(trpc.caseMetadata.updateCaseMetadata.mutationOptions());
+
+    const handleClick = async () => {
+        try {
+            await mutation.mutateAsync({
+                caseNumber: "123",
+                data: { plaintiffName: "John" },
+            });
+        } catch (error) {
+            console.error("Failed to update:", error);
+        }
+    };
+
+    return (
+        <button onClick={handleClick} disabled={mutation.isPending}>
+            {mutation.isPending ? "Saving..." : "Save"}
+        </button>
+    );
+}
+```
+
+#### Key Patterns
+
+1. **Always use `queryOptions()`** - This provides full React Query integration with typing
+2. **Use `useTRPC()` hook** - Returns a decorated router with queryOptions and mutationOptions
+3. **Handle loading/error states** - Check `query.isLoading`, `query.isError`, `mutation.isPending`, `mutation.isError`
+4. **Server prefetch + HydrateClient** - For server components, prefetch data and hydrate to client
+5. **Don't mix patterns** - Don't use `useTRPC()` in server components, don't use `prefetch` in client components
+
+#### Provider Setup
+
+Ensure your app is wrapped with the TRPC provider (usually in `apps/web/src/app/layout.tsx`):
+
+```tsx
+import { TRPCReactProvider } from "@/trpc/client";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html>
+            <body>
+                <TRPCReactProvider>{children}</TRPCReactProvider>
+            </body>
+        </html>
+    );
+}
+```
+
+#### Router Structure
+
+tRPC routers are defined in `packages/api/src/routers/`:
+
+- `cases.ts` - Case queries (getCases, getCasesCount, getCourtGenetative, getCasesWithHearings)
+- `case-metadata.ts` - Case mutations (updateCaseMetadata)
+- `auth.ts` - Auth operations (login)
+
+Access procedures via: `trpc.<router>.<procedure>` (e.g., `trpc.cases.getCases`)
 
 ### Git Practices
 

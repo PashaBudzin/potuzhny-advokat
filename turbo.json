@@ -35,9 +35,10 @@
         "//#lint:fix": {
             "cache": false
         },
-        "//#format:check": {},
+        "//#format:check": {
+            "cache": false
+        },
         "//#format": {
-            "dependsOn": ["//#lint:fix"],
             "cache": false
         }
     }

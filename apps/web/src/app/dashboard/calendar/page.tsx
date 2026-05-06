@@ -1,10 +1,14 @@
-import { getCasesWithHearings } from "@/lib/actions/cases";
 import CalendarClient from "./calendar-client";
+import { trpc, prefetch, HydrateClient } from "@/trpc/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function CalendarPage() {
-    const hearings = await getCasesWithHearings();
+    void prefetch(trpc.cases.getCasesWithHearings.queryOptions());
 
-    return <CalendarClient hearings={hearings} />;
+    return (
+        <HydrateClient>
+            <CalendarClient />
+        </HydrateClient>
+    );
 }

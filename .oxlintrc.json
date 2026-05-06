@@ -6,7 +6,8 @@
         "**/.next",
         "**/bun.lock",
         "*.tsbuildinfo",
-        "**/public/pdf.worker.mjs"
+        "**/public/pdf.worker.mjs",
+        "AGENTS.md"
     ],
     "plugins": ["eslint", "oxc", "react", "typescript"],
     "categories": {
@@ -16,6 +17,7 @@
     },
     "rules": {
         "react-in-jsx-scope": "off",
-        "eslint/no-shadow": "off"
+        "eslint/no-shadow": "off",
+        "eslint/no-underscore-dangle": ["warn", { "allow": ["_config", "_ctx", "_meta"] }]
     }
 }

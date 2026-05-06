@@ -137,22 +137,3 @@ export async function getCourtGenetative(courtName: string): Promise<string> {
     const { generateGenetativeCase } = await import("@/lib/ai");
     return generateGenetativeCase(courtName);
 }
-
-export async function getCasesWithHearings() {
-    return db
-        .select({
-            caseNumber: cases.caseNumber,
-            nextCourtHearing: cases.nextCourtHearing,
-            plaintiffName: cases.plaintiffName,
-            plaintiffAddress: cases.plaintiffAddress,
-            plaintiffCode: cases.plaintiffCode,
-            defendantName: cases.defendantName,
-            defendantAddress: cases.defendantAddress,
-            defendantCode: cases.defendantCode,
-            courtName: cases.courtName,
-            judgeName: cases.judgeName,
-        })
-        .from(cases)
-        .where(sql`${cases.nextCourtHearing} is not null`)
-        .orderBy(asc(cases.nextCourtHearing));
-}

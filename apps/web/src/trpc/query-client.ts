@@ -1,6 +1,22 @@
+/**
+ * Query Client Configuration for tRPC + TanStack Query
+ *
+ * Configures the React Query client with:
+ * - SuperJSON for data serialization (handles dates, etc.)
+ * - Default stale time to avoid immediate refetching
+ * - Proper dehydration/hydration for SSR
+ *
+ * This is used by both server (prefetch) and client providers.
+ */
 import { defaultShouldDehydrateQuery, QueryClient } from "@tanstack/react-query";
 import SuperJSON from "superjson";
 
+/**
+ * Creates a configured QueryClient for tRPC.
+ * Used by both server-side prefetching and client-side provider.
+ *
+ * @returns QueryClient with SuperJSON serialization and default options
+ */
 export const createQueryClient = () =>
     new QueryClient({
         defaultOptions: {

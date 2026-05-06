@@ -15,8 +15,10 @@ import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { toGenitive } from "@/lib/case";
 import { firstBetween, initials } from "@/lib/string";
-import { getCourtGenetative } from "@/lib/actions/cases";
 import { getCourtEmail } from "@/lib/courts";
+import { getCourtGenetative } from "@/lib/actions/cases";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface Hearing {
     caseNumber: string;
@@ -31,7 +33,10 @@ interface Hearing {
     judgeName: string | null;
 }
 
-export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
+export default function CalendarClient() {
+    const trpc = useTRPC();
+    const hearingsQuery = useQuery(trpc.cases.getCasesWithHearings.queryOptions());
+
     const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(new Date());
     const [generatePoz, setGeneratePoz] = React.useState(true);
     const [generateVid, setGenerateVid] = React.useState(false);
@@ -41,7 +46,7 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
 
     const hearingsOnDate = React.useMemo(() => {
         if (!selectedDate) return [];
-        return hearings.filter((h) => {
+        return (hearingsQuery.data ?? []).filter((h) => {
             if (!h.nextCourtHearing) return false;
             const hearingDate = new Date(h.nextCourtHearing);
             return (
@@ -50,10 +55,10 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
                 hearingDate.getFullYear() === selectedDate.getFullYear()
             );
         });
-    }, [hearings, selectedDate]);
+    }, [hearingsQuery.data, selectedDate]);
 
     const dateHasHearing = (date: Date) => {
-        return hearings.some((h) => {
+        return (hearingsQuery.data ?? []).some((h) => {
             if (!h.nextCourtHearing) return false;
             const hearingDate = new Date(h.nextCourtHearing);
             return (
@@ -162,7 +167,19 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {hearingsOnDate.length === 0 ? (
+                        {hearingsQuery.isLoading ? (
+                            <p className="text-muted-foreground">Завантаження...</p>
+                        ) : hearingsQuery.isError ? (
+                            <div className="text-muted-foreground">
+                                <p>
+                                    Помилка при завантаженні засідань:{" "}
+                                    {String(hearingsQuery.error?.message)}
+                                </p>
+                                <Button onClick={() => void hearingsQuery.refetch()}>
+                                    Повторити
+                                </Button>
+                            </div>
+                        ) : hearingsOnDate.length === 0 ? (
                             <p className="text-muted-foreground">
                                 Немає запланованих засідань на цю дату
                             </p>
@@ -272,17 +289,27 @@ export default function CalendarClient({ hearings }: { hearings: Hearing[] }) {
                                                                     onClick={async () => {
                                                                         if (!hearing.courtName)
                                                                             return;
-                                                                        const gen =
-                                                                            await getCourtGenetative(
-                                                                                hearing.courtName,
+                                                                        try {
+                                                                            const gen =
+                                                                                await getCourtGenetative(
+                                                                                    hearing.courtName,
+                                                                                );
+                                                                            setCourtGenitive(
+                                                                                (prev) => ({
+                                                                                    ...prev,
+                                                                                    [hearing.caseNumber]:
+                                                                                        gen,
+                                                                                }),
                                                                             );
-                                                                        setCourtGenitive(
-                                                                            (prev) => ({
-                                                                                ...prev,
-                                                                                [hearing.caseNumber]:
-                                                                                    gen,
-                                                                            }),
-                                                                        );
+                                                                        } catch (err) {
+                                                                            console.error(
+                                                                                "AI gen error",
+                                                                                err,
+                                                                            );
+                                                                            alert(
+                                                                                "Помилка генерації родового відмінка",
+                                                                            );
+                                                                        }
                                                                     }}
                                                                 >
                                                                     AI

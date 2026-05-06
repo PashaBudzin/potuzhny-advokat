@@ -1,7 +1,5 @@
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
-export {};
-
 import type { AppRouter } from "./root";
 
 /**
