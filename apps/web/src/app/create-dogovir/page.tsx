@@ -24,7 +24,7 @@ const metaOptions = [
 ] as const;
 
 export default function CreateDogovirRoute() {
-    const [ціна, setЦіна] = React.useState("5000");
+    const [ціна, setЦіна] = React.useState("6000");
     const [мета, setМета] = React.useState("");
 
     const ціна_розшифровка = ціна ? formatNumber(Number(ціна)) : "";
