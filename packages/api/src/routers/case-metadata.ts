@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { publicProcedure, createTRPCRouter } from "../trpc";
+import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { db, cases } from "@potuzhny-advokat/db";
 import { eq } from "drizzle-orm";
 
 export const caseMetadataRouter = createTRPCRouter({
-    updateCaseMetadata: publicProcedure
+    updateCaseMetadata: protectedProcedure
         .input(
             z.object({
                 caseNumber: z.string(),
