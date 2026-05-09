@@ -167,6 +167,51 @@ export const casesRouter = createTRPCRouter({
             .where(sql`${cases.nextCourtHearing} is not null`)
             .orderBy(asc(cases.nextCourtHearing));
     }),
+
+    updateCaseMetadata: publicProcedure
+        .input(
+            z.object({
+                caseNumber: z.string(),
+                data: z.object({
+                    plaintiffName: z.string().nullable().optional(),
+                    plaintiffAddress: z.string().nullable().optional(),
+                    plaintiffCode: z.string().nullable().optional(),
+                    defendantName: z.string().nullable().optional(),
+                    defendantAddress: z.string().nullable().optional(),
+                    defendantCode: z.string().nullable().optional(),
+                    courtName: z.string().nullable().optional(),
+                    judgeName: z.string().nullable().optional(),
+                }),
+            }),
+        )
+        .mutation(async ({ input }) => {
+            const { caseNumber, data } = input;
+
+            const existing = await db.query.cases.findFirst({
+                where: (cases, { eq }) => eq(cases.caseNumber, caseNumber),
+            });
+
+            if (!existing) {
+                return { success: false, error: "Case not found" };
+            }
+
+            await db
+                .update(cases)
+                .set({
+                    plaintiffName: data.plaintiffName ?? existing.plaintiffName,
+                    plaintiffAddress: data.plaintiffAddress ?? existing.plaintiffAddress,
+                    plaintiffCode: data.plaintiffCode ?? existing.plaintiffCode,
+                    defendantName: data.defendantName ?? existing.defendantName,
+                    defendantAddress: data.defendantAddress ?? existing.defendantAddress,
+                    defendantCode: data.defendantCode ?? existing.defendantCode,
+                    courtName: data.courtName ?? existing.courtName,
+                    judgeName: data.judgeName ?? existing.judgeName,
+                    updatedAt: new Date(),
+                })
+                .where(eq(cases.caseNumber, caseNumber));
+
+            return { success: true };
+        }),
 });
 
 export default casesRouter;

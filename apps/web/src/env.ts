@@ -16,10 +16,13 @@ export const env = createEnv({
         BRIEFING_THREAD_ID: z.string().optional(),
         PASSWORD_HASH: z.string().optional(),
         HMAC_SECRET: z.string().optional(),
+    },
 
+    shared: {
         NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     },
     experimental__runtimeEnv: {
         NODE_ENV: process.env.NODE_ENV,
     },
+    skipValidation: !!process.env.CI || process.env.npm_lifecycle_event === "lint",
 });

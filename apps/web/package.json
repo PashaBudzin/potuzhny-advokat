@@ -8,7 +8,6 @@
         "check-types": "tsc --noEmit"
     },
     "dependencies": {
-        "@ai-sdk/anthropic": "^3.0.66",
         "@ai-sdk/google": "^3.0.58",
         "@ai-sdk/groq": "^3.0.34",
         "@base-ui/react": "^1.0.0",
@@ -19,7 +18,11 @@
         "@potuzhny-advokat/db": "workspace:*",
         "@potuzhny-advokat/strings": "workspace:*",
         "@t3-oss/env-nextjs": "^0.13.11",
+        "@tanstack/react-form": "^1.29.3",
+        "@tanstack/react-form-nextjs": "^1.29.3",
         "@tanstack/react-query": "^5.100.9",
+        "@trpc/client": "^11.17.0",
+        "@trpc/server": "^11.17.0",
         "@trpc/tanstack-react-query": "^11.17.0",
         "@types/node-telegram-bot-api": "^0.64.14",
         "ai": "^6.0.146",
