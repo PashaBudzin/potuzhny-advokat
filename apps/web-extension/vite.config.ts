@@ -2,7 +2,9 @@ import { defineConfig } from "vite";
 import { config } from "dotenv";
 import react from "@vitejs/plugin-react";
 import webExtension, { readJsonFile } from "vite-plugin-web-extension";
+// @ts-ignore
 import tailwindcss from "@tailwindcss/vite";
+import { fileURLToPath } from "url";
 
 config();
 
@@ -26,4 +28,9 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    resolve: {
+        alias: {
+            "@": fileURLToPath(new URL("./src", import.meta.url)),
+        },
+    },
 });
