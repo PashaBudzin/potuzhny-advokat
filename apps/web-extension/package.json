@@ -10,6 +10,7 @@
     "dependencies": {
         "@fontsource-variable/noto-sans": "^5.2.10",
         "@fontsource-variable/playfair-display": "^5.2.8",
+        "@potuzhny-advokat/auth-crypto": "workspace:*",
         "@potuzhny-advokat/strings": "workspace:*",
         "@tailwindcss/postcss": "^4.2.4",
         "@tailwindcss/vite": "^4.2.4",

@@ -4,7 +4,7 @@ import z from "zod/v4";
 export function dbEnv() {
     return createEnv({
         server: {
-            DB_URL: z.url(),
+            DATABASE_URL: z.url(),
         },
         runtimeEnv: process.env,
     });

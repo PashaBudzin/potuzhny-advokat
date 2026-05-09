@@ -23,7 +23,8 @@
         },
         "db:studio": {
             "cache": false,
-            "persistent": true
+            "persistent": true,
+            "passThroughEnv": ["DATABASE_URL"]
         },
         "//#quality": {
             "dependsOn": ["//#lint", "//#format:check"]
