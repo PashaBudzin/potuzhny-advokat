@@ -11,14 +11,14 @@ export type CourtData = {
 };
 
 function extractMeta(text: string, name: string): string {
-    return text.split(`<meta name="${name}" content="`)[1]?.split('"')[0] ?? "";
+    return text.split(`<META NAME="${name}" CONTENT="`)[1]?.split('"')[0] ?? "";
 }
 
 export function extractCourtData(text: string): CourtData {
     return {
-        caseNumber: text.split('name="CAUSENUM" content="')[1]?.split('">')[0] ?? "",
-        courtName: text.split('"COURTNAME" content="')[1]?.split('">')[0] ?? "",
-        judgeName: text.split('"JUDGENAME1" content="')[1]?.split('">')[0] ?? "",
+        caseNumber: extractMeta(text, "CAUSENUM"),
+        courtName: extractMeta(text, "COURTNAME"),
+        judgeName: extractMeta(text, "JUDGENAME1"),
         plaintiffName: extractMeta(text, "MEMBNAME1"),
         plaintiffCode: extractMeta(text, "MEMBOKPO1"),
         plaintiffAddress: extractMeta(text, "MEMBPOSTADDRESS1"),
