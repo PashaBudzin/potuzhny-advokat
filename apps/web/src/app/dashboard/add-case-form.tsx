@@ -8,24 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
-import { normalizeAddress } from "@/lib/string";
+import { extractCourtData, normalizeAddress } from "@/lib/string";
 import { useMutation } from "@tanstack/react-query";
-
-function extractCourt(text: string): string {
-    return text.split('"COURTNAME" content="')[1]?.split('">')[0] ?? "";
-}
-
-function extractJudge(text: string): string {
-    return text.split('"JUDGENAME1" content="')[1]?.split('">')[0] ?? "";
-}
-
-function extractCaseNumber(text: string): string {
-    return text.split('name="CAUSENUM" content="')[1]?.split('">')[0] ?? "";
-}
-
-function extractMeta(text: string, name: string): string {
-    return text.split(`<meta name="${name}" content="`)[1]?.split('"')[0] ?? "";
-}
 
 export function AddCaseForm() {
     const trpc = useTRPC();
@@ -71,21 +55,18 @@ export function AddCaseForm() {
         const fr = new FileReader();
         fr.onload = (event) => {
             const text = event.target?.result?.toString() ?? "";
-            form.setFieldValue("caseNumber", extractCaseNumber(text));
-            form.setFieldValue("courtName", extractCourt(text));
-            form.setFieldValue("judgeName", extractJudge(text));
-            form.setFieldValue("plaintiffName", extractMeta(text, "MEMBNAME1") || "");
-            form.setFieldValue("plaintiffCode", extractMeta(text, "MEMBOKPO1") || "");
-            form.setFieldValue(
-                "plaintiffAddress",
-                normalizeAddress(extractMeta(text, "MEMBPOSTADDRESS1")) || "",
-            );
-            form.setFieldValue("defendantName", extractMeta(text, "MEMBNAME2") || "");
-            form.setFieldValue("defendantCode", extractMeta(text, "MEMBOKPO2") || "");
-            form.setFieldValue(
-                "defendantAddress",
-                normalizeAddress(extractMeta(text, "MEMBPOSTADDRESS2")) || "",
-            );
+            const data = extractCourtData(text);
+            form.setFieldsValue({
+                caseNumber: data.caseNumber,
+                courtName: data.courtName,
+                judgeName: data.judgeName,
+                plaintiffName: data.plaintiffName,
+                plaintiffCode: data.plaintiffCode,
+                plaintiffAddress: normalizeAddress(data.plaintiffAddress) || "",
+                defendantName: data.defendantName,
+                defendantCode: data.defendantCode,
+                defendantAddress: normalizeAddress(data.defendantAddress) || "",
+            });
         };
         fr.readAsText(file);
     };

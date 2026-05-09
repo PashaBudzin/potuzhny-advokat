@@ -8,3 +8,5 @@ export {
     normalizeCourtName,
     formatBytes,
 } from "./string-utils";
+export { extractCourtData } from "./court-data";
+export type { CourtData } from "./court-data";
