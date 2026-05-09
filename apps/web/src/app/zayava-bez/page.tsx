@@ -67,7 +67,9 @@ export default function TemplateFillerRoute() {
             <div className="max-w-2xl mx-auto pt-10">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Створити заяву без участі</CardTitle>
+                        <CardTitle className="text-2xl font-heading text-center">
+                            Створити заяву без участі
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-6">

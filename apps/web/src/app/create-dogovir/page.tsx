@@ -69,7 +69,9 @@ export default function CreateDogovirRoute() {
             <div className="max-w-2xl mx-auto pt-10">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Створити Договори</CardTitle>
+                        <CardTitle className="text-center text-2xl font-heading">
+                            Створити Договори
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form ref={formRef}>

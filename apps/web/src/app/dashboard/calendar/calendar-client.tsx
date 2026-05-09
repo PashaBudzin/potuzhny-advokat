@@ -46,7 +46,7 @@ export default function CalendarClient() {
 
     return (
         <div className="p-8">
-            <h1 className="mb-6 text-2xl font-bold">Календарь судових засідань</h1>
+            <h1 className="mb-6 text-2xl font-semibold font-heading">Календар судових засідань</h1>
 
             <AddCaseForm />
 

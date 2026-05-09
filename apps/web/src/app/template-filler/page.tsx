@@ -41,7 +41,9 @@ export default function TemplateFillerRoute() {
             <div className="max-w-2xl mx-auto pt-10">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Template Filler</CardTitle>
+                        <CardTitle className="text-2xl font-heading text-center">
+                            Template Filler
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-6">

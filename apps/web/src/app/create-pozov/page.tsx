@@ -62,7 +62,9 @@ export default function Page() {
         <div className="min-h-screen flex items-center justify-center p-4">
             <Card className="w-full max-w-2xl p-4">
                 <CardHeader className="text-center mx-20">
-                    <CardTitle>Створення Позову</CardTitle>
+                    <CardTitle className="text-2xl text-center font-heading">
+                        Створення Позову
+                    </CardTitle>
                     <CardDescription>
                         Заповніть 3 прості кроки для створення юридичного позову
                     </CardDescription>

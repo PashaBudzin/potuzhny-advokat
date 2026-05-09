@@ -52,7 +52,9 @@ export default function TemplateFillerRoute() {
             <div className="max-w-2xl mx-auto pt-10">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Копія рішення/судовий наказ</CardTitle>
+                        <CardTitle className="font-heading text-2xl text-center">
+                            Копія рішення/судовий наказ
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-6">
