@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Court Cabinet Helper",
+    "name": "Potuzhny Advokat",
     "version": "1.0.0",
-    "description": "Helper for cabinet.court.gov.ua",
+    "description": "potuzhny advokat web extension, https://potuzhny-advokat.vercel.app/",
     "permissions": ["storage"],
     "host_permissions": ["https://cabinet.court.gov.ua/*"],
     "icons": {

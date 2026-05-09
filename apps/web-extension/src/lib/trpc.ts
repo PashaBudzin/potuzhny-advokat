@@ -4,6 +4,7 @@ import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import type { AppRouter } from "@potuzhny-advokat/api";
 import superjson from "superjson";
 import browser from "webextension-polyfill";
+import { appUrl } from "./config";
 
 export const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ export function getTRPCClient() {
         trpcClient = createTRPCClient<AppRouter>({
             links: [
                 httpBatchLink({
-                    url: "http://localhost:3000/api/trpc",
+                    url: `${appUrl}/api/trpc`,
                     transformer: superjson,
                     async headers() {
                         return await getTRPCHeaders();

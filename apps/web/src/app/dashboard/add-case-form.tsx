@@ -56,17 +56,15 @@ export function AddCaseForm() {
         fr.onload = (event) => {
             const text = event.target?.result?.toString() ?? "";
             const data = extractCourtData(text);
-            form.setFieldsValue({
-                caseNumber: data.caseNumber,
-                courtName: data.courtName,
-                judgeName: data.judgeName,
-                plaintiffName: data.plaintiffName,
-                plaintiffCode: data.plaintiffCode,
-                plaintiffAddress: normalizeAddress(data.plaintiffAddress) || "",
-                defendantName: data.defendantName,
-                defendantCode: data.defendantCode,
-                defendantAddress: normalizeAddress(data.defendantAddress) || "",
-            });
+            form.setFieldValue("caseNumber", data.caseNumber);
+            form.setFieldValue("courtName", data.courtName);
+            form.setFieldValue("judgeName", data.judgeName);
+            form.setFieldValue("plaintiffName", data.plaintiffName);
+            form.setFieldValue("plaintiffCode", data.plaintiffCode);
+            form.setFieldValue("plaintiffAddress", normalizeAddress(data.plaintiffAddress) || "");
+            form.setFieldValue("defendantName", data.defendantName);
+            form.setFieldValue("defendantCode", data.defendantCode);
+            form.setFieldValue("defendantAddress", normalizeAddress(data.defendantAddress) || "");
         };
         fr.readAsText(file);
     };
