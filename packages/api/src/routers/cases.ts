@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { publicProcedure, createTRPCRouter } from "../trpc";
+import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { db, cases } from "@potuzhny-advokat/db";
 import { desc, asc, sql } from "drizzle-orm";
 import { eq, or, like, and } from "drizzle-orm";
 
 export const casesRouter = createTRPCRouter({
-    getCases: publicProcedure
+    getCases: protectedProcedure
         .input(
             z.object({
                 offset: z.number().optional().default(0),
@@ -90,7 +90,7 @@ export const casesRouter = createTRPCRouter({
             return db.select().from(cases).orderBy(orderBy).limit(limit).offset(offset);
         }),
 
-    getCasesCount: publicProcedure
+    getCasesCount: protectedProcedure
         .input(
             z.object({
                 state: z
@@ -149,7 +149,7 @@ export const casesRouter = createTRPCRouter({
             return result[0]?.count ?? 0;
         }),
 
-    getCasesWithHearings: publicProcedure.query(async () => {
+    getCasesWithHearings: protectedProcedure.query(async () => {
         return db
             .select({
                 caseNumber: cases.caseNumber,
@@ -168,7 +168,7 @@ export const casesRouter = createTRPCRouter({
             .orderBy(asc(cases.nextCourtHearing));
     }),
 
-    updateCaseMetadata: publicProcedure
+    updateCaseMetadata: protectedProcedure
         .input(
             z.object({
                 caseNumber: z.string(),
