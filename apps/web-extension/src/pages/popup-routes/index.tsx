@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 import { extractCourtData, normalizeAddress } from "@potuzhny-advokat/strings";
+import { useMutation } from "@tanstack/react-query";
+import { trpc } from "@/lib/trpc";
 
 type CourtFormData = {
     caseNumber: string;
@@ -15,7 +17,6 @@ type CourtFormData = {
 };
 
 export default function MainPage() {
-    const [source, setSource] = useState("");
     const [formData, setFormData] = useState<CourtFormData>({
         caseNumber: "",
         courtName: "",
@@ -27,11 +28,13 @@ export default function MainPage() {
         defendantCode: "",
         defendantAddress: "",
     });
+    const [error, setError] = useState<string | null>(null);
+
+    const updateMutation = useMutation(trpc.cases.updateCaseMetadata.mutationOptions());
 
     useEffect(() => {
         browser.storage.session.get("blobSource").then((result) => {
             const text = result.blobSource ?? "";
-            setSource(text);
             const data = extractCourtData(text);
             setFormData({
                 caseNumber: data.caseNumber,
@@ -49,7 +52,6 @@ export default function MainPage() {
         const listener = (changes: Record<string, browser.Storage.StorageChange>) => {
             if (changes.blobSource) {
                 const text = changes.blobSource.newValue ?? "";
-                setSource(text);
                 if (text) {
                     const data = extractCourtData(text);
                     setFormData({
@@ -72,24 +74,40 @@ export default function MainPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
 
-        alert(JSON.stringify(formData));
-
-        setFormData({
-            caseNumber: "",
-            courtName: "",
-            judgeName: "",
-            plaintiffName: "",
-            plaintiffCode: "",
-            plaintiffAddress: "",
-            defendantName: "",
-            defendantCode: "",
-            defendantAddress: "",
-        });
+        updateMutation
+            .mutateAsync({
+                caseNumber: formData.caseNumber,
+                data: {
+                    ...formData,
+                },
+            })
+            .then(() => {
+                setFormData({
+                    caseNumber: "",
+                    courtName: "",
+                    judgeName: "",
+                    plaintiffName: "",
+                    plaintiffCode: "",
+                    plaintiffAddress: "",
+                    defendantName: "",
+                    defendantCode: "",
+                    defendantAddress: "",
+                });
+            })
+            .catch((err) => {
+                setError(err.message ?? "Something went wrong");
+            });
     };
 
     return (
         <form onSubmit={handleSubmit} className="p-4">
+            {error && (
+                <div className="mb-4 rounded border border-destructive bg-destructive/10 p-2 text-sm text-destructive">
+                    {error}
+                </div>
+            )}
             <div className="mb-4">
                 <label className="mb-1 block text-xs font-medium">Номер справи</label>
                 <input

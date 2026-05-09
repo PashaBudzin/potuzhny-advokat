@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, createTRPCRouter } from "../trpc";
+import { publicProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { db, cases } from "@potuzhny-advokat/db";
 import { desc, asc, sql } from "drizzle-orm";
 import { eq, or, like, and } from "drizzle-orm";
@@ -168,7 +168,7 @@ export const casesRouter = createTRPCRouter({
             .orderBy(asc(cases.nextCourtHearing));
     }),
 
-    updateCaseMetadata: publicProcedure
+    updateCaseMetadata: protectedProcedure
         .input(
             z.object({
                 caseNumber: z.string(),
