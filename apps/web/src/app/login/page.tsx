@@ -5,10 +5,10 @@ import { loginAction } from "@/lib/actions/login";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function LoginPage() {
+function LoginForm() {
     const params = useSearchParams();
-
     const redirectUrl = params.get("redirect");
 
     const [error, setError] = useState<string | null>(null);
@@ -27,16 +27,22 @@ export default function LoginPage() {
     };
 
     return (
-        <Suspense>
-            <div className="flex min-h-[200px] items-center justify-center p-8">
-                <form onSubmit={handleSubmit} className="flex w-64 flex-col gap-4">
-                    <Input type="password" name="password" placeholder="Password" required />
-                    {error && <p className="text-sm text-red-500">{error}</p>}
-                    <Button type="submit" disabled={pending}>
-                        {pending ? "Loading..." : "Login"}
-                    </Button>
-                </form>
-            </div>
+        <div className="flex min-h-[200px] items-center justify-center p-8">
+            <form onSubmit={handleSubmit} className="flex w-64 flex-col gap-4">
+                <Input type="password" name="password" placeholder="Password" required />
+                {error && <p className="text-sm text-red-500">{error}</p>}
+                <Button type="submit" disabled={pending}>
+                    {pending ? "Loading..." : "Login"}
+                </Button>
+            </form>
+        </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<Skeleton />}>
+            <LoginForm />
         </Suspense>
     );
 }
