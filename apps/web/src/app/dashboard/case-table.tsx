@@ -13,27 +13,27 @@ interface CaseTableProps {
 export function CaseTable({ cases, expandedRows, onToggleRow }: CaseTableProps) {
     return (
         <div className="overflow-x-auto">
-            <table className="min-w-full divide-y border">
+            <table className="min-w-[800px] divide-y border">
                 <thead className="bg-muted">
                     <tr>
                         <th className="w-10 px-3 py-2"></th>
+                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">№</th>
                         <th className="px-3 py-2 text-left text-xs font-medium uppercase">
-                            Case #
-                        </th>
-                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">State</th>
-                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">
-                            Plaintiff
+                            Статус
                         </th>
                         <th className="px-3 py-2 text-left text-xs font-medium uppercase">
-                            Defendant
-                        </th>
-                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">Court</th>
-                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">Judge</th>
-                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">
-                            Reg. Date
+                            Позивач
                         </th>
                         <th className="px-3 py-2 text-left text-xs font-medium uppercase">
-                            Last Updated
+                            Відповідач
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">Суд</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">Суддя</th>
+                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">
+                            Дата реєстрації
+                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium uppercase">
+                            Останнє оновлення
                         </th>
                     </tr>
                 </thead>
@@ -72,12 +72,12 @@ export function CaseTableWithPagination({
             {hasMore && (
                 <div className="mt-4 flex justify-center">
                     <Button onClick={onLoadMore} disabled={pending}>
-                        {pending ? "Loading..." : "Load More"}
+                        {pending ? "Завантаження..." : "Завантажити ще"}
                     </Button>
                 </div>
             )}
             {cases.length === 0 && (
-                <p className="py-8 text-center text-muted-foreground">No cases found</p>
+                <p className="py-8 text-center text-muted-foreground">Справи не знайдено</p>
             )}
         </>
     );

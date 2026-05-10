@@ -76,9 +76,9 @@ export default function DashboardClient() {
     };
 
     return (
-        <div className="p-8">
+        <div className="p-4 md:p-8">
+            <h1 className="mb-6 text-2xl font-bold font-heading">Список клієнтів</h1>
             <AddCaseForm />
-            <h1 className="mb-6 text-2xl font-bold">Dashboard</h1>
             <CaseFilters
                 state={state}
                 onStateChange={handleStateChange}
@@ -89,10 +89,10 @@ export default function DashboardClient() {
                 filteredCount={filteredCount}
             />
             {isLoading ? (
-                <p className="py-8 text-center text-muted-foreground">Loading...</p>
+                <p className="py-8 text-center text-muted-foreground">Завантаження...</p>
             ) : casesQuery.isError ? (
                 <p className="py-8 text-center text-muted-foreground">
-                    Error: {casesQuery.error.message}
+                    Помилка: {casesQuery.error.message}
                 </p>
             ) : (
                 <CaseTableWithPagination

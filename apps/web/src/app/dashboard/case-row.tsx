@@ -36,7 +36,11 @@ export function CaseRow({ c, isExpanded, onToggle }: CaseRowProps) {
                                   : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                         }`}
                     >
-                        {c.state}
+                        {c.state === "decision"
+                            ? "Ухвала"
+                            : c.state === "ruling"
+                              ? "Рішення"
+                              : "Реєстрація"}
                     </span>
                 </td>
                 <td className="px-3 py-2 text-sm">{c.plaintiffName || "-"}</td>
@@ -52,8 +56,8 @@ export function CaseRow({ c, isExpanded, onToggle }: CaseRowProps) {
             </tr>
             {isExpanded && (
                 <tr key={`${c.caseNumber}-expanded`}>
-                    <td colSpan={9} className="bg-muted/30 px-4 py-4">
-                        <div className="rounded-lg border bg-card p-4 lg:max-w-[33%]">
+                    <td colSpan={9} className="bg-muted/30 p-4">
+                        <div className="rounded-lg border bg-card p-4">
                             <h3 className="mb-3 text-sm font-semibold">Згенерувати документи</h3>
                             <DocumentGenerator
                                 caseData={{
