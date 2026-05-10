@@ -23,6 +23,10 @@ export const OPTIONS = () => {
 };
 
 const handler = async (req: NextRequest) => {
+    const authToken = req.cookies.get("auth_token")?.value;
+
+    if (authToken) req.headers.set("Authentification", authToken);
+
     const response = await fetchRequestHandler({
         endpoint: "/api/trpc",
         router: appRouter,

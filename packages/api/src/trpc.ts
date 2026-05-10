@@ -32,7 +32,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     let passwordHash: string | undefined = authHeader ?? undefined;
 
     if (!passwordHash) {
-        const cookieHeader = opts.headers.get("cookie") ?? "";
+        const cookieHeader = opts.headers.get("Cookie") ?? "";
         const authToken = cookieHeader
             .split(";")
             .map((c) => c.trim())
