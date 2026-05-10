@@ -4,8 +4,13 @@ import { useState } from "react";
 import { loginAction } from "@/lib/actions/login";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
+    const params = useSearchParams();
+
+    const redirectUrl = params.get("redirect");
+
     const [error, setError] = useState<string | null>(null);
     const [pending, setPending] = useState(false);
 
@@ -15,7 +20,7 @@ export default function LoginPage() {
         setError(null);
 
         const formData = new FormData(e.currentTarget);
-        const result = await loginAction(formData);
+        const result = await loginAction(formData, redirectUrl ?? "/dashboard");
 
         setPending(false);
         setError(result);

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { login } from "@/lib/auth-server";
 import { hashPassServer } from "@/lib/auth";
 
-export async function loginAction(formData: FormData): Promise<string> {
+export async function loginAction(formData: FormData, redirectUrl = "/"): Promise<string> {
     const password = formData.get("password") as string;
 
     if (!password) {
@@ -18,6 +18,5 @@ export async function loginAction(formData: FormData): Promise<string> {
         return "Invalid password";
     }
 
-    redirect("/dashboard");
-    return "success";
+    return redirect(redirectUrl);
 }
