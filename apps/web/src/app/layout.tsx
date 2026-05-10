@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans, Playfair_Display } from "next/font/google
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/client";
+import Favicon from "../../public/favicon.svg";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 
@@ -24,6 +25,10 @@ const playfair_Display = Playfair_Display({
 export const metadata: Metadata = {
     title: "Потужний адвокат",
     description: "Система потужний адвокат",
+    icons: {
+        icon: { url: Favicon.src, type: "image/svg+xml" },
+        apple: { url: Favicon.src, type: "image/svg+xml" },
+    },
 };
 
 export default function RootLayout({
