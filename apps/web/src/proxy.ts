@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAuthenticated } from "@/lib/auth-server";
 
-const PROTECTED_ROUTES = ["/admin", "/dashboard"];
+const PROTECTED_ROUTES = ["/dashboard", "/create-pozov-live", "/create-pozov"];
 
 export async function proxy(request: NextRequest) {
     const path = request.nextUrl.pathname;
@@ -21,5 +21,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/admin/:path*", "/dashboard/:path*"],
+    matcher: ["/admin/:path*", "/dashboard/:path*", "/create-pozov-live", "/create-pozov"],
 };
