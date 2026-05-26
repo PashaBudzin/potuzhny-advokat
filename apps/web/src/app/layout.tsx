@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TRPCReactProvider } from "@/trpc/client";
 import Favicon from "../../public/favicon.svg";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const notoSans = Noto_Sans({ variable: "--font-sans" });
 
@@ -48,7 +50,9 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
+                        <TooltipProvider>
+                            <SidebarProvider>{children}</SidebarProvider>
+                        </TooltipProvider>
                     </ThemeProvider>
                 </TRPCReactProvider>
             </body>

@@ -50,12 +50,14 @@ export function AddCaseForm() {
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (!file) return;
 
         const fr = new FileReader();
         fr.onload = (event) => {
             const text = event.target?.result?.toString() ?? "";
             const data = extractCourtData(text);
+
             form.setFieldValue("caseNumber", data.caseNumber);
             form.setFieldValue("courtName", data.courtName);
             form.setFieldValue("judgeName", data.judgeName);
