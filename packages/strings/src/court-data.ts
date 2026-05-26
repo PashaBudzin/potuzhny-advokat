@@ -11,10 +11,11 @@ export type CourtData = {
 };
 
 function extractMeta(text: string, name: string): string {
-    return text.split(`<META NAME="${name}" CONTENT="`)[1]?.split('"')[0] ?? "";
+    return text.split(`<meta name="${name}" content="`)[1]?.split('"')[0] ?? "";
 }
 
 export function extractCourtData(text: string): CourtData {
+    console.log(text);
     return {
         caseNumber: extractMeta(text, "CAUSENUM"),
         courtName: extractMeta(text, "COURTNAME"),
