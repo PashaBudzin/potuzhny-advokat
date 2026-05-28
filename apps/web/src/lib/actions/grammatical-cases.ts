@@ -17,10 +17,7 @@ function formatAnthroponym(res: { familyName: string; givenName: string; patrony
     return res.familyName + SEP + res.givenName + SEP + res.patronymicName;
 }
 
-async function inflect(
-    fullname: string,
-    method: typeof shevchenko.inGenitive,
-) {
+async function inflect(fullname: string, method: typeof shevchenko.inGenitive) {
     const anthroponym = parseAnthroponym(fullname);
     const gender = await shevchenko.detectGender(anthroponym);
     if (!gender) return null;

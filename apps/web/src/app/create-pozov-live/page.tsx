@@ -314,7 +314,7 @@ function PreviewSection({ extractionStatus, templateData }: PreviewSectionProps)
 
         const doc = generatePozovDocx(generatedText);
         Packer.toBlob(doc).then((blob) => {
-            const fileName = `позов ${(templateData as Record<string, unknown>)["ПІБ позивача"] ?? "pozov"}.docx`;
+            const fileName = `позов ${(templateData as Record<string, unknown>)["ПІБ Позивача"] ?? "pozov"}.docx`;
             saveAs(blob, fileName);
         });
     }, [templateData, generatedText]);

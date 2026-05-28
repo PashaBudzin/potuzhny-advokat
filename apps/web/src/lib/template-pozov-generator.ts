@@ -2,59 +2,64 @@ import z from "zod";
 import { splitName } from "./string";
 import { toInstrumental, toAccusative } from "./actions/grammatical-cases";
 
-const dateString = () =>
-    z.string().transform((val) => val.replace(/\s+року$/i, ""));
+const dateString = () => z.string().transform((val) => val.replace(/\s+року$/i, ""));
 
-export const pozovTemplateDataSchema = z.object({
-    "дата реєстрації шлюбу": dateString(),
-    "орган який зареєстрував (орудний відмінок)": z.string(),
-    "номер актового запису": z.string(),
+export const pozovTemplateDataSchema = z
+    .object({
+        "дата реєстрації шлюбу": dateString(),
+        "орган який зареєстрував (орудний відмінок)": z.string(),
+        "номер актового запису": z.string(),
 
-    "чи є діти": z.boolean(),
+        "чи є діти": z.boolean(),
 
-    "з ким проживають діти": z.enum(["позивач", "відповідач"]),
-    "з ким будуть проживати діти": z.enum(["позивач", "відповідач", "питання буде вирішуватись"]),
+        "з ким проживають діти": z.enum(["позивач", "відповідач"]),
+        "з ким будуть проживати діти": z.enum([
+            "позивач",
+            "відповідач",
+            "питання буде вирішуватись",
+        ]),
 
-    діти: z
-        .array(
-            z.object({
-                "ПІБ (називний відмінок)": z.string(),
-                ДН: dateString(),
-            }),
-        )
-        .optional(),
+        діти: z
+            .array(
+                z.object({
+                    "ПІБ (називний відмінок)": z.string(),
+                    ДН: dateString(),
+                }),
+            )
+            .optional(),
 
-    "причина розпаду сім'ї": z.string(),
-    "дата припинення шлюбних стосунків (родовий відмінок)": dateString(),
-    "чи є спір про розподіл майна": z.boolean(),
-    "ПІБ Позивача": z.string(),
-    "ПІБ Відповідача": z.string(),
+        "причина розпаду сім'ї": z.string(),
+        "дата припинення шлюбних стосунків (родовий відмінок)": dateString(),
+        "чи є спір про розподіл майна": z.boolean(),
+        "ПІБ Позивача": z.string(),
+        "ПІБ Відповідача": z.string(),
 
-    "чи залишає позивач прізвище (шлюбне)": z.enum(["так", "ні", "не брав"]),
-    "дошлюбне прізвище Позивача": z.string(),
-}).transform(async (data) => {
-    const [plaintiffInst, defendantInst] = await Promise.all([
-        toInstrumental(data["ПІБ Позивача"]),
-        toInstrumental(data["ПІБ Відповідача"]),
-    ]);
+        "чи залишає позивач прізвище (шлюбне)": z.enum(["так", "ні", "не брав"]),
+        "дошлюбне прізвище Позивача": z.string(),
+    })
+    .transform(async (data) => {
+        const [plaintiffInst, defendantInst] = await Promise.all([
+            toInstrumental(data["ПІБ Позивача"]),
+            toInstrumental(data["ПІБ Відповідача"]),
+        ]);
 
-    const children = data.діти
-        ? await Promise.all(
-              data.діти.map(async (ch) => ({
-                  ...ch,
-                  "ПІБ (знахідний відмінок)":
-                      (await toAccusative(ch["ПІБ (називний відмінок)"])) ?? "",
-              })),
-          )
-        : undefined;
+        const children = data.діти
+            ? await Promise.all(
+                  data.діти.map(async (ch) => ({
+                      ...ch,
+                      "ПІБ (знахідний відмінок)":
+                          (await toAccusative(ch["ПІБ (називний відмінок)"])) ?? "",
+                  })),
+              )
+            : undefined;
 
-    return {
-        ...data,
-        "ПІБ позивача (орудний відмінок)": plaintiffInst ?? "",
-        "ПІБ Відповідача (орудний відмінок)": defendantInst ?? "",
-        діти: children,
-    };
-});
+        return {
+            ...data,
+            "ПІБ позивача (орудний відмінок)": plaintiffInst ?? "",
+            "ПІБ Відповідача (орудний відмінок)": defendantInst ?? "",
+            діти: children,
+        };
+    });
 
 export type PozovTemplateData = z.infer<typeof pozovTemplateDataSchema>;
 
@@ -65,8 +70,8 @@ export function generatePozovText(data: PozovTemplateData) {
         data["чи залишає позивач прізвище (шлюбне)"] == "так"
             ? `/tПісля розірвання шлюбу залишити  Позивачу прізвище «${lastName}».`
             : data["чи залишає позивач прізвище (шлюбне)"] == "ні"
-                ? `/tПісля розірвання шлюбу повернути Позивачу прізвище «${data["дошлюбне прізвище Позивача"]}».`
-                : "";
+              ? `/tПісля розірвання шлюбу повернути Позивачу прізвище «${data["дошлюбне прізвище Позивача"]}».`
+              : "";
 
     return `
 /tСторони перебувають у шлюбі, який зареєстрований ${data["дата реєстрації шлюбу"]} року ${data["орган який зареєстрував (орудний відмінок)"]}, актовий запис №${data["номер актового запису"]}.
