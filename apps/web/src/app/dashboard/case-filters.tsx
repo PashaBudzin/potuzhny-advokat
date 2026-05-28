@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import type { CaseState } from "@/lib/actions/cases";
-import type { SortField, SortOrder } from "@/lib/actions/cases";
+import type { CaseState } from "@/lib/types/cases";
+import type { SortField, SortOrder } from "@/lib/types/cases";
 
 const stateOptions: { value: CaseState | ""; label: string }[] = [
     { value: "", label: "Всі" },

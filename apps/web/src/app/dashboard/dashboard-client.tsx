@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
-import type { SortField, SortOrder, CaseState } from "@/lib/actions/cases";
+import type { SortField, SortOrder, CaseState } from "@/lib/types/cases";
 import { AddCaseForm } from "./add-case-form";
 import { CaseFilters } from "./case-filters";
 import { CaseTableWithPagination } from "./case-table";

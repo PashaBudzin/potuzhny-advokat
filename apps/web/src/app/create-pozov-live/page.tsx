@@ -117,7 +117,7 @@ function UploadSection({
 
         try {
             const result = await extractPozovTemplateData(currentFiles, messageRef.current);
-            const parsed = pozovTemplateDataSchema.parse(result);
+            const parsed = await pozovTemplateDataSchema.parseAsync(result);
             setExtractionStatus("success");
             setTemplateData(parsed);
         } catch (err) {

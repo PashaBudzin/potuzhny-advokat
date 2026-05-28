@@ -11,7 +11,7 @@ import { JsonPreview } from "@/components/json-preview";
 import { firstBetween, initials, normalizeAddress } from "@/lib/string";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toGenitive } from "@/lib/case";
+import { toGenitive } from "@/lib/actions/grammatical-cases";
 
 type ParsedData = {
     суд: string;

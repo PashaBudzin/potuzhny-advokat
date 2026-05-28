@@ -1,5 +1,6 @@
 import z from "zod";
 import { splitName } from "./string";
+import { toInstrumental, toAccusative } from "./actions/grammatical-cases";
 
 const dateString = () =>
     z.string().transform((val) => val.replace(/\s+року$/i, ""));
@@ -18,7 +19,6 @@ export const pozovTemplateDataSchema = z.object({
         .array(
             z.object({
                 "ПІБ (називний відмінок)": z.string(),
-                "ПІБ (знахідний відмінок)": z.string(),
                 ДН: dateString(),
             }),
         )
@@ -27,20 +27,39 @@ export const pozovTemplateDataSchema = z.object({
     "причина розпаду сім'ї": z.string(),
     "дата припинення шлюбних стосунків (родовий відмінок)": dateString(),
     "чи є спір про розподіл майна": z.boolean(),
-    "ПІБ позивача": z.string(),
+    "ПІБ Позивача": z.string(),
     "ПІБ Відповідача": z.string(),
-
-    "ПІБ позивача (орудний відмінок)": z.string(),
-    "ПІБ Відповідача (орудний відмінок)": z.string(),
 
     "чи залишає позивач прізвище (шлюбне)": z.enum(["так", "ні", "не брав"]),
     "дошлюбне прізвище Позивача": z.string(),
+}).transform(async (data) => {
+    const [plaintiffInst, defendantInst] = await Promise.all([
+        toInstrumental(data["ПІБ Позивача"]),
+        toInstrumental(data["ПІБ Відповідача"]),
+    ]);
+
+    const children = data.діти
+        ? await Promise.all(
+              data.діти.map(async (ch) => ({
+                  ...ch,
+                  "ПІБ (знахідний відмінок)":
+                      (await toAccusative(ch["ПІБ (називний відмінок)"])) ?? "",
+              })),
+          )
+        : undefined;
+
+    return {
+        ...data,
+        "ПІБ позивача (орудний відмінок)": plaintiffInst ?? "",
+        "ПІБ Відповідача (орудний відмінок)": defendantInst ?? "",
+        діти: children,
+    };
 });
 
 export type PozovTemplateData = z.infer<typeof pozovTemplateDataSchema>;
 
 export function generatePozovText(data: PozovTemplateData) {
-    const lastName = splitName(data["ПІБ позивача"]).lastName;
+    const lastName = splitName(data["ПІБ Позивача"]).lastName;
 
     const surnameLine =
         data["чи залишає позивач прізвище (шлюбне)"] == "так"

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { useDocumentGenerator, type DocumentCaseData } from "@/lib/hooks/use-document-generator";
-import { getCourtGenetative } from "@/lib/actions/cases";
+import { getCourtGenetative } from "@/lib/actions/grammatical-cases";
 
 export function DocumentGenerator({
     caseData,

@@ -11,7 +11,7 @@ import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
 import { firstBetween, normalizeAddress } from "@/lib/string";
-import { toGenitive } from "@/lib/case";
+import { toGenitive } from "@/lib/actions/grammatical-cases";
 
 type ParsedData = {
     суд: string;

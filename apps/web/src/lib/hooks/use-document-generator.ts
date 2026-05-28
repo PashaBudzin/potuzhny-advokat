@@ -4,7 +4,7 @@ import { useState } from "react";
 import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
-import { toGenitive } from "@/lib/case";
+import { toGenitive } from "@/lib/actions/grammatical-cases";
 import { firstBetween, initials } from "@/lib/string";
 
 export interface DocumentCaseData {
