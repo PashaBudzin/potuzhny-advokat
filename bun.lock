@@ -158,6 +158,10 @@
         "zod": "^3.25.67",
       },
     },
+    "packages/branding": {
+      "name": "@potuzhny-advokat/branding",
+      "version": "0.1.0",
+    },
     "packages/db": {
       "name": "@potuzhny-advokat/db",
       "version": "0.1.0",
@@ -585,6 +589,8 @@
     "@potuzhny-advokat/api": ["@potuzhny-advokat/api@workspace:packages/api"],
 
     "@potuzhny-advokat/auth-crypto": ["@potuzhny-advokat/auth-crypto@workspace:packages/auth-crypto"],
+
+    "@potuzhny-advokat/branding": ["@potuzhny-advokat/branding@workspace:packages/branding"],
 
     "@potuzhny-advokat/db": ["@potuzhny-advokat/db@workspace:packages/db"],
 
