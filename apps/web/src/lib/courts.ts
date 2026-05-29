@@ -9,27 +9,44 @@ export interface Court {
     legalAddress: string;
     mail: string;
     region: string;
+    genetative: string;
+}
+
+function normalizeSearchKey(input: string): string | null {
+    const normalized = normalizeCourtName(input);
+    if (!normalized) return null;
+    return normalized
+        .replace(/\s+міста\s+.*$/i, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+export function findCourt(input: string | null): Court | null {
+    if (!input) return null;
+
+    const key = normalizeSearchKey(input);
+    if (!key) return null;
+
+    const exactMatch = courtsData.find((c: Court) => normalizeSearchKey(c.name) === key);
+    if (exactMatch) return exactMatch;
+
+    const genitiveMatch = courtsData.find((c: Court) => normalizeSearchKey(c.genetative) === key);
+    if (genitiveMatch) return genitiveMatch;
+
+    const fuzzyMatch = courtsData.find((c: Court) => {
+        const dbKey = normalizeSearchKey(c.name);
+        if (!dbKey) return false;
+
+        if (key.length >= 5) {
+            return dbKey.includes(key) || key.includes(dbKey);
+        }
+
+        return dbKey === key;
+    });
+
+    return fuzzyMatch ?? null;
 }
 
 export function getCourtEmail(courtName: string | null): string | null {
-    if (!courtName) return null;
-
-    const normalizedInput = normalizeCourtName(courtName);
-    if (!normalizedInput) return null;
-
-    const exactMatch = courtsData.find(
-        (c: Court) => normalizeCourtName(c.name) === normalizedInput,
-    );
-    if (exactMatch) return exactMatch.mail;
-
-    const fuzzyMatch = courtsData.find((c: Court) => {
-        const normalizedDbName = normalizeCourtName(c.name);
-        if (!normalizedDbName) return false;
-
-        return (
-            normalizedDbName.includes(normalizedInput) || normalizedInput.includes(normalizedDbName)
-        );
-    });
-
-    return fuzzyMatch?.mail ?? null;
+    return findCourt(courtName)?.mail ?? null;
 }

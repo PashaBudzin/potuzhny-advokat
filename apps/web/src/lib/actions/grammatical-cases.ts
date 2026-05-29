@@ -1,6 +1,7 @@
 "use server";
 
 import * as shevchenko from "shevchenko";
+import { findCourt } from "../courts";
 
 const SEP = " ";
 
@@ -38,6 +39,13 @@ export async function toAccusative(fullname: string) {
 }
 
 export async function getCourtGenetative(courtName: string): Promise<string> {
+    const jsonCourtGenetative = findCourt(courtName)?.genetative;
+
+    if (jsonCourtGenetative) return jsonCourtGenetative;
+
     const { generateGenetativeCase } = await import("@/lib/ai");
+
+    console.log("generating court genetative using AI");
+
     return generateGenetativeCase(courtName);
 }

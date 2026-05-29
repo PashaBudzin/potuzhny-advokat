@@ -11,7 +11,8 @@ import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
 import { firstBetween, normalizeAddress } from "@/lib/string";
-import { toGenitive } from "@/lib/actions/grammatical-cases";
+import { getCourtGenetative, toGenitive } from "@/lib/actions/grammatical-cases";
+import { normalizeName } from "../../../../../packages/strings/src/string-utils";
 
 type ParsedData = {
     суд: string;
@@ -117,18 +118,20 @@ export default function TemplateFillerRoute() {
 }
 
 async function parseText(text: string): Promise<ParsedData> {
-    const poz = firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "";
-    const def = firstBetween(text, '<meta name="MEMBNAME2" content="', '">') ?? "";
+    const poz = normalizeName(firstBetween(text, '<meta name="MEMBNAME1" content="', '">') ?? "");
+    const def = normalizeName(firstBetween(text, '<meta name="MEMBNAME2" content="', '">') ?? "");
+
+    const court = firstBetween(text, '"COURTNAME" content="', '">') ?? "";
 
     return {
-        суд: firstBetween(text, '"COURTNAME" content="', '">') ?? "",
+        суд: court,
         ПІБ_позивача: poz,
         ПІБ_позивача_рв: (await toGenitive(poz)) ?? "",
         адреса_позивача:
             normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">')) ??
             "",
         код_позивача: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
-        суд_рв: firstBetween(text, "року до ", "надійшла") ?? "",
+        суд_рв: await getCourtGenetative(court),
         дата_рішення: firstBetween(text, '"DOCDATE" content="', '">') ?? "",
         номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
         ПІБ_відповідача_рв: (await toGenitive(def)) ?? "",

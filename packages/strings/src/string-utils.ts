@@ -29,6 +29,10 @@ export function normalizeAddress(text: string | null) {
     return text.replace(/,\s*Україна\s*,\s*\d+\s*$/i, "");
 }
 
+export function normalizeName(name: string) {
+    return name.split(".")[0].split(";")[0].split(",")[0];
+}
+
 export function normalizeCourtName(courtName: string | null) {
     if (!courtName) return null;
     return courtName
