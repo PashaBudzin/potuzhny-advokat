@@ -625,7 +625,7 @@
         "zipCode": "49074",
         "city": "Дніпро",
         "legalAddress": "Слобожанське",
-        "mail": "inbox@kma.court.gov.ua",
+        "mail": "inbox@ind.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Індустріального районного суду міста Дніпра"
     },
@@ -795,7 +795,7 @@
         "zipCode": "52100",
         "city": "П'ятихатки",
         "legalAddress": "Шевченка, 114",
-        "mail": "inbox@рх.dp.court.gov.ua",
+        "mail": "inbox@px.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "П'ятихатського районного суду"
     },
@@ -915,7 +915,7 @@
         "zipCode": "51300",
         "city": "Ю'рївка",
         "legalAddress": "Центральна, 89",
-        "mail": "inbox@yr.dp.court",
+        "mail": "inbox@yr.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Юр'ївського районного суду"
     },
@@ -1105,7 +1105,7 @@
         "zipCode": "11101",
         "city": "Овруч",
         "legalAddress": "Гетьмана Виговського, 5",
-        "mail": "inbox:@ov.zt.court.gov.ua",
+        "mail": "inbox@ov.zt.court.gov.ua",
         "region": "Житомирська",
         "genetative": "Овруцького районного суду"
     },
