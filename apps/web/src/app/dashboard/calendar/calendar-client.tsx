@@ -45,7 +45,7 @@ export default function CalendarClient() {
     const mode = "single" as const;
 
     return (
-        <div className="p-8">
+        <div className="p-8 w-full">
             <h1 className="mb-6 text-2xl font-semibold font-heading">Календар судових засідань</h1>
 
             <AddCaseForm />
