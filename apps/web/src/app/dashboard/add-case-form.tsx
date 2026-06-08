@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { useForm } from "@tanstack/react-form";
+import { useForm, useStore } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { extractCourtData, normalizeAddress } from "@/lib/string";
@@ -48,6 +47,8 @@ export function AddCaseForm() {
         },
     });
 
+    const values = useStore(form.store, (state) => state.values);
+
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
@@ -72,18 +73,20 @@ export function AddCaseForm() {
     };
 
     return (
-        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-            <CollapsibleTrigger asChild>
-                <Button variant="outline" className="mb-4">
-                    {isOpen ? (
-                        <ChevronUp className="mr-2 h-4 w-4" />
-                    ) : (
-                        <ChevronDown className="mr-2 h-4 w-4" />
-                    )}
-                    {isOpen ? "Згорнути" : "Додати справу"}
-                </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
+        <div>
+            <Button
+                variant="outline"
+                className="mb-4"
+                onClick={() => setIsOpen((prev) => !prev)}
+            >
+                {isOpen ? (
+                    <ChevronUp className="mr-2 h-4 w-4" />
+                ) : (
+                    <ChevronDown className="mr-2 h-4 w-4" />
+                )}
+                {isOpen ? "Згорнути" : "Додати справу"}
+            </Button>
+            {isOpen && (
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -255,12 +258,12 @@ export function AddCaseForm() {
                     <Button
                         type="submit"
                         className="mt-4"
-                        disabled={!form.state.values.caseNumber || updateMutation.isPending}
+                        disabled={!values.caseNumber || updateMutation.isPending}
                     >
                         {updateMutation.isPending ? "Збереження..." : "Зберегти"}
                     </Button>
                 </form>
-            </CollapsibleContent>
-        </Collapsible>
+            )}
+        </div>
     );
 }
