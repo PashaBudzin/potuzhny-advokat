@@ -74,11 +74,7 @@ export function AddCaseForm() {
 
     return (
         <div>
-            <Button
-                variant="outline"
-                className="mb-4"
-                onClick={() => setIsOpen((prev) => !prev)}
-            >
+            <Button variant="outline" className="mb-4" onClick={() => setIsOpen((prev) => !prev)}>
                 {isOpen ? (
                     <ChevronUp className="mr-2 h-4 w-4" />
                 ) : (

@@ -15,10 +15,7 @@ export interface Court {
 function normalizeSearchKey(input: string): string | null {
     const normalized = normalizeCourtName(input);
     if (!normalized) return null;
-    return normalized
-        .replace(/\s+міста\s+.*$/i, "")
-        .replace(/\s+/g, " ")
-        .trim();
+    return normalized.replace(/\s+/g, " ").trim();
 }
 
 export function findCourt(input: string | null): Court | null {
