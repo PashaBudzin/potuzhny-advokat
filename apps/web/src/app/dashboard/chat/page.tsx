@@ -102,12 +102,14 @@ function ChatView({
                                 switch (part.type) {
                                     case "text":
                                         return (
+                                            // oxlint-disable-next-line react/no-array-index-key
                                             <MessageResponse key={`${msg.id}-${i}`}>
                                                 {part.text}
                                             </MessageResponse>
                                         );
                                     case "reasoning":
                                         return (
+                                            // oxlint-disable-next-line react/no-array-index-key
                                             <Reasoning key={`${msg.id}-${i}`}>
                                                 <ReasoningTrigger />
                                                 <ReasoningContent>{part.text}</ReasoningContent>

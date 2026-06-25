@@ -175,7 +175,6 @@ const Example = () => {
 
         setStatus("submitted");
 
-        // eslint-disable-next-line no-console
         console.log("Submitting message:", message);
 
         setTimeout(() => {
