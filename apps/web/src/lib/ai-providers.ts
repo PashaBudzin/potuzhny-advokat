@@ -13,3 +13,5 @@ export const groq = createGroq({
 
 export const fastModel = () =>
     env.GROQ_API_KEY ? groq("openai/gpt-oss-120b") : google("gemini-flash-lite-latest");
+
+export const mainModel = google("gemini-flash-lite-latest");

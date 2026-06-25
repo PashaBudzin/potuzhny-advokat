@@ -2,10 +2,8 @@
 
 import { generateText, Output } from "ai";
 import { dataSchema, extractDataSchema, extractionPrompt } from "./ai-configs/create-pozov-config";
-import { fastModel, google } from "./ai-providers";
+import { fastModel, mainModel } from "./ai-providers";
 import { pozovTemplateDataSchema } from "./template-pozov-generator";
-
-const model = google("gemini-2.5-flash-lite");
 
 /**
  * @deprecated
@@ -26,7 +24,7 @@ async function extractPozovData(files: File[]) {
     const fileParts = await Promise.all(filePromises);
 
     const result = await generateText({
-        model,
+        model: mainModel,
         messages: [
             {
                 role: "user",
@@ -56,7 +54,7 @@ async function extractPozovTemplateData(files: File[], message = "") {
     const fileParts = await Promise.all(filePromises);
 
     const result = await generateText({
-        model,
+        model: mainModel,
         messages: [
             {
                 role: "user",
@@ -84,7 +82,7 @@ ${JSON.stringify(pozovData, null, 2)}
 На основі наданих даних створи повний текст позовної заяви українською мовою, дотримуючись формату potuzhny-advokat-docx.`;
 
     const result = await generateText({
-        model,
+        model: mainModel,
         messages: [{ role: "user", content: prompt }],
     });
 
