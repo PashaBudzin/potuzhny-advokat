@@ -104,6 +104,19 @@ export default function Page() {
                     <Card className="text-center">
                         <CardHeader>
                             <CardTitle className="text-xl font-heading">
+                                Рішення суду (CSV)
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <Button asChild className="w-full">
+                                <Link href="/dashboard/decisions">Відкрити</Link>
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="text-center">
+                        <CardHeader>
+                            <CardTitle className="text-xl font-heading">
                                 Календар судових засідань
                             </CardTitle>
                         </CardHeader>

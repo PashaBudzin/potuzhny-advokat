@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { env } from "@/env";
 import {
-    parseDocType,
-    fetchEmails,
+    fetchAndTypeEmails,
     updateCaseStates,
     groupDocsByCase,
     sendTelegramBriefing,
-    type DocEmail,
 } from "@potuzhny-advokat/accounting";
 
 function getDaysAgo(days: number): Date {
@@ -31,7 +29,7 @@ export async function GET() {
 
     const since = getDaysAgo(3);
 
-    const emails: DocEmail[] = await fetchEmails({
+    const typedEmails = await fetchAndTypeEmails({
         host: "imap.ukr.net",
         port: 993,
         user: env.IMAP_USER,
@@ -43,17 +41,7 @@ export async function GET() {
         return [];
     });
 
-    console.log("[cron] Parsing document types...");
-    const typedEmails = emails
-        .map(parseDocType)
-        .filter((d): d is NonNullable<typeof d> => d !== null);
-
-    console.log(
-        "[cron] Typed",
-        typedEmails.length,
-        "emails, rejected",
-        emails.length - typedEmails.length,
-    );
+    console.log("[cron] Got", typedEmails.length, "typed emails");
 
     console.log("[cron] Grouping by case...");
     const cases = groupDocsByCase(typedEmails);

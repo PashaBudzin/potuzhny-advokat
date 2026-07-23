@@ -1,4 +1,5 @@
 export { fetchEmails, type FetchEmailsOptions } from "./emails";
+export { fetchAndTypeEmails } from "./fetchAndType";
 export { updateCaseStates, type CaseUpdate } from "./sync";
 export { sendTelegramBriefing } from "./telegram/sendBriefingViaTelegram";
 export { groupDocsByCase, casesToCsv, jsonToCsv, type CaseStage } from "./caseStage";
