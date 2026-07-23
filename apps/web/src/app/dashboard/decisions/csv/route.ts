@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
         plaintiffName: plaintiffByCase[d.caseNumber] ?? "",
         courtName: extractCourtName(d.content),
         documentLink: d.content.match(/\[(https?:\/\/[^\]]+)\]/)?.[1] ?? "",
-        date: d.date.toISOString(),
+        date: d.date.toLocaleDateString("uk-UA"),
         type: d.type,
     }));
 
