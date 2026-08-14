@@ -4,6 +4,7 @@ import { env } from "@/env";
 import { fetchAndTypeEmails, jsonToCsv } from "@potuzhny-advokat/accounting";
 import { db, cases } from "@potuzhny-advokat/db";
 import { isAuthenticated } from "@/lib/auth-server";
+import { getCourtEmail } from "@/lib/courts";
 
 export const maxDuration = 30;
 
@@ -39,8 +40,9 @@ export async function GET(request: NextRequest) {
     });
 
     const decisions = typedEmails.filter((e) => e.type === "decision");
+    const deduped = [...new Map(decisions.map((d) => [d.caseNumber, d])).values()];
 
-    const caseNumbers = [...new Set(decisions.map((d) => d.caseNumber))];
+    const caseNumbers = deduped.map((d) => d.caseNumber);
     const dbCases =
         caseNumbers.length > 0
             ? await db.query.cases.findMany({
@@ -51,18 +53,29 @@ export async function GET(request: NextRequest) {
     const plaintiffByCase = Object.fromEntries(dbCases.map((c) => [c.caseNumber, c.plaintiffName]));
 
     function extractCourtName(content: string): string {
-        const parts = content.split("від");
-        return parts[parts.length - 1]?.trim() ?? "";
+        return content.match(/\]\s*від\s*(.+)$/)?.[1]?.trim() ?? "";
     }
 
-    const rows = decisions.map((d) => ({
-        caseNumber: d.caseNumber,
-        plaintiffName: plaintiffByCase[d.caseNumber] ?? "",
-        courtName: extractCourtName(d.content),
-        documentLink: d.content.match(/\[(https?:\/\/[^\]]+)\]/)?.[1] ?? "",
-        date: d.date.toLocaleDateString("uk-UA"),
-        type: d.type,
-    }));
+    function extractDocType(content: string, title: string): string {
+        const doc = content.match(/надійшов документ\s+([^[\n]+)/)?.[1]?.trim() ?? "";
+        if (/наказ/i.test(doc)) return "Судовий наказ";
+        if (/рішення/i.test(doc)) return "Рішення";
+        return /наказ/i.test(title) ? "Судовий наказ" : "Рішення";
+    }
+
+    const rows = deduped.map((d) => {
+        const courtName = extractCourtName(d.content);
+        return {
+            caseNumber: d.caseNumber,
+            plaintiffName: plaintiffByCase[d.caseNumber] ?? "",
+            courtName,
+            email: getCourtEmail(courtName) ?? "",
+            documentLink:
+                d.content.match(/надійшов документ[\s\S]*?\[(https?:\/\/[^\]]+)\]/)?.[1] ?? "",
+            date: d.date.toLocaleDateString("uk-UA"),
+            type: extractDocType(d.content, d.title),
+        };
+    });
 
     const csv = jsonToCsv(rows);
 
