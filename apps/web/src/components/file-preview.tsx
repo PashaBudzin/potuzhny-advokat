@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import DocxPreview from "./docx-preview";
 import ExcelPreview from "./xlsx-preview";
 
@@ -37,7 +39,7 @@ const MemoizedFilePreview = React.memo(FilePreview, (prev, curr) => {
 
 function FileTypePreview({ file, small }: { file: File; small?: boolean }) {
     if (file.type === "application/pdf") {
-        return <PdfPreview file={file} />;
+        return <PdfPreview file={file} small={small} />;
     }
 
     if (file.type.startsWith("image/")) {
@@ -63,10 +65,83 @@ function FileTypePreview({ file, small }: { file: File; small?: boolean }) {
     return <p>Unsupported file type</p>;
 }
 
-function PdfPreview({ file }: { file: File }) {
-    const url = URL.createObjectURL(file);
+function PdfPreview({ file, small }: { file: File; small?: boolean }) {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [error, setError] = React.useState<string | null>(null);
 
-    return <object data={url} type="application/pdf" className="h-full w-full"></object>;
+    React.useEffect(() => {
+        let cancelled = false;
+        let doc: import("pdfjs-dist").PDFDocumentProxy | null = null;
+        const container = containerRef.current;
+
+        if (!container) return;
+
+        const renderPage = async (pageProxy: import("pdfjs-dist").PDFPageProxy, scale: number) => {
+            const viewport = pageProxy.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            canvas.width = Math.floor(viewport.width * devicePixelRatio);
+            canvas.height = Math.floor(viewport.height * devicePixelRatio);
+            canvas.style.width = `${Math.floor(viewport.width)}px`;
+            canvas.style.height = `${Math.floor(viewport.height)}px`;
+            const transform =
+                devicePixelRatio === 1
+                    ? undefined
+                    : [devicePixelRatio, 0, 0, devicePixelRatio, 0, 0];
+            await pageProxy.render({ canvas, viewport, transform }).promise;
+            return canvas;
+        };
+
+        (async () => {
+            try {
+                const pdfjs = await import("pdfjs-dist");
+                pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+                    "pdfjs-dist/build/pdf.worker.min.mjs",
+                    import.meta.url,
+                ).toString();
+                const data = await file.arrayBuffer();
+                doc = await pdfjs.getDocument({ data }).promise;
+                if (cancelled) return;
+
+                const pageNumbers = small
+                    ? [1]
+                    : Array.from({ length: doc.numPages }, (_, i) => i + 1);
+                const pages = await Promise.all(pageNumbers.map((num) => doc!.getPage(num)));
+                if (cancelled) return;
+
+                const scale = small ? 0.4 : 1.5;
+                const canvases = await Promise.all(pages.map((page) => renderPage(page, scale)));
+                if (cancelled) return;
+
+                container.replaceChildren(...canvases);
+            } catch (err) {
+                if (!cancelled) {
+                    setError(err instanceof Error ? err.message : "Failed to render PDF");
+                }
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+            container.replaceChildren();
+            void doc?.destroy();
+        };
+    }, [file, small]);
+
+    return (
+        <div
+            ref={containerRef}
+            className={cn(
+                small
+                    ? "h-full w-full flex items-center justify-center overflow-hidden"
+                    : "flex flex-col items-center gap-4 overflow-auto p-4",
+            )}
+        >
+            {error ? (
+                <p className="text-sm text-destructive">Failed to render PDF: {error}</p>
+            ) : null}
+        </div>
+    );
 }
 
 function ImagePreview({ file, small }: { file: File; small?: boolean }) {
