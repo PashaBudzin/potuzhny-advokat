@@ -3,5 +3,5 @@
   outputs = { self, nixpkgs, utils }:
     utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system};
-      in { devShell = pkgs.mkShell { buildInputs = with pkgs; [ bun ]; }; });
+      in { devShell = pkgs.mkShell { buildInputs = with pkgs; [ bun nodejs_26 ]; }; });
 }
