@@ -1,4 +1,4 @@
-import { type ExtractData } from "@/lib/ai-configs/create-pozov-config";
+import { type ExtractData } from "@potuzhny-advokat/ai";
 import { atom } from "jotai";
 
 export const filesAtom = atom<File[]>([]);

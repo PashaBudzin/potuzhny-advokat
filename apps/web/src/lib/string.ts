@@ -5,6 +5,7 @@ export {
     removeTags,
     normalizeAddress,
     normalizeCourtName,
+    normalizeName,
     formatBytes,
     formatNumber,
     extractCourtData,

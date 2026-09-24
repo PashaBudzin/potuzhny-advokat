@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchTemplateArrayBuffer, templates, type Template } from "@/lib/templates";
+import { fetchTemplateArrayBuffer, templates, type Template } from "@potuzhny-advokat/strings";
 import { useEffect, useState } from "react";
 import { extractTags, generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";

@@ -32,7 +32,7 @@ import {
     StepperTrigger,
 } from "@/components/ui/stepper";
 import { extractPozovData } from "@/lib/ai";
-import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
+import { extractDataSchema } from "@potuzhny-advokat/ai";
 import { filesAtom, pozovDataAtom } from "@/state/create-pozov";
 import { atom, useAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";

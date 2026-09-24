@@ -1,5 +1,4 @@
-import { generatePozov } from "@/lib/ai";
-import { extractDataSchema } from "@/lib/ai-configs/create-pozov-config";
+import { extractDataSchema, generatePozov } from "@potuzhny-advokat/ai";
 
 export async function POST(req: Request) {
     const { pozovData: rawPozovData } = await req.json();

@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     transpilePackages: [
         "@potuzhny-advokat/db",
         "@potuzhny-advokat/strings",
+        "@potuzhny-advokat/ai",
         "@potuzhny-advokat/accounting",
         "@potuzhny-advokat/auth-crypto",
     ],

@@ -1,51 +1,13 @@
 "use server";
 
-import * as shevchenko from "shevchenko";
-import { findCourt } from "../courts";
-
-const SEP = " ";
-
-function parseAnthroponym(fullname: string) {
-    const parts = fullname.split(" ");
-    return {
-        familyName: parts[0],
-        givenName: parts[1],
-        patronymicName: parts[2],
-    };
-}
-
-function formatAnthroponym(res: { familyName: string; givenName: string; patronymicName: string }) {
-    return res.familyName + SEP + res.givenName + SEP + res.patronymicName;
-}
-
-async function inflect(fullname: string, method: typeof shevchenko.inGenitive) {
-    const anthroponym = parseAnthroponym(fullname);
-    const gender = await shevchenko.detectGender(anthroponym);
-    if (!gender) return null;
-    const res = await method({ gender, ...anthroponym });
-    return formatAnthroponym(res);
-}
+import { generateGenetativeCase } from "@potuzhny-advokat/ai";
+import { toGenitive as stringsToGenitive } from "@potuzhny-advokat/strings";
+import { findCourt } from "@/lib/courts";
 
 export async function toGenitive(fullname: string) {
-    return inflect(fullname, shevchenko.inGenitive);
-}
-
-export async function toInstrumental(fullname: string) {
-    return inflect(fullname, shevchenko.inAblative);
-}
-
-export async function toAccusative(fullname: string) {
-    return inflect(fullname, shevchenko.inAccusative);
+    return stringsToGenitive(fullname);
 }
 
 export async function getCourtGenetative(courtName: string): Promise<string> {
-    const jsonCourtGenetative = findCourt(courtName)?.genetative;
-
-    if (jsonCourtGenetative) return jsonCourtGenetative;
-
-    const { generateGenetativeCase } = await import("@/lib/ai");
-
-    console.log("generating court genetative using AI");
-
-    return generateGenetativeCase(courtName);
+    return findCourt(courtName)?.genetative ?? generateGenetativeCase(courtName);
 }

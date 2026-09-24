@@ -1,0 +1,21 @@
+{
+    "name": "@potuzhny-advokat/ai",
+    "version": "0.1.0",
+    "sideEffects": false,
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "dependencies": {
+        "@ai-sdk/google": "^3.0.58",
+        "@ai-sdk/groq": "^3.0.34",
+        "@potuzhny-advokat/db": "workspace:*",
+        "@potuzhny-advokat/strings": "workspace:*",
+        "@t3-oss/env-core": "^0.13.11",
+        "ai": "^6.0.191",
+        "drizzle-orm": "^0.45.2",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@types/node": "^25.6.0",
+        "typescript": "^5"
+    }
+}

@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { type PozovTemplateData } from "@/lib/template-pozov-generator";
+import { type PozovTemplateData } from "@potuzhny-advokat/strings";
 
 export const pozovFilesAtom = atom<File[]>([]);
 export const pozovTemplateDataAtom = atom<PozovTemplateData | null>(null);

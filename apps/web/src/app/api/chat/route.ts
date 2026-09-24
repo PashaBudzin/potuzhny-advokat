@@ -1,5 +1,7 @@
 import { createAgentUIStreamResponse } from "ai";
-import { chatAgent } from "@/lib/ai/chat";
+import { createChatAgent } from "@potuzhny-advokat/ai";
+
+const chatAgent = createChatAgent();
 
 export async function POST(request: Request) {
     const body = await request.json();

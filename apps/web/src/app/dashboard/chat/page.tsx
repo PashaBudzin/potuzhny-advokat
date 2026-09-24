@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { DefaultChatTransport } from "ai";
 import { useChat } from "@ai-sdk/react";
 import { useMutation } from "@tanstack/react-query";
-import type { ChatAgentUIMessage } from "@/lib/ai/chat";
+import type { ChatAgentUIMessage } from "@potuzhny-advokat/ai";
 import {
     Sidebar,
     SidebarContent,

@@ -17,11 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
-import {
-    pozovTemplateDataSchema,
-    generatePozovText,
-    PozovTemplateData,
-} from "@/lib/template-pozov-generator";
+import { generatePozovText, type PozovTemplateData } from "@potuzhny-advokat/strings";
 import { extractPozovTemplateData } from "@/lib/ai";
 import { generatePozovDocx } from "@/lib/generatePozovDocx";
 import { formatBytes } from "@/lib/string";
@@ -116,8 +112,7 @@ function UploadSection({
         setTemplateData(null);
 
         try {
-            const result = await extractPozovTemplateData(currentFiles, messageRef.current);
-            const parsed = await pozovTemplateDataSchema.parseAsync(result);
+            const parsed = await extractPozovTemplateData(currentFiles, messageRef.current);
             setExtractionStatus("success");
             setTemplateData(parsed);
         } catch (err) {

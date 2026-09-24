@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
+import { fetchTemplateArrayBuffer, templates } from "@potuzhny-advokat/strings";
 import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";

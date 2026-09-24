@@ -5,14 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Field, FieldLabel } from "@/components/ui/field";
-import { fetchTemplateArrayBuffer, templates } from "@/lib/templates";
+import { fetchTemplateArrayBuffer, templates } from "@potuzhny-advokat/strings";
 import { useCallback, useState } from "react";
 import { generateDocx } from "@/lib/docsUtils";
 import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
-import { firstBetween, normalizeAddress } from "@/lib/string";
+import { firstBetween, normalizeAddress, normalizeName } from "@/lib/string";
 import { getCourtGenetative, toGenitive } from "@/lib/actions/grammatical-cases";
-import { normalizeName } from "../../../../../packages/strings/src/string-utils";
 
 type ParsedData = {
     суд: string;

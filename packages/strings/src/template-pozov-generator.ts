@@ -1,65 +1,72 @@
-import z from "zod";
-import { splitName } from "./string";
-import { toInstrumental, toAccusative } from "./actions/grammatical-cases";
+import { z } from "zod";
+
+import { splitName } from "./string-utils";
 
 const dateString = () => z.string().transform((val) => val.replace(/\s+року$/i, ""));
 
-export const pozovTemplateDataSchema = z
-    .object({
-        "дата реєстрації шлюбу": dateString(),
-        "орган який зареєстрував (орудний відмінок)": z.string(),
-        "номер актового запису": z.string(),
+type Inflectors = {
+    toInstrumental: (fullname: string) => Promise<string | null>;
+    toAccusative: (fullname: string) => Promise<string | null>;
+};
 
-        "чи є діти": z.boolean(),
+export function createPozovTemplateDataSchema(inflectors: Inflectors) {
+    return z
+        .object({
+            "дата реєстрації шлюбу": dateString(),
+            "орган який зареєстрував (орудний відмінок)": z.string(),
+            "номер актового запису": z.string(),
 
-        "з ким проживають діти": z.enum(["позивач", "відповідач"]).optional(),
-        "з ким будуть проживати діти": z
-            .enum(["позивач", "відповідач", "питання буде вирішуватись"])
-            .optional(),
+            "чи є діти": z.boolean(),
 
-        діти: z
-            .array(
-                z.object({
-                    "ПІБ (називний відмінок)": z.string(),
-                    ДН: dateString(),
-                }),
-            )
-            .optional(),
+            "з ким проживають діти": z.enum(["позивач", "відповідач"]).optional(),
+            "з ким будуть проживати діти": z
+                .enum(["позивач", "відповідач", "питання буде вирішуватись"])
+                .optional(),
 
-        "причина розпаду сім'ї": z.string(),
-        "дата припинення шлюбних стосунків (родовий відмінок)": dateString(),
-        "чи є спір про розподіл майна": z.boolean(),
-        "ПІБ Позивача": z.string(),
-        "ПІБ Відповідача": z.string(),
+            діти: z
+                .array(
+                    z.object({
+                        "ПІБ (називний відмінок)": z.string(),
+                        ДН: dateString(),
+                    }),
+                )
+                .optional(),
 
-        "чи залишає позивач прізвище (шлюбне)": z.enum(["так", "ні", "не брав"]),
-        "дошлюбне прізвище Позивача": z.string(),
-    })
-    .transform(async (data) => {
-        const [plaintiffInst, defendantInst] = await Promise.all([
-            toInstrumental(data["ПІБ Позивача"]),
-            toInstrumental(data["ПІБ Відповідача"]),
-        ]);
+            "причина розпаду сім'ї": z.string(),
+            "дата припинення шлюбних стосунків (родовий відмінок)": dateString(),
+            "чи є спір про розподіл майна": z.boolean(),
+            "ПІБ Позивача": z.string(),
+            "ПІБ Відповідача": z.string(),
 
-        const children = data.діти
-            ? await Promise.all(
-                  data.діти.map(async (ch) => ({
-                      ...ch,
-                      "ПІБ (знахідний відмінок)":
-                          (await toAccusative(ch["ПІБ (називний відмінок)"])) ?? "",
-                  })),
-              )
-            : undefined;
+            "чи залишає позивач прізвище (шлюбне)": z.enum(["так", "ні", "не брав"]),
+            "дошлюбне прізвище Позивача": z.string(),
+        })
+        .transform(async (data) => {
+            const [plaintiffInst, defendantInst] = await Promise.all([
+                inflectors.toInstrumental(data["ПІБ Позивача"]),
+                inflectors.toInstrumental(data["ПІБ Відповідача"]),
+            ]);
 
-        return {
-            ...data,
-            "ПІБ позивача (орудний відмінок)": plaintiffInst ?? "",
-            "ПІБ Відповідача (орудний відмінок)": defendantInst ?? "",
-            діти: children,
-        };
-    });
+            const children = data.діти
+                ? await Promise.all(
+                      data.діти.map(async (ch) => ({
+                          ...ch,
+                          "ПІБ (знахідний відмінок)":
+                              (await inflectors.toAccusative(ch["ПІБ (називний відмінок)"])) ?? "",
+                      })),
+                  )
+                : undefined;
 
-export type PozovTemplateData = z.infer<typeof pozovTemplateDataSchema>;
+            return {
+                ...data,
+                "ПІБ позивача (орудний відмінок)": plaintiffInst ?? "",
+                "ПІБ Відповідача (орудний відмінок)": defendantInst ?? "",
+                діти: children,
+            };
+        });
+}
+
+export type PozovTemplateData = z.infer<ReturnType<typeof createPozovTemplateDataSchema>>;
 
 export function generatePozovText(data: PozovTemplateData) {
     const lastName = splitName(data["ПІБ Позивача"]).lastName;
