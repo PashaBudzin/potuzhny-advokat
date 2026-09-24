@@ -17,3 +17,9 @@ export {
 } from "./pozov";
 export { createChatAgent } from "./chat";
 export type { ChatAgentUIMessage } from "./chat";
+export {
+    addressNormalizationSchema,
+    normalizeAddressWithAI,
+    formatNormalizedAddress,
+} from "./normalize-address";
+export type { NormalizedAddressParts } from "./normalize-address";

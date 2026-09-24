@@ -12,6 +12,7 @@ import { saveAs } from "file-saver";
 import { JsonPreview } from "@/components/json-preview";
 import { firstBetween, normalizeAddress, normalizeName } from "@/lib/string";
 import { getCourtGenetative, toGenitive } from "@/lib/actions/grammatical-cases";
+import { normalizeAddressWithAI } from "@/lib/ai";
 
 type ParsedData = {
     суд: string;
@@ -126,13 +127,24 @@ async function parseText(text: string): Promise<ParsedData> {
         суд: court,
         ПІБ_позивача: poz,
         ПІБ_позивача_рв: (await toGenitive(poz)) ?? "",
-        адреса_позивача:
-            normalizeAddress(firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">')) ??
-            "",
+        адреса_позивача: await normalizeParsedAddress(
+            firstBetween(text, '<meta name="MEMBPOSTADDRESS1" content="', '">') ?? "",
+        ),
         код_позивача: firstBetween(text, '"MEMBOKPO1" content="', '"') ?? "",
         суд_рв: await getCourtGenetative(court),
         дата_рішення: firstBetween(text, '"DOCDATE" content="', '">') ?? "",
         номер_справи: firstBetween(text, 'name="CAUSENUM" content="', '">') ?? "",
         ПІБ_відповідача_рв: (await toGenitive(def)) ?? "",
     };
+}
+
+async function normalizeParsedAddress(address: string): Promise<string> {
+    if (!address) return "";
+
+    try {
+        return await normalizeAddressWithAI(address);
+    } catch (error) {
+        console.error("Failed to normalize address with AI:", error);
+        return normalizeAddress(address) ?? "";
+    }
 }
