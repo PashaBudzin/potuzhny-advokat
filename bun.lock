@@ -137,6 +137,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@potuzhny-advokat-internal/eservices": "0.1.0",
+        "@potuzhny-advokat/accounting": "workspace:*",
         "@potuzhny-advokat/ai": "workspace:*",
         "@potuzhny-advokat/strings": "workspace:*",
         "docxtemplater": "^3.67.6",

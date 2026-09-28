@@ -12,6 +12,7 @@
         "dev": "turbo run dev",
         "build": "turbo run build",
         "package": "turbo run package",
+        "case": "turbo run case",
         "lint": "oxlint --report-unused-disable-directives",
         "lint:fix": "oxlint --fix .",
         "format:check": "oxfmt --check --ignore-path .oxfmtignore",
