@@ -244,6 +244,13 @@
         "typescript": "^5",
       },
     },
+    "packages/ecourt-api": {
+      "name": "@potuzhny-advokat/ecourt-api",
+      "version": "0.1.0",
+      "devDependencies": {
+        "typescript": "^5",
+      },
+    },
     "packages/strings": {
       "name": "@potuzhny-advokat/strings",
       "version": "0.1.0",
@@ -682,6 +689,8 @@
     "@potuzhny-advokat/branding": ["@potuzhny-advokat/branding@workspace:packages/branding"],
 
     "@potuzhny-advokat/db": ["@potuzhny-advokat/db@workspace:packages/db"],
+
+    "@potuzhny-advokat/ecourt-api": ["@potuzhny-advokat/ecourt-api@workspace:packages/ecourt-api"],
 
     "@potuzhny-advokat/strings": ["@potuzhny-advokat/strings@workspace:packages/strings"],
 
