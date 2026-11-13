@@ -34,7 +34,7 @@
         "publisherId": "2894814",
         "zipCode": "21009",
         "city": "Вінниця",
-        "legalAddress": "Винниченка 29",
+        "legalAddress": "Винниченка, 29",
         "mail": "inbox@vnr.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Вінницького районного суду"
@@ -103,7 +103,7 @@
         "name": "Ладижинський міський суд",
         "publisherId": "26340816",
         "zipCode": "24321",
-        "city": "м. Ладижин",
+        "city": "Ладижин",
         "legalAddress": "Енергетиків, 13",
         "mail": "inbox@lgm.vn.court.gov.ua",
         "region": "Вінницька",
@@ -134,7 +134,7 @@
         "publisherId": "26423235",
         "zipCode": "24000",
         "city": "Могилів-Подільський",
-        "legalAddress": "Сагайдачного. 1/30",
+        "legalAddress": "Сагайдачного, 1/30",
         "mail": "inbox@mpm.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Могилів-Подільського міськрайонного суду"
@@ -204,7 +204,7 @@
         "publisherId": "2895047",
         "zipCode": "23300",
         "city": "Тиврів",
-        "legalAddress": "Шевченка. 3",
+        "legalAddress": "Шевченка, 3",
         "mail": "inbox@tv.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Тиврівського районного суду"
@@ -214,7 +214,7 @@
         "publisherId": "2895018",
         "zipCode": "24200",
         "city": "Томашпіль",
-        "legalAddress": "Ігоря Гаврилюка 45",
+        "legalAddress": "Ігоря Гаврилюка, 45",
         "mail": "inbox@tm.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Томашпільського районного суду"
@@ -224,7 +224,7 @@
         "publisherId": "2895024",
         "zipCode": "24300",
         "city": "Тростянець",
-        "legalAddress": "Соборна 21",
+        "legalAddress": "Соборна, 21",
         "mail": "inbox@tr.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Тростянецького районного суду"
@@ -234,7 +234,7 @@
         "publisherId": "2895030",
         "zipCode": "23600",
         "city": "Тульчин",
-        "legalAddress": "Перемоги 16",
+        "legalAddress": "Перемоги, 16",
         "mail": "inbox@tl.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Тульчинського районного суду"
@@ -264,7 +264,7 @@
         "publisherId": "2895064",
         "zipCode": "24800",
         "city": "Чечельник",
-        "legalAddress": "жовтнева, 33",
+        "legalAddress": "Жовтнева, 33",
         "mail": "inbox@ch.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Чечельницького районного суду"
@@ -284,7 +284,7 @@
         "publisherId": "2895082",
         "zipCode": "24500",
         "city": "Ямпіль",
-        "legalAddress": "Свободи 116",
+        "legalAddress": "Свободи, 116",
         "mail": "inbox@yam.vn.court.gov.ua",
         "region": "Вінницька",
         "genetative": "Ямпільського районного суду"
@@ -363,7 +363,7 @@
         "name": "Луцький міськрайонний суд",
         "publisherId": "2890417",
         "zipCode": "43023",
-        "city": "Kewmr",
+        "city": "Луцьк",
         "legalAddress": "Конякіна, 3",
         "mail": "inbox@lc.vl.court.gov.ua",
         "region": "Волинська",
@@ -482,9 +482,9 @@
     {
         "name": "Шевченківський районний суд міста Дніпра",
         "publisherId": "2891368",
-        "zipCode": "4900",
+        "zipCode": "49000",
         "city": "Дніпро",
-        "legalAddress": "Д. Яворинськог, 57",
+        "legalAddress": "Дмитра Яворницького, 57",
         "mail": "inbox@bs.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Шевченківського районного суду міста Дніпра"
@@ -504,7 +504,7 @@
         "publisherId": "2890707",
         "zipCode": "52600",
         "city": "Васильківка",
-        "legalAddress": "спортивна, 23",
+        "legalAddress": "Спортивна, 23",
         "mail": "inbox@vs.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Васильківського районного суду"
@@ -530,7 +530,7 @@
         "genetative": "Вільногірського міського суду"
     },
     {
-        "name": "Металургійний  районний суд міста Кривого Рогу",
+        "name": "Металургійний районний суд міста Кривого Рогу",
         "publisherId": "26371314",
         "zipCode": "50007",
         "city": "Кривий Ріг",
@@ -550,7 +550,7 @@
         "genetative": "Дніпровського районного суду міста Кам'янського"
     },
     {
-        "name": "Дніпровський  районний суд",
+        "name": "Дніпровський районний суд",
         "publisherId": "2891233",
         "zipCode": "52005",
         "city": "Слобожанське",
@@ -564,7 +564,7 @@
         "publisherId": "26371308",
         "zipCode": "50086",
         "city": "Кривий Ріг",
-        "legalAddress": "Л. Бородича,3",
+        "legalAddress": "Л. Бородича, 3",
         "mail": "inbox@dv.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Довгинцівського районного суду міста Кривого Рогу"
@@ -580,7 +580,7 @@
         "genetative": "Соборного районного суду міста Дніпра"
     },
     {
-        "name": "Покровський  районний суд міста Кривого Рогу",
+        "name": "Покровський районний суд міста Кривого Рогу",
         "publisherId": "2890653",
         "zipCode": "50029",
         "city": "Кривий Ріг",
@@ -624,7 +624,7 @@
         "publisherId": "2891374",
         "zipCode": "49074",
         "city": "Дніпро",
-        "legalAddress": "Слобожанське",
+        "legalAddress": "пр. Слобожанський, 84",
         "mail": "inbox@ind.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Індустріального районного суду міста Дніпра"
@@ -720,7 +720,7 @@
         "genetative": "Нікопольського міськрайонного суду"
     },
     {
-        "name": "Самарівський  міськрайонний суд Дніпропетровської області",
+        "name": "Самарівський міськрайонний суд Дніпропетровської області",
         "publisherId": "26509600",
         "zipCode": "51200",
         "city": "Новомосковськ",
@@ -742,15 +742,15 @@
     {
         "name": "Павлоградський міськрайонний суд",
         "publisherId": "26509623",
-        "zipCode": "54001",
-        "city": "Миколаїв",
-        "legalAddress": "68 Десантників, 2,",
+        "zipCode": "51400",
+        "city": "Павлоград",
+        "legalAddress": "Дніпровська, 135",
         "mail": "inbox@pvm.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Павлоградського міськрайонного суду"
     },
     {
-        "name": "Шахтарський  міський суд",
+        "name": "Шахтарський міський суд",
         "publisherId": "2124189",
         "zipCode": "52800",
         "city": "Першотравенськ",
@@ -784,7 +784,7 @@
         "publisherId": "2890860",
         "zipCode": "53600",
         "city": "Покровське",
-        "legalAddress": "Д. Яворинськог,134",
+        "legalAddress": "Дмитра Яворницького, 134",
         "mail": "inbox@pok.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Покровського районного суду"
@@ -855,7 +855,7 @@
         "zipCode": "51500",
         "city": "Тернівка",
         "legalAddress": "Лермонтова, 15-Б",
-        "mail": "inbox@tr.dp.court.gov.ua",
+        "mail": "inbox@trm.dp.court.gov.ua",
         "region": "Дніпропетровська",
         "genetative": "Тернівського міського суду Дніпропетровської області"
     },
@@ -913,7 +913,7 @@
         "name": "Юр'ївський районний суд",
         "publisherId": "26371337",
         "zipCode": "51300",
-        "city": "Ю'рївка",
+        "city": "Юр'ївка",
         "legalAddress": "Центральна, 89",
         "mail": "inbox@yr.dp.court.gov.ua",
         "region": "Дніпропетровська",
@@ -934,7 +934,7 @@
         "publisherId": "26503448",
         "zipCode": "84122",
         "city": "Слов'янськ",
-        "legalAddress": "Добровольського",
+        "legalAddress": "Добровольського, 2",
         "mail": "inbox@sl.dn.court.gov.ua",
         "region": "Донецька",
         "genetative": "Слов'янського міськрайонного суду"
@@ -990,7 +990,7 @@
         "genetative": "Брусилівського районного суду"
     },
     {
-        "name": "Хорошівський  районний суд",
+        "name": "Хорошівський районний суд",
         "publisherId": "2896064",
         "zipCode": "12101",
         "city": "Хорошів",
@@ -1302,7 +1302,7 @@
     {
         "name": "Ужгородський міськрайонний суд",
         "publisherId": "26529130",
-        "zipCode": "80017",
+        "zipCode": "88000",
         "city": "Ужгород",
         "legalAddress": "Загорська, 53",
         "mail": "inbox@ug.zk.court.gov.ua",
@@ -1330,7 +1330,7 @@
         "genetative": "Вільнянського районного суду"
     },
     {
-        "name": "Олександрівський  районний суд міста Запоріжжя",
+        "name": "Олександрівський районний суд міста Запоріжжя",
         "publisherId": "37408285",
         "zipCode": "69063",
         "city": "Запоріжжя",
@@ -1370,7 +1370,7 @@
         "genetative": "Комунарського районного суду міста Запоріжжя"
     },
     {
-        "name": "Дніпровський  районний суд міста Запоріжжя",
+        "name": "Дніпровський районний суд міста Запоріжжя",
         "publisherId": "37408421",
         "zipCode": "69006",
         "city": "Запоріжжя",
@@ -1592,7 +1592,7 @@
     {
         "name": "Баришівський районний суд",
         "publisherId": "2892095",
-        "zipCode": "7501",
+        "zipCode": "07501",
         "city": "Баришівка",
         "legalAddress": "Київський шлях, 61",
         "mail": "inbox@ba.ko.court.gov.ua",
@@ -1602,7 +1602,7 @@
     {
         "name": "Березанський міський суд",
         "publisherId": "20078872",
-        "zipCode": "7540",
+        "zipCode": "07540",
         "city": "Березань",
         "legalAddress": "Шевченків шлях, 32",
         "mail": "inbox@be.ko.court.gov.ua",
@@ -1612,7 +1612,7 @@
     {
         "name": "Білоцерківський міськрайонний суд",
         "publisherId": "26539647",
-        "zipCode": "9100",
+        "zipCode": "09100",
         "city": "Біла Церква",
         "legalAddress": "Турчанінова, 7",
         "mail": "inbox@bcm.ko.court.gov.ua",
@@ -1622,7 +1622,7 @@
     {
         "name": "Богуславський районний суд",
         "publisherId": "2892111",
-        "zipCode": "9700",
+        "zipCode": "09700",
         "city": "Богуслав",
         "legalAddress": "Франка, 29-А",
         "mail": "inbox@bg.ko.court.gov.ua",
@@ -1632,7 +1632,7 @@
     {
         "name": "Бориспільський міськрайонний суд",
         "publisherId": "26539653",
-        "zipCode": "8301",
+        "zipCode": "08301",
         "city": "Бориспіль",
         "legalAddress": "Київський шлях, 72",
         "mail": "inbox@bpm.ko.court.gov.ua",
@@ -1642,7 +1642,7 @@
     {
         "name": "Бородянський районний суд",
         "publisherId": "2892184",
-        "zipCode": "7801",
+        "zipCode": "07801",
         "city": "Бородянка",
         "legalAddress": "Центральна, 315",
         "mail": "inbox@bd.ko.court.gov.ua",
@@ -1652,7 +1652,7 @@
     {
         "name": "Броварський міськрайонний суд",
         "publisherId": "26539667",
-        "zipCode": "7400",
+        "zipCode": "07400",
         "city": "Бровари",
         "legalAddress": "Грушевського, 29",
         "mail": "inbox@br.ko.court.gov.ua",
@@ -1662,7 +1662,7 @@
     {
         "name": "Васильківський міськрайонний суд",
         "publisherId": "26539676",
-        "zipCode": "8600",
+        "zipCode": "08600",
         "city": "Васильків",
         "legalAddress": "Шевченка, 8",
         "mail": "inbox@vs.ko.court.gov.ua",
@@ -1672,7 +1672,7 @@
     {
         "name": "Вишгородський районний суд",
         "publisherId": "2892132",
-        "zipCode": "7300",
+        "zipCode": "07300",
         "city": "Вишгород",
         "legalAddress": "Кургузова, 7",
         "mail": "inbox@vsh.ko.court.gov.ua",
@@ -1682,7 +1682,7 @@
     {
         "name": "Володарський районний суд",
         "publisherId": "2892215",
-        "zipCode": "9300",
+        "zipCode": "09300",
         "city": "Володарка",
         "legalAddress": "Миру, 25",
         "mail": "inbox@vl.ko.court.gov.ua",
@@ -1692,7 +1692,7 @@
     {
         "name": "Згурівський районний суд",
         "publisherId": "26190624",
-        "zipCode": "7600",
+        "zipCode": "07600",
         "city": "Згурівка",
         "legalAddress": "Українська, 43",
         "mail": "inbox@zg.ko.court.gov.ua",
@@ -1702,7 +1702,7 @@
     {
         "name": "Іванківський районний суд",
         "publisherId": "26190630",
-        "zipCode": "7201",
+        "zipCode": "07201",
         "city": "Іванків",
         "legalAddress": "Проскури, 14а",
         "mail": "inbox@iv.ko.court.gov.ua",
@@ -1712,7 +1712,7 @@
     {
         "name": "Ірпінський міський суд",
         "publisherId": "2892037",
-        "zipCode": "8200",
+        "zipCode": "08200",
         "city": "Ірпінь",
         "legalAddress": "Мінеральна, 7",
         "mail": "inbox@ip.ko.court.gov.ua",
@@ -1722,7 +1722,7 @@
     {
         "name": "Кагарлицький районний суд",
         "publisherId": "2892155",
-        "zipCode": "9201",
+        "zipCode": "09201",
         "city": "Кагарлик",
         "legalAddress": "Володимира Великого, 3",
         "mail": "inbox@kg.ko.court.gov.ua",
@@ -1732,7 +1732,7 @@
     {
         "name": "Києво-Святошинський районний суд",
         "publisherId": "2892161",
-        "zipCode": "3170",
+        "zipCode": "03170",
         "city": "Київ",
         "legalAddress": "Мельниченка, 1",
         "mail": "inbox@ks.ko.court.gov.ua",
@@ -1742,7 +1742,7 @@
     {
         "name": "Макарівський районний суд",
         "publisherId": "2892178",
-        "zipCode": "8000",
+        "zipCode": "08000",
         "city": "Макарів",
         "legalAddress": "Димитрія Ростовського, 35",
         "mail": "inbox@mk.ko.court.gov.ua",
@@ -1752,7 +1752,7 @@
     {
         "name": "Миронівський районний суд",
         "publisherId": "2892310",
-        "zipCode": "8800",
+        "zipCode": "08800",
         "city": "Миронівка",
         "legalAddress": "Першотравнева, 3",
         "mail": "inbox@mr.ko.court.gov.ua",
@@ -1762,7 +1762,7 @@
     {
         "name": "Обухівський районний суд",
         "publisherId": "2892286",
-        "zipCode": "8700",
+        "zipCode": "08700",
         "city": "Обухів",
         "legalAddress": "Київська, 20",
         "mail": "inbox@ob.ko.court.gov.ua",
@@ -1772,7 +1772,7 @@
     {
         "name": "Переяславський міськрайонний суд",
         "publisherId": "26539682",
-        "zipCode": "8400",
+        "zipCode": "08400",
         "city": "Переяслав",
         "legalAddress": "Б. Хмельницького, 65",
         "mail": "inbox@ph.ko.court.gov.ua",
@@ -1782,7 +1782,7 @@
     {
         "name": "Ржищівський міський суд",
         "publisherId": "26190593",
-        "zipCode": "9230",
+        "zipCode": "09230",
         "city": "Ржищів",
         "legalAddress": "Соборна, 87",
         "mail": "inbox@rg.ko.court.gov.ua",
@@ -1792,7 +1792,7 @@
     {
         "name": "Рокитнянський районний суд",
         "publisherId": "2892072",
-        "zipCode": "9601",
+        "zipCode": "09601",
         "city": "Рокитне",
         "legalAddress": "Заводська, 11",
         "mail": "inbox@rk.ko.court.gov.ua",
@@ -1802,7 +1802,7 @@
     {
         "name": "Сквирський районний суд",
         "publisherId": "2892221",
-        "zipCode": "9001",
+        "zipCode": "09001",
         "city": "Сквира",
         "legalAddress": "Громова, 7-А",
         "mail": "inbox@sk.ko.court.gov.ua",
@@ -1812,7 +1812,7 @@
     {
         "name": "Славутицький міський суд",
         "publisherId": "26190601",
-        "zipCode": "7100",
+        "zipCode": "07100",
         "city": "Славутич",
         "legalAddress": "Невський квартал, 3-а",
         "mail": "inbox@slm.ko.court.gov.ua",
@@ -1822,7 +1822,7 @@
     {
         "name": "Ставищенський районний суд",
         "publisherId": "2892066",
-        "zipCode": "9400",
+        "zipCode": "09400",
         "city": "Ставище",
         "legalAddress": "Г. Кравченка, 4",
         "mail": "inbox@st.ko.court.gov.ua",
@@ -1832,7 +1832,7 @@
     {
         "name": "Таращанський районний суд",
         "publisherId": "2892238",
-        "zipCode": "9501",
+        "zipCode": "09501",
         "city": "Тараща",
         "legalAddress": "Сікевича Володимира, 61",
         "mail": "inbox@tr.ko.court.gov.ua",
@@ -1842,7 +1842,7 @@
     {
         "name": "Тетіївський районний суд",
         "publisherId": "2892244",
-        "zipCode": "9800",
+        "zipCode": "09800",
         "city": "Тетіїв",
         "legalAddress": "Соборна, 27",
         "mail": "inbox@te.ko.court.gov.ua",
@@ -1852,7 +1852,7 @@
     {
         "name": "Фастівський міськрайонний суд",
         "publisherId": "26539699",
-        "zipCode": "8500",
+        "zipCode": "08500",
         "city": "Фастів",
         "legalAddress": "Івана Ступака, 25",
         "mail": "inbox@fs.ko.court.gov.ua",
@@ -1862,7 +1862,7 @@
     {
         "name": "Яготинський районний суд",
         "publisherId": "2892273",
-        "zipCode": "7700",
+        "zipCode": "07700",
         "city": "Яготин",
         "legalAddress": "Незалежності, 67",
         "mail": "inbox@yg.ko.court.gov.ua",
@@ -1874,7 +1874,7 @@
         "publisherId": "2896839",
         "zipCode": "27200",
         "city": "Бобринець",
-        "legalAddress": "Миколаївська,",
+        "legalAddress": "Миколаївська, 80",
         "mail": "inbox@bb.kr.court.gov.ua",
         "region": "Кіровоградська",
         "genetative": "Бобринецького районного суду"
@@ -1940,7 +1940,7 @@
         "genetative": "Знам’янського міськрайонного суду"
     },
     {
-        "name": "Кропивницький  районний суд",
+        "name": "Кропивницький районний суд",
         "publisherId": "2896911",
         "zipCode": "25014",
         "city": "Кропивницький",
@@ -2175,7 +2175,7 @@
         "zipCode": "80300",
         "city": "Жовква",
         "legalAddress": "Гагаріна, 3а",
-        "mail": "inbox@gv.lv.соuгt.gov.ua",
+        "mail": "inbox@gv.lv.court.gov.ua",
         "region": "Львівська",
         "genetative": "Жовківського районного суду"
     },
@@ -2252,7 +2252,7 @@
     {
         "name": "Пустомитівський районний суд",
         "publisherId": "37325733",
-        "zipCode": "811100",
+        "zipCode": "81100",
         "city": "Пустомити",
         "legalAddress": "Івана Кандиби, 3",
         "mail": "inbox@pu.lv.court.gov.ua",
@@ -2365,7 +2365,7 @@
         "zipCode": "80100",
         "city": "Шептицький",
         "legalAddress": "Святого Володимира, 15",
-        "mail": "inbox@cgm.iv.court.gov.ua",
+        "mail": "inbox@cgm.lv.court.gov.ua",
         "region": "Львівська",
         "genetative": "Шептицького міського суду"
     },
@@ -2490,7 +2490,7 @@
         "genetative": "Єланецького районного суду"
     },
     {
-        "name": "Вітовський  районний суд",
+        "name": "Вітовський районний суд",
         "publisherId": "2892623",
         "zipCode": "54050",
         "city": "Миколаїв",
@@ -2574,7 +2574,7 @@
         "publisherId": "2892586",
         "zipCode": "56602",
         "city": "Нова Одеса",
-        "legalAddress": "Центральна 190",
+        "legalAddress": "Центральна, 190",
         "mail": "inbox@no.mk.court.gov.ua",
         "region": "Миколаївська",
         "genetative": "Новоодеського районного суду"
@@ -2620,7 +2620,7 @@
         "genetative": "Центрального районного суду міста Миколаєва"
     },
     {
-        "name": "Південноукраїнський  міський суд",
+        "name": "Південноукраїнський міський суд",
         "publisherId": "24059914",
         "zipCode": "55000",
         "city": "Південноукраїнськ",
@@ -2674,7 +2674,7 @@
         "publisherId": "2897678",
         "zipCode": "67707",
         "city": "Білгород-Дністровський",
-        "legalAddress": "Військової слави. 27",
+        "legalAddress": "Військової слави, 27",
         "mail": "inbox@bd.od.court.gov.ua",
         "region": "Одеська",
         "genetative": "Білгород-Дністровського міськрайонного суду"
@@ -2730,7 +2730,7 @@
         "genetative": "Ізмаїльського міськрайонного суду"
     },
     {
-        "name": "Чорноморський  міський суд",
+        "name": "Чорноморський міський суд",
         "publisherId": "2897922",
         "zipCode": "68001",
         "city": "Чорноморськ",
@@ -2774,7 +2774,7 @@
         "publisherId": "2897773",
         "zipCode": "67500",
         "city": "Доброслав",
-        "legalAddress": "Першотравнева, 51 Центральна, 81",
+        "legalAddress": "Першотравнева, 51; Центральна, 81",
         "mail": "inbox@km.od.court.gov.ua",
         "region": "Одеська",
         "genetative": "Доброславського районного суду"
@@ -2790,7 +2790,7 @@
         "genetative": "Подільського міськрайонного суду"
     },
     {
-        "name": "Окнянський  районний суд",
+        "name": "Окнянський районний суд",
         "publisherId": "2897810",
         "zipCode": "67900",
         "city": "Окни",
@@ -2810,7 +2810,7 @@
         "genetative": "Любашівського районного суду"
     },
     {
-        "name": "Хаджибейський  районний суд міста Одеси",
+        "name": "Хаджибейський районний суд міста Одеси",
         "publisherId": "5383419",
         "zipCode": "65033",
         "city": "Одеса",
@@ -2930,7 +2930,7 @@
         "genetative": "Теплодарського міського суду"
     },
     {
-        "name": "Захарівський  районний суд",
+        "name": "Захарівський районний суд",
         "publisherId": "2897903",
         "zipCode": "66700",
         "city": "Захарівка",
@@ -2994,7 +2994,7 @@
         "publisherId": "2885936",
         "zipCode": "39000",
         "city": "Глобине",
-        "legalAddress": "Центральна,183/23",
+        "legalAddress": "Центральна, 183/23",
         "mail": "inbox@gl.pl.court.gov.ua",
         "region": "Полтавська",
         "genetative": "Глобинського районного суду"
@@ -3070,7 +3070,7 @@
         "genetative": "Козельщинського районного суду"
     },
     {
-        "name": "Горішньоплавнівський  міський суд",
+        "name": "Горішньоплавнівський міський суд",
         "publisherId": "22548112",
         "zipCode": "39800",
         "city": "Горішні Плавні",
@@ -3103,7 +3103,7 @@
         "name": "Крюківський районний суд міста Кременчука",
         "publisherId": "2886029",
         "zipCode": "39605",
-        "city": "Кремечук",
+        "city": "Кременчук",
         "legalAddress": "Троїцька, 37/49",
         "mail": "inbox@kr.pl.court.gov.ua",
         "region": "Полтавська",
@@ -3162,9 +3162,9 @@
     {
         "name": "Новосанжарський районний суд",
         "publisherId": "2886090",
-        "zipCode": "393000",
+        "zipCode": "39300",
         "city": "Нові Санжари",
-        "legalAddress": "Незалежності, 32 Площа Перемоги, 11",
+        "legalAddress": "Незалежності, 32; площа Перемоги, 11",
         "mail": "inbox@ns.pl.court.gov.ua",
         "region": "Полтавська",
         "genetative": "Новосанжарського районного суду"
@@ -3194,7 +3194,7 @@
         "publisherId": "2886114",
         "zipCode": "37000",
         "city": "Пирятин",
-        "legalAddress": "Соборна, 41 Ярмаркова, 17",
+        "legalAddress": "Соборна, 41; Ярмаркова, 17",
         "mail": "inbox@pr.pl.court.gov.ua",
         "region": "Полтавська",
         "genetative": "Пирятинського районного суду"
@@ -3255,7 +3255,7 @@
         "zipCode": "38800",
         "city": "Чутове",
         "legalAddress": "Набережна, 15",
-        "mail": "Inbox@ct.pl.court.gov.ua",
+        "mail": "inbox@ct.pl.court.gov.ua",
         "region": "Полтавська",
         "genetative": "Чутівського районного суду"
     },
@@ -3355,7 +3355,7 @@
         "zipCode": "34700",
         "city": "Корець",
         "legalAddress": "Титова, 7",
-        "mail": "inbox@kr.rv.court.qov.ua",
+        "mail": "inbox@kr.rv.court.gov.ua",
         "region": "Рівненська",
         "genetative": "Корецького районного суду"
     },
@@ -3370,7 +3370,7 @@
         "genetative": "Костопільського районного суду"
     },
     {
-        "name": "Вараський  міський суд",
+        "name": "Вараський міський суд",
         "publisherId": "26406308",
         "zipCode": "34400",
         "city": "Вараш",
@@ -3455,7 +3455,7 @@
         "zipCode": "41800",
         "city": "Білопілля",
         "legalAddress": "Шевченка, 17",
-        "mail": "inbox@bl.su.court.gov.uа",
+        "mail": "inbox@bl.su.court.gov.ua",
         "region": "Сумська",
         "genetative": "Білопільського районного суду"
     },
@@ -3754,7 +3754,7 @@
         "publisherId": "21157728",
         "zipCode": "48000",
         "city": "Підгайці",
-        "legalAddress": "Міцкевича,26",
+        "legalAddress": "Міцкевича, 26",
         "mail": "inbox@pg.te.court.gov.ua",
         "region": "Тернопільська",
         "genetative": "Підгаєцького районного суду"
@@ -3774,7 +3774,7 @@
         "publisherId": "2886692",
         "zipCode": "46003",
         "city": "Тернопіль",
-        "legalAddress": "Котляревського. 34",
+        "legalAddress": "Котляревського, 34",
         "mail": "inbox@tem.te.court.gov.ua",
         "region": "Тернопільська",
         "genetative": "Тернопільського міськрайонного суду"
@@ -3923,14 +3923,14 @@
         "name": "Коломацький районний суд",
         "publisherId": "23328542",
         "zipCode": "63110",
-        "city": "Різузенкове",
+        "city": "Різуненкове",
         "legalAddress": "Центральна, 56",
         "mail": "inbox@kl.hr.court.gov.ua",
         "region": "Харківська",
         "genetative": "Коломацького районного суду"
     },
     {
-        "name": "Слобідський  районний суд міста Харкова",
+        "name": "Слобідський районний суд міста Харкова",
         "publisherId": "2894042",
         "zipCode": "61068",
         "city": "Харків",
@@ -3940,7 +3940,7 @@
         "genetative": "Слобідського районного суду міста Харкова"
     },
     {
-        "name": "Берестинський  районний суд",
+        "name": "Берестинський районний суд",
         "publisherId": "2893918",
         "zipCode": "63601",
         "city": "Берестин",
@@ -3960,11 +3960,11 @@
         "genetative": "Краснокутського районного суду"
     },
     {
-        "name": "Холодногірський  районний суд міста Харкова",
+        "name": "Холодногірський районний суд міста Харкова",
         "publisherId": "2894065",
         "zipCode": "61052",
         "city": "Харків",
-        "legalAddress": "Полтавський Шлях",
+        "legalAddress": "Полтавський Шлях, 20",
         "mail": "inbox@ln.hr.court.gov.ua",
         "region": "Харківська",
         "genetative": "Холодногірського районного суду міста Харкова"
@@ -3974,7 +3974,7 @@
         "publisherId": "2893953",
         "zipCode": "64600",
         "city": "Лозова",
-        "legalAddress": "Ярослава Мудрого. 9",
+        "legalAddress": "Ярослава Мудрого, 9",
         "mail": "inbox@lzm.hr.court.gov.ua",
         "region": "Харківська",
         "genetative": "Лозівського міськрайонного суду"
@@ -4003,7 +4003,7 @@
         "name": "Нововодолазький районний суд",
         "publisherId": "2893700",
         "zipCode": "63202",
-        "city": "Нова Водолога",
+        "city": "Нова Водолага",
         "legalAddress": "40 років Перемоги, 1",
         "mail": "inbox@nv.hr.court.gov.ua",
         "region": "Харківська",
@@ -4020,7 +4020,7 @@
         "genetative": "Індустріального районного суду міста Харкова"
     },
     {
-        "name": "Златопільський  міськрайонний суд",
+        "name": "Златопільський міськрайонний суд",
         "publisherId": "22705741",
         "zipCode": "64107",
         "city": "Златопіль",
@@ -4060,7 +4060,7 @@
         "genetative": "Харківського районного суду"
     },
     {
-        "name": "Основ'янський  районний суд міста Харкова",
+        "name": "Основ'янський районний суд міста Харкова",
         "publisherId": "2894059",
         "zipCode": "61001",
         "city": "Харків",
@@ -4755,7 +4755,7 @@
         "zipCode": "14013",
         "city": "Чернігів",
         "legalAddress": "Перемоги, 141",
-        "mail": "іnbox@ds.cn.court.gov.ua",
+        "mail": "inbox@ds.cn.court.gov.ua",
         "region": "Чернігівська",
         "genetative": "Деснянського районного суду міста Чернігова"
     },
@@ -4835,7 +4835,7 @@
         "zipCode": "16000",
         "city": "Новгород-Сіверський",
         "legalAddress": "Гімназична, 10-а",
-        "mail": "Inbox@ns.cn.court.gov.ua",
+        "mail": "inbox@ns.cn.court.gov.ua",
         "region": "Чернігівська",
         "genetative": "Новгород-Сіверського районного суду"
     },
@@ -4864,7 +4864,7 @@
         "publisherId": "26543620",
         "zipCode": "17500",
         "city": "Прилуки",
-        "legalAddress": "Котляревського. 62",
+        "legalAddress": "Котляревського, 62",
         "mail": "inbox@pr.cn.court.gov.ua",
         "region": "Чернігівська",
         "genetative": "Прилуцького міськрайонного суду"
@@ -4930,7 +4930,7 @@
         "genetative": "Чернігівського районного суду"
     },
     {
-        "name": "Сновський  районний суд",
+        "name": "Сновський районний суд",
         "publisherId": "2894473",
         "zipCode": "15200",
         "city": "Сновськ",
@@ -4941,102 +4941,102 @@
     },
     {
         "name": "Деснянський районний суд",
-        "publisherId": "О2896779",
-        "zipCode": "2225",
+        "publisherId": "02896779",
+        "zipCode": "02225",
         "city": "Київ",
         "legalAddress": "Червоної Калини, 5-В",
         "mail": "inbox@ds.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Деснянського районного суду"
     },
     {
         "name": "Дніпровський районний суд",
-        "publisherId": "О2896696",
-        "zipCode": "2105",
+        "publisherId": "02896696",
+        "zipCode": "02105",
         "city": "Київ",
         "legalAddress": "І. Сергієнка, 3",
         "mail": "inbox@dn.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Дніпровського районного суду"
     },
     {
         "name": "Дарницький районний суд",
-        "publisherId": "О2896704",
-        "zipCode": "2068",
+        "publisherId": "02896704",
+        "zipCode": "02068",
         "city": "Київ",
         "legalAddress": "О. Кошиця, 5",
         "mail": "inbox@dr.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Дарницького районного суду"
     },
     {
         "name": "Печерський районний суд",
-        "publisherId": "О2896745",
-        "zipCode": "1601",
+        "publisherId": "02896745",
+        "zipCode": "01601",
         "city": "Київ",
         "legalAddress": "Володимирська, 15",
         "mail": "inbox@pc.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Печерського районного суду"
     },
     {
         "name": "Голосіївський районний суд",
-        "publisherId": "О2896756",
-        "zipCode": "3127",
+        "publisherId": "02896756",
+        "zipCode": "03127",
         "city": "Київ",
         "legalAddress": "Потєхіна, 14 А",
         "mail": "inbox@gl.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Голосіївського районного суду"
     },
     {
         "name": "Святошинський районний суд",
-        "publisherId": "О2896733",
-        "zipCode": "3148",
+        "publisherId": "02896733",
+        "zipCode": "03148",
         "city": "Київ",
         "legalAddress": "Якуба Коласа, 27-А",
         "mail": "inbox@sv.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Святошинського районного суду"
     },
     {
         "name": "Солом'янський районний суд",
-        "publisherId": "О2896762",
-        "zipCode": "3680",
+        "publisherId": "02896762",
+        "zipCode": "03680",
         "city": "Київ",
         "legalAddress": "М. Кривоноса, 25",
         "mail": "inbox@sl.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Солом'янського районного суду"
     },
     {
         "name": "Шевченківський районний суд",
-        "publisherId": "О2896710",
-        "zipCode": "3057",
+        "publisherId": "02896710",
+        "zipCode": "03057",
         "city": "Київ",
         "legalAddress": "Дехтярівська, 31 А",
         "mail": "inbox@sh.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Шевченківського районного суду"
     },
     {
         "name": "Оболонський районний суд",
-        "publisherId": "О2896785",
-        "zipCode": "4212",
+        "publisherId": "02896785",
+        "zipCode": "04212",
         "city": "Київ",
         "legalAddress": "Маршала Тимошенка, 2-Є",
         "mail": "inbox@ob.ki.court.gov.ua",
-        "region": "Чернігівська",
+        "region": "Київ",
         "genetative": "Оболонського районного суду"
     },
     {
         "name": "Подільський районний суд",
-        "publisherId": "О2896727",
-        "zipCode": "4071",
+        "publisherId": "02896727",
+        "zipCode": "04071",
         "city": "Київ",
         "legalAddress": "Хорива, 21",
-        "mail": "inbox@pd.court.gov.ua",
-        "region": "Чернігівська",
+        "mail": "inbox@pd.ki.court.gov.ua",
+        "region": "Київ",
         "genetative": "Подільського районного суду"
     }
 ]

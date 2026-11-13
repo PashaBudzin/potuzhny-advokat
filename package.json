@@ -17,7 +17,8 @@
         "lint:fix": "oxlint --fix .",
         "format:check": "oxfmt --check --ignore-path .oxfmtignore",
         "format": "oxfmt --ignore-path .oxfmtignore",
-        "ci:check": "bunx turbo run quality",
+        "test": "turbo run test",
+        "ci:check": "bunx turbo run quality test",
         "ci:fix": "bunx turbo run quality:fix",
         "prepare": "husky"
     },
